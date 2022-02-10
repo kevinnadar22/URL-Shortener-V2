@@ -27,29 +27,9 @@ Droplink URL Shortener and MDISK convertor
 
 ## Bot Usage:
 
-Just send me any post with link, I will send you the shorten link
+DROPLINK - This BOT can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit postes in channels also.
 
-You can use me in channel too 
+MDISK - This bot will upload mdisk links to your account through API ID. Can be used in channels
 
-Add your Channel ID in Heroku vars. Make me admin in your channel with edit permission. That's enough, now continue 
-posting movies in channel I will edit all posts and add the shorten link
 
-##### Custom Alias:
 
-Send me a link to short a link with random alias.
-For custom alias, [link] | [custom_alias], Send in this format
-
-Ex: https://t.me/example | Example
-
-### Commands
-
-* /start - start message
-
-* /batch - This command is used to short all links from the first post to last post in your channel. Make the bot as an 
-admin in your channel.
-
-Command usage: /batch [channel id or username]
-
-* /help - The current command
-
-* /about - About this bot
