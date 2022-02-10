@@ -15,7 +15,11 @@ async def private_link_handler(bot, message):
             await message.reply_text("Set your MODE in Heroku vars")
         else:
             if MODE == "mdisk":
-                links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
+                if message.text:
+                    links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
+                elif message.caption:
+                    links = re.findall(r'https?://mdisk.me[^\s]+', message.caption)
+                    
                 if len(links) == 0:
                     await message.reply_text("Send any MDISK link to save it to your mdisk account")
                 # url shortener in private chat
