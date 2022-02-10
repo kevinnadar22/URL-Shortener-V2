@@ -1,0 +1,80 @@
+{
+  "name": "Url-Shortener-bot-V2",
+  "description": "Make short link by using Shortener using API key",
+  "logo": "https://i.ibb.co/z6Rs1dz/automation-inspiration-URLshortener-00-hero.jpg",
+  "keywords": [
+    "telegram",
+    "shortener"
+  ],
+  "website": "https://github.com/T2links/",
+  "repository": "https://github.com/T2links/",
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Your bot token",
+      "value": ""
+    },
+    "API_ID": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": ""
+    },
+    "MODE": {
+      "description": "Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase",
+      "value": ""
+    },
+    "DROPLINK_KEY": {
+      "description": "Enter your DROPLINK API KEY only if mode is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
+      "value": "",
+      "required": false
+    },
+    "MDISK_KEY": {
+      "description": "Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
+      "value": "",
+      "required": false
+    },
+    "INCLUDE_DOMAIN": {
+      "description": "Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink",
+      "value": "",
+      "required": false
+    },
+    "EXCLUDE_DOMAIN": {
+      "description": "Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink",
+      "value": "",
+      "required": false
+    },
+    "CHANNELS": {
+      "description": "Enter True if you want the bot to work in Channels also else Leave it as it is",
+      "value": "",
+      "required": false
+    },
+    "CHANNEL_ID": {
+      "description": "Enter your Channel ID, Leave this to deafault if CHANNELS set to False",
+      "value": "",
+      "required": false
+    },
+    "FORWARD_MESSAGE": {
+      "description": "Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False",
+      "value": "",
+      "required": false
+    },
+    "ADMINS": {
+      "description": "Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma. No space inbetween. Only user's ID added will be able to use the bot",
+      "value": ""
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
+}
