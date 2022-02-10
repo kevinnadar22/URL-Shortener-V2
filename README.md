@@ -5,7 +5,7 @@ Droplink URL Shortener and MDISK convertor
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-##### Required Variables
+## Required Variables
 
 * `BOT_TOKEN`: Create a bot using [@BotFather](https://telegram.dog/BotFather), and get the Telegram API token.
 
@@ -15,13 +15,13 @@ Droplink URL Shortener and MDISK convertor
 * `API_KEY`: API_KEY of the WEBSITE you want to use. Get this value from https://your_website/member/tools/api
 
 
-#### Bot Usage:
+## Bot Usage:
 
 Just send me any post with link, I will send you the shorten link
 
 You can use me in channel too 
 
-** Add your Channel ID in Heroku vars. Make me admin in your channel with edit permission. That's enough, now continue 
+Add your Channel ID in Heroku vars. Make me admin in your channel with edit permission. That's enough, now continue 
 posting movies in channel I will edit all posts and add the shorten link
 
 ##### Custom Alias:
@@ -31,7 +31,7 @@ For custom alias, [link] | [custom_alias], Send in this format
 
 Ex: https://t.me/example | Example
 
-#### Commands
+### Commands
 
 * /start - start message
 
