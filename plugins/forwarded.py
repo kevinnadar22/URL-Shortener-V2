@@ -5,7 +5,7 @@ from config import CHANNEL_ID, FORWARD_MESSAGE, CHANNELS
 import json
 from utils import replace_link, replace_mdisk_link
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from plugins.mode import MODE
+from config import METHOD
 import re
 
 # edit forwarded message
@@ -14,7 +14,7 @@ import re
 @Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.chat(CHANNEL_ID) & (
         filters.channel | filters.group) & filters.incoming & ~filters.edited & ~filters.private & filters.forwarded)
 async def channel_forward_link_handler(bot, message):
-    if MODE == "droplink":
+    if METHOD == "droplink":
         if FORWARD_MESSAGE and CHANNELS is True:
 
             # reply markup - button post
@@ -78,7 +78,7 @@ async def channel_forward_link_handler(bot, message):
                     await message.reply_document(fileid, caption=link)
                     await message.delete()
 
-    elif MODE == "mdisk":
+    elif METHOD == "mdisk":
         if FORWARD_MESSAGE and CHANNELS is True:
             
                 # reply markup - button post

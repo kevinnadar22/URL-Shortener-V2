@@ -3,7 +3,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import CHANNEL_ID, CHANNELS
 from pyrogram import Client, filters
 from utils import replace_link, replace_mdisk_link
-from plugins.mode import MODE
+from config import METHOD
 import re
 
 # Channel
@@ -15,7 +15,7 @@ import re
     ~filters.forwarded)
 async def channel_link_handler(bot, message):
     if CHANNELS is True:
-        if MODE == "droplink":
+        if METHOD == "droplink":
 
             # reply markup - button post
 
@@ -53,7 +53,7 @@ async def channel_link_handler(bot, message):
                 else:
                     await message.edit_caption(link)
 
-        elif MODE == "mdisk":
+        elif METHOD == "mdisk":
             links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
             if len(links) == 0:
                 return

@@ -5,10 +5,10 @@ Droplink URL Shortener and MDISK convertor
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-## Required Variables
+## Required Variables <br> <br>
 
-* `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps)<br><br>
-* `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)<br><br>
+* `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps) <br><br>
+* `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps) <br><br>
 * `ADMINS`: Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.<br><br>
 * `BOT_TOKEN`: Your bot token from @botfather<br><br>
 * `METHOD`: Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk in lowercase<br><br>
@@ -16,7 +16,7 @@ Droplink URL Shortener and MDISK convertor
 * `MDISK_KEY`: Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot. If METHOD is droplink, Leave it to default<br><br>
 
 
-## Optional Variables
+## Optional Variables <br> <br>
 
 * `CHANNELS`: Enter True if you want the bot to work in Channels also else Leave it as it is<br><br>
 * `CHANNEL_ID`: Enter your Channel ID, Leave this to deafault if CHANNELS set to False<br><br>
@@ -25,11 +25,11 @@ Droplink URL Shortener and MDISK convertor
 * `FORWARD_MESSAGE`: Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False<br><br>
 
 
-## Bot Usage:
+## Bot Usage: <br><br>
 
-DROPLINK - This BOT can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit postes in channels also.
+* `Droplink` - This bot can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit postes in channels also. <br><br>
 
-MDISK - This bot will upload mdisk links to your account through API ID. Can be used in channels
+* `MDisk` - This bot will upload mdisk links to your account through API ID. Can be used in channels
 
 
 

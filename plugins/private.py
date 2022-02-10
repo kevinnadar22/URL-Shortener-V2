@@ -2,7 +2,7 @@ import json
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram import Client, filters
 from utils import replace_mdisk_link, replace_link, get_shortlink
-from config import MODE, ADMINS, SOURCE_CODE
+from config import METHOD, ADMINS, SOURCE_CODE
 import re
 
 
@@ -11,10 +11,10 @@ import re
 @Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.private & ~filters.edited)
 async def private_link_handler(bot, message):
     if message.from_user.id in ADMINS:
-        if MODE == "":
-            await message.reply_text("Set your MODE in Heroku vars")
+        if METHOD == "":
+            await message.reply_text("Set your METHOD in Heroku vars")
         else:
-            if MODE == "mdisk":
+            if METHOD == "mdisk":
                 if message.text:
                     links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
                 elif message.caption:
@@ -58,7 +58,7 @@ async def private_link_handler(bot, message):
                         link = await replace_mdisk_link(text)
                         await message.reply_document(fileid, caption=link)
 
-            elif MODE == "droplink":
+            elif METHOD == "droplink":
                 # url shortener in private chat
                 print(True)
 

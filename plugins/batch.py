@@ -3,7 +3,7 @@ import json
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import CHANNELS, ADMINS, SOURCE_CODE
 from utils import replace_link, replace_mdisk_link
-from plugins.mode import MODE
+from config import METHOD
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 import os
 import sys
@@ -30,8 +30,8 @@ channel_id = ""
 @Client.on_message(filters.private & ~filters.edited & filters.command('batch'))
 async def batch(c, m):
     if m.from_user.id in ADMINS:
-        if MODE == "":
-            await m.reply_text("Set your MODE in Heroku vars")
+        if METHOD == "":
+            await m.reply_text("Set your METHOD in Heroku vars")
         else:
             global channel_id
             print("Started")
@@ -84,7 +84,7 @@ async def cancel(c, m):
                 print(i)
                 try:
                     message = await c.get_messages(channel_id, i)
-                    if MODE == "droplink":
+                    if METHOD == "droplink":
 
                         # reply markup - button post
 
@@ -122,7 +122,7 @@ async def cancel(c, m):
                             else:
                                 await message.edit_caption(link)
 
-                    elif MODE == "mdisk":
+                    elif METHOD == "mdisk":
 
                         # reply markup - button post
 
