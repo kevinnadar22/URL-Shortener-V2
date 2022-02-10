@@ -11,18 +11,18 @@ Droplink URL Shortener and MDISK convertor
 * `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)<br><br>
 * `ADMINS`: Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.<br><br>
 * `BOT_TOKEN`: Your bot token from @botfather<br><br>
-* `MODE`: Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase<br><br>
+* `METHOD`: Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk in lowercase<br><br>
 * `DROPLINK_KEY`:  Get your DROPLINK_KEY from https://droplink.co/member/tools/api. If MODE is mdisk, Leave it to default<br><br>
 * `MDISK_KEY`: Enter your MDISK API KEY only if mode is selected to mdisk. Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot<br><br>
 
 
 ## Optional Variables
 
-* `CHANNELS`: Enter True if you want the bot to work in Channels also else Leave it as it is
-* `CHANNEL_ID`: Enter your Channel ID, Leave this to deafault if CHANNELS set to False
-* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink
-* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink
-* `FORWARD_MESSAGE`: Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False
+* `CHANNELS`: Enter True if you want the bot to work in Channels also else Leave it as it is<br><br>
+* `CHANNEL_ID`: Enter your Channel ID, Leave this to deafault if CHANNELS set to False<br><br>
+* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink<br><br>
+* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink<br><br>
+* `FORWARD_MESSAGE`: Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False<br><br>
 
 
 ## Bot Usage:
