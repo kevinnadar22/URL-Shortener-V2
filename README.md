@@ -27,9 +27,9 @@ Droplink URL Shortener and MDISK convertor
 
 ## Bot Usage: <br><br>
 
-* `Droplink` - This bot can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit postes in channels also. <br><br>
+* `Droplink` - This bot can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit posts in channels too. <br><br>
 
-* `MDisk` - This bot will upload mdisk links to your account through API ID. Can be used in channels
+* `MDisk` - This bot will upload mdisk links to your account through API KEY. Can be used in channels too
 
 
 
