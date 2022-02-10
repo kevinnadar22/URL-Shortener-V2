@@ -7,12 +7,18 @@ Droplink URL Shortener and MDISK convertor
 
 ## Required Variables
 
-* `BOT_TOKEN`: Create a bot using [@BotFather](https://telegram.dog/BotFather), and get the Telegram API token.
-
 * `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps)
 * `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)
-* `WEBSITE`: Any shortener website which you want to use. Ex. droplink.co
-* `API_KEY`: API_KEY of the WEBSITE you want to use. Get this value from https://your_website/member/tools/api
+* `ADMINS`: Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma. No space inbetween. Only user's ID added will be able to use the bot
+* `BOT_TOKEN`: Your bot token from @botfather
+* `CHANNELS`: Enter True if you want the bot to work in Channels also else Leave it as it is
+* `CHANNEL_ID`: Enter your Channel ID, Leave this to deafault if CHANNELS set to False
+* `DROPLINK_KEY`:  Get your API_ID from https://droplink.co/member/tools/api
+* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink
+* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink
+* `FORWARD_MESSAGE`: Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False
+* `MDISK_KEY`: Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot
+* `MODE`: Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase
 
 
 ## Bot Usage:
