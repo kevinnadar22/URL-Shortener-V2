@@ -15,7 +15,7 @@ Droplink URL Shortener and MDISK convertor
 * `API_KEY`: API_KEY of the WEBSITE you want to use. Get this value from https://your_website/member/tools/api
 
 
-##### Bot Usage:
+#### Bot Usage:
 
 Just send me any post with link, I will send you the shorten link
 
@@ -31,7 +31,7 @@ For custom alias, [link] | [custom_alias], Send in this format
 
 Ex: https://t.me/example | Example
 
-##### Commands
+#### Commands
 
 * /start - start message
 
