@@ -139,18 +139,21 @@ async def cancel(c, m):
                                     button = InlineKeyboardButton(text, url=url)
                                     buttons.append(button)
                                 buttsons.append(buttons)
-
-                            if message.text:
-                                txt = await replace_link(txt, x="")
-                                await message.reply(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
-                            elif message.caption:
-                                txt = await replace_link(message.caption, x="")
-                                if message.photo:
-                                    await message.reply_photo(photo=message.photo.file_id, caption=txt,
-                                                              reply_markup=InlineKeyboardMarkup(buttsons))
-                                elif message.document:
-                                    await message.reply_document(photo=message.document.file_id, caption=txt,
-                                                                 reply_markup=InlineKeyboardMarkup(buttsons))
+                    
+                            try:
+                                if message.text:
+                                    txt = await replace_link(txt, x="")
+                                    await message.edit(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
+                                elif message.caption:
+                                    txt = await replace_link(message.caption, x="")
+                                    if message.photo:
+                                        await message.edit_caption(photo=message.photo.file_id, caption=txt,
+                                                                  reply_markup=InlineKeyboardMarkup(buttsons))
+                                    elif message.document:
+                                        await message.edit_caption(photo=message.document.file_id, caption=txt,
+                                                                     reply_markup=InlineKeyboardMarkup(buttsons))
+                            except Exception as e:
+                                print(e)
 
                         # For text messages
 
