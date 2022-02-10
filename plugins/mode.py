@@ -1,5 +1,5 @@
 from pyrogram import Client, filters
-from config import MODE
+from config import METHOD
 
 
 @Client.on_message(filters.command('mode') & filters.private)
