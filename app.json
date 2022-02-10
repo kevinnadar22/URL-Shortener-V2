@@ -27,11 +27,11 @@
     },
     "DROPLINK_API": {
       "description": "Enter your DROPLINK API KEY only if mode is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
-      "value": ""
+      "value": "0"
     },
     "MDISK_API": {
       "description": "Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
-      "value": ""
+      "value": "0"
     },
     "INCLUDE_DOMAIN": {
       "description": "Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink",
