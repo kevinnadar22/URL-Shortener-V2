@@ -80,11 +80,7 @@ async def channel_forward_link_handler(bot, message):
 
     elif MODE == "mdisk":
         if FORWARD_MESSAGE and CHANNELS is True:
-            if MODE == "mdisk":
-                links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
-                if len(links) == 0:
-                    await message.reply_text("Send any MDISK link to save it to your mdisk account")
-            else:
+            
                 # reply markup - button post
 
                 if message.reply_markup:
