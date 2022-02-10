@@ -22,15 +22,15 @@
       "value": ""
     },
     "METHOD": {
-      "description": "Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase",
+      "description": "Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk in lowercase",
       "value": ""
     },
     "DROPLINK_API": {
-      "description": "Enter your DROPLINK API KEY only if mode is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
+      "description": "Enter your DROPLINK API KEY only if METHOD is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
       "value": "0"
     },
     "MDISK_API": {
-      "description": "Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
+      "description": "Enter your MDISK API KEY only if METHOD is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
       "value": "0"
     },
     "INCLUDE_DOMAIN": {
