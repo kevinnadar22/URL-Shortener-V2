@@ -1,4 +1,4 @@
-from config import MDISK_KEY, DROPLINK_KEY, EXCLUDE_DOMAIN, INCLUDE_DOMAIN
+from config import MDISK_API, DROPLINK_API, EXCLUDE_DOMAIN, INCLUDE_DOMAIN
 import re
 import aiohttp
 import requests
@@ -14,7 +14,7 @@ async def get_shortlink(link, x):
         link = link.replace("http", https)
         print(link)
     url = f'https://droplink.co/api'
-    params = {'api': DROPLINK_KEY,
+    params = {'api': DROPLINK_API,
               'url': link,
               'alias': x
               }
@@ -66,7 +66,7 @@ async def replace_link(text, x):
 
 async def get_mdisk(link):
     url = 'https://diskuploader.mypowerdisk.com/v1/tp/cp'
-    param = {'token': MDISK_KEY, 'link': link
+    param = {'token': MDISK_API, 'link': link
              }
     res = requests.post(url, json=param)
     try:

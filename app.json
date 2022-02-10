@@ -21,15 +21,15 @@
       "description": "Get this value from https://my.telegram.org",
       "value": ""
     },
-    "MODE": {
+    "METHOD": {
       "description": "Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase",
       "value": ""
     },
-    "DROPLINK_KEY": {
+    "DROPLINK_API": {
       "description": "Enter your DROPLINK API KEY only if mode is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
       "value": ""
     },
-    "MDISK_KEY": {
+    "MDISK_API": {
       "description": "Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
       "value": ""
     },
