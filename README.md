@@ -11,9 +11,9 @@ Droplink URL Shortener and MDISK convertor
 * `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)
 * `ADMINS`: Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma. No space inbetween. Only user's ID added will be able to use the bot
 * `BOT_TOKEN`: Your bot token from @botfather
-* `DROPLINK_KEY`:  Get your API_ID from https://droplink.co/member/tools/api
 * `MODE`: Select your preferred mode between droplink or mdisk. Enter exactly droplink or mdisk in lowercase
-* `MDISK_KEY`: Enter your MDISK API KEY only if mode is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot
+* `DROPLINK_KEY`:  Get your DROPLINK_KEY from https://droplink.co/member/tools/api
+* `MDISK_KEY`: Enter your MDISK API KEY only if mode is selected to mdisk. Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot
 
 
 ## Optional Variables
