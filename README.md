@@ -1,35 +1,90 @@
-# URL-Shortener-V2
-Droplink URL Shortener and MDISK convertor
+# URL Shortener Bot V2
 
-#### The Easy Way
+<p align="center">
+  <a href="https://github.com/kevinnadar22/URL-Shortener-V2/stargazers">
+    <img src="https://img.shields.io/github/stars/kevinnadar22/URL-Shortener-V2?style=social">
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+  </a>
+  
+  <a href="https://github.com/kevinnadar22/URL-Shortener-V2/fork">
+    <img src="https://img.shields.io/github/forks/kevinnadar22/URL-Shortener-V2?label=Fork&style=social">
 
-## Required Variables <br> <br>
+  </a>  
+</p>
 
-* `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps) <br><br>
-* `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps) <br><br>
-* `ADMINS`: Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.<br><br>
-* `BOT_TOKEN`: Your bot token from @botfather<br><br>
-* `METHOD`: Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk in lowercase<br><br>
-* `DROPLINK_API`:  Get your DROPLINK_KEY from https://droplink.co/member/tools/api. If METHOD is mdisk, Leave it to default<br><br>
-* `MDISK_API`: Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot. If METHOD is droplink, Leave it to default<br><br>
+__This Is Just An Simple Advance Auto Filter Bot Complete Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
-
-## Optional Variables <br> <br>
-
-* `CHANNELS`: Enter True if you want the bot to work in Channels also else Leave it as it is<br><br>
-* `CHANNEL_ID`: Enter your Channel ID, Leave this to deafault if CHANNELS set to False<br><br>
-* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink<br><br>
-* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink<br><br>
-* `FORWARD_MESSAGE`: Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False<br><br>
+__Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your MDisk Account__
 
 
-## Bot Usage: <br><br>
+## Usage
 
-* `Droplink` - This bot can short links from telegram text, photo, document and button messages to droplink links with custom alias support. This bot can edit posts in channels too. <br><br>
+**__How To Use Me!?__**
 
-* `MDisk` - This bot will upload mdisk links to your account through API KEY. Can be used in channels too
+* -> Add me to your channel as admin with full previlages
+
+**Bot Commands :**
 
 
+  * -> `/start` - Start Command
+  
 
+  * -> `/batch [channel id]` - To Short Every Links In The Post Of Your Channel
+  
+
+* -> `/about` - About The Bot
+
+
+Pre Requisites 
+------------------
+* -> __Your Bot Token From [@BotFather](http://www.telegram.dog/BotFather)__
+
+* -> __Your APP ID And API Harsh From [Telegram](http://www.my.telegram.org) or [@UseTGXBot](http://www.telegram.dog/UseTGXBot)__
+
+* -> __Your Telegram ID and ID of Users you want add as Admin__
+
+* -> __Select your preferred METHOD between droplink or mdisk.__
+
+* -> __Get your DROPLINK_KEY from https://droplink.co/member/tools/api.__
+* -> __Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot.__
+
+#### PR's Are Very Welcome
+
+## Deploy <br>
+You can deploy this bot anywhere.
+
+<p>Deploy To Heroku<P>
+<p>
+
+<a href="https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+</a>
+</p>
+<br>
+Deploy to VPS
+<p>
+<pre>
+git clone https://github.com/kevinnadar22/URL-Shortener-V2
+cd URL-Shortener-V2
+pip3 install -r requirements.txt
+# Change The Vars Of bot/config.py File Accordingly
+python3 -m bot
+</pre>
+
+
+## Support   
+Contact Our [DEV](https://www.telegram.dog/ask_admin001) For Support/Assistance    
+   
+Report Bugs, Give Feature Requests There..   
+Do Fork And Star The Repository If You Liked It.
+
+## Disclaimer
+[![GNU Affero General Public License v3.0](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/agpl-3.0.en.html#header)    
+Licensed under [GNU AGPL v3.0.](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2/blob/main/LICENSE)
+Selling The Codes To Other People For Money Is *Strictly Prohibited*.
+
+
+## Credits
+
+ - Thanks To [CrazyBotsz/Adv-Auto-Filter-Bot-V2](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2) For His Awesome README.md Template
+ - [Thanks To Me](https://github.com/Kevinnadar22)
