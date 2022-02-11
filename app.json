@@ -10,7 +10,7 @@
   "repository": "https://github.com/T2links/",
   "env": {
     "BOT_TOKEN": {
-      "description": "Your bot token",
+      "description": "Your bot token from @botfather",
       "value": ""
     },
     "API_ID": {
@@ -26,7 +26,7 @@
       "value": ""
     },
     "DROPLINK_API": {
-      "description": "Enter your DROPLINK API KEY only if METHOD is selected to droplink. Get your API_ID from https://droplink.co/member/tools/api",
+      "description": "Enter your DROPLINK API KEY only if METHOD is selected to droplink. Get your API from https://droplink.co/member/tools/api",
       "value": "0"
     },
     "MDISK_API": {
@@ -34,12 +34,12 @@
       "value": "0"
     },
     "INCLUDE_DOMAIN": {
-      "description": "Use this option if you want to short only links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink",
+      "description": "Use this option if you want to short only links from the given domains list. Separate each domain by comma, Works only when mode is selected to droplink",
       "value": "",
       "required": false
     },
     "EXCLUDE_DOMAIN": {
-      "description": "Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, No space inbetween. Works only when mode is selected to droplink",
+      "description": "Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, Works only when mode is selected to droplink",
       "value": "",
       "required": false
     },
@@ -59,7 +59,7 @@
       "required": false
     },
     "ADMINS": {
-      "description": "Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma. No space inbetween. Only user's ID added will be able to use the bot",
+      "description": "Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.",
       "value": ""
     }
   },
