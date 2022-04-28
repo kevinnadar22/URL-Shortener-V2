@@ -13,14 +13,14 @@
 # ADMINS = list(int(i.strip()) for i in os.environ.get("ADMINS").split(",")) if os.environ.get("ADMINS") else []
 # SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
 # CHANNELS = bool(os.environ.get("CHANNELS"))
-#
+# USERNAME = os.environ.get("USERNAME")
 
 import os
 
 API_ID = 12405606
 API_HASH = "705f624d87506fb1f5b88dae01d738f7"
 BOT_TOKEN = "5380604595:AAGQenmdCFL8VAJOYTCmOe0R62ASrGwdOmA"
-METHOD = "mdisk"
+METHOD = "mdlink"
 DROPLINK_API = "1aab74171e9891abd0ba799e3fd568c9598a79e1"
 MDISK_API = "6LZq851sXoPHuwqgiKQq"
 INCLUDE_DOMAIN = os.environ.get("INCLUDE_DOMAIN")
@@ -30,4 +30,5 @@ FORWARD_MESSAGE = True
 ADMINS = list(int(i.strip()) for i in "1510060563".split(",")) if "1510060563" else []
 SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
 CHANNELS = True
+USERNAME = "T2linkss"
 

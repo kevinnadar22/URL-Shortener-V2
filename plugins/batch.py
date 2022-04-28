@@ -2,7 +2,7 @@ import asyncio
 import json
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import CHANNELS, ADMINS, SOURCE_CODE
-from utils import replace_link, replace_mdisk_link
+from utils import replace_link, replace_mdisk_link, mdisk_droplink_convertor
 from config import METHOD
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 import os
@@ -72,15 +72,16 @@ async def cancel(c, m):
         if CHANNELS is True:
             try:
                 txt = await c.send_message(channel_id, ".")
+                print("Text", txt)
                 await txt.delete()
-                print(txt.message_id)
+                print("Text", txt)
             except ChatWriteForbidden:
                 await m.message.edit("Bot is not an admin in the given channel")
             await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",
 
                                  )
 
-            for i in range(txt.message_id, 1, -1):
+            for i in range(txt.id, 1, -1):
                 print(i)
                 try:
                     message = await c.get_messages(channel_id, i)
@@ -171,6 +172,57 @@ async def cancel(c, m):
                                 print("The given link is either excluded domain link or a droplink link")
                             else:
                                 await message.edit_caption(link)
+
+                    elif METHOD == "mdlink":
+
+                        # reply markup - button post
+
+                        if message.reply_markup:
+                            txt = message.text
+                            reply_markup = json.loads(str(message.reply_markup))
+                            buttsons = []
+                            for i, markup in enumerate(reply_markup["inline_keyboard"]):
+                                buttons = []
+                                for j in markup:
+                                    text = j["text"]
+                                    url = j["url"]
+                                    url = await mdisk_droplink_convertor(url)
+                                    button = InlineKeyboardButton(text, url=url)
+                                    buttons.append(button)
+                                buttsons.append(buttons)
+
+                            try:
+                                if message.text:
+                                    txt = await mdisk_droplink_convertor(txt)
+                                    await message.edit(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
+                                elif message.caption:
+                                    txt = await mdisk_droplink_convertor(message.caption)
+                                    if message.photo:
+                                        await message.edit_caption(photo=message.photo.file_id, caption=txt,
+                                                                   reply_markup=InlineKeyboardMarkup(buttsons))
+                                    elif message.document:
+                                        await message.edit_caption(photo=message.document.file_id, caption=txt,
+                                                                   reply_markup=InlineKeyboardMarkup(buttsons))
+                            except Exception as e:
+                                print(e)
+
+                        # For text messages
+
+                        elif message.text:
+                            text = message.text
+                            text = await mdisk_droplink_convertor(text)
+                            await message.edit(text)
+
+                        # For media or document messages
+
+                        elif message.media or message.document:
+                            text = message.caption
+                            link = await mdisk_droplink_convertor(text)
+                            if link == text:
+                                print("The given link is either excluded domain link or a droplink link")
+                            else:
+                                await message.edit_caption(link)
+
                     await asyncio.sleep(1)
 
 

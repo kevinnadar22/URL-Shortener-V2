@@ -22,7 +22,7 @@
       "value": ""
     },
     "METHOD": {
-      "description": "Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk in lowercase",
+      "description": "Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk or mdlink (for both mdisk and droplink) in lowercase",
       "value": ""
     },
     "DROPLINK_API": {
@@ -61,6 +61,11 @@
     "ADMINS": {
       "description": "Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.",
       "value": ""
+    },
+    "USERNAME": {
+      "description": "Your Telegram Channel Username without @",
+      "value": "T2linkss",
+      "required": false
     }
   },
   "addons": [],
