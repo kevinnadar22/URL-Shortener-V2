@@ -8,7 +8,7 @@ import re
 
 # Private Chat
 
-@Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.private & ~filters.edited)
+@Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.private)
 async def private_link_handler(bot, message):
     if message.from_user.id in ADMINS:
         if METHOD == "":

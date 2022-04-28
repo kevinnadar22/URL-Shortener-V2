@@ -11,7 +11,7 @@ import re
 
 @Client.on_message(
     filters.inline_keyboard & ~filters.forwarded | filters.regex(r'https?://[^\s]+') & filters.chat(CHANNEL_ID) & (
-            filters.channel | filters.group) & filters.incoming & ~filters.edited & ~filters.private &
+            filters.channel | filters.group) & filters.incoming & ~filters.private &
     ~filters.forwarded)
 async def channel_link_handler(bot, message):
     if CHANNELS is True:

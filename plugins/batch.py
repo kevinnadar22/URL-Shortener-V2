@@ -27,7 +27,7 @@ cancel_button = [[
 channel_id = ""
 
 
-@Client.on_message(filters.private & ~filters.edited & filters.command('batch'))
+@Client.on_message(filters.private & filters.command('batch'))
 async def batch(c, m):
     if m.from_user.id in ADMINS:
         if METHOD == "":

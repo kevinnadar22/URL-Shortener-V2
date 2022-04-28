@@ -12,7 +12,7 @@ import re
 
 
 @Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.chat(CHANNEL_ID) & (
-        filters.channel | filters.group) & filters.incoming & ~filters.edited & ~filters.private & filters.forwarded)
+        filters.channel | filters.group) & filters.incoming & ~filters.private & filters.forwarded)
 async def channel_forward_link_handler(bot, message):
     if METHOD == "droplink":
         if FORWARD_MESSAGE and CHANNELS is True:
