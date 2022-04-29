@@ -15,52 +15,43 @@ async def private_link_handler(bot, message):
             await message.reply_text("Set your METHOD in Heroku vars")
         else:
             if METHOD == "mdisk":
-                if message.text:
-                    links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
-                elif message.caption:
-                    links = re.findall(r'https?://mdisk.me[^\s]+', message.caption)
-                    
-                if len(links) == 0:
-                    await message.reply_text("Send any MDISK link to save it to your mdisk account")
                 # url shortener in private chat
-                else:
-                    if message.reply_markup:  # reply markup - button post
-                        txt = message.text
-                        reply_markup = json.loads(str(message.reply_markup))
-                        buttsons = []
-                        for i, markup in enumerate(reply_markup["inline_keyboard"]):
-                            buttons = []
-                            for j in markup:
-                                text = j["text"]
-                                url = j["url"]
-                                url = await replace_mdisk_link(url)
-                                button = InlineKeyboardButton(text, url=url)
-                                buttons.append(button)
-                            buttsons.append(buttons)
+                if message.reply_markup:  # reply markup - button post
+                    txt = message.text
+                    reply_markup = json.loads(str(message.reply_markup))
+                    buttsons = []
+                    for i, markup in enumerate(reply_markup["inline_keyboard"]):
+                        buttons = []
+                        for j in markup:
+                            text = j["text"]
+                            url = j["url"]
+                            url = await replace_mdisk_link(url)
+                            button = InlineKeyboardButton(text, url=url)
+                            buttons.append(button)
+                        buttsons.append(buttons)
 
-                        txt = await replace_mdisk_link(txt)
-                        await message.reply(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
+                    txt = await replace_mdisk_link(txt)
+                    await message.reply(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
 
-                    elif message.text:  # for text messages
-                        text = message.text
-                        link = await replace_mdisk_link(text)
-                        await message.reply_text(link)
+                elif message.text:  # for text messages
+                    text = message.text
+                    link = await replace_mdisk_link(text)
+                    await message.reply_text(link)
 
-                    elif message.photo:  # for media messages
-                        fileid = message.photo.file_id
-                        text = message.caption
-                        link = await replace_mdisk_link(text)
-                        await message.reply_photo(fileid, caption=link)
+                elif message.photo:  # for media messages
+                    fileid = message.photo.file_id
+                    text = message.caption
+                    link = await replace_mdisk_link(text)
+                    await message.reply_photo(fileid, caption=link)
 
-                    elif message.document:  # for document messages
-                        fileid = message.document.file_id
-                        text = message.caption
-                        link = await replace_mdisk_link(text)
-                        await message.reply_document(fileid, caption=link)
+                elif message.document:  # for document messages
+                    fileid = message.document.file_id
+                    text = message.caption
+                    link = await replace_mdisk_link(text)
+                    await message.reply_document(fileid, caption=link)
 
             elif METHOD == "droplink":
                 # url shortener in private chat
-                print(True)
 
                 if message.reply_markup:  # reply markup - button post
                     txt = message.text
@@ -76,7 +67,7 @@ async def private_link_handler(bot, message):
                             button = InlineKeyboardButton(text, url=url)
                             buttons.append(button)
                         buttsons.append(buttons)
-                    print(txt)
+
 
                     if message.text:
                         txt = await replace_link(txt, x="")

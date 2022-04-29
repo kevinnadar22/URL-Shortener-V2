@@ -34,7 +34,7 @@ async def batch(c, m):
             await m.reply_text("Set your METHOD in Heroku vars")
         else:
             global channel_id
-            print("Started")
+
             if CHANNELS is True:
                 if len(m.command) < 2:
                     await m.reply_text(BATCH)
@@ -55,7 +55,6 @@ async def batch(c, m):
 
                     await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}",
                                   reply_markup=InlineKeyboardMarkup(buttons))
-                    print(channel_id)
 
             elif CHANNELS is False:
                 await m.reply(text="Set your CHANNELS var to True in HEROKU to use this command")
@@ -72,9 +71,9 @@ async def cancel(c, m):
         if CHANNELS is True:
             try:
                 txt = await c.send_message(channel_id, ".")
-                print("Text", txt)
+
                 await txt.delete()
-                print("Text", txt)
+
             except ChatWriteForbidden:
                 await m.message.edit("Bot is not an admin in the given channel")
             await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",
@@ -82,7 +81,7 @@ async def cancel(c, m):
                                  )
 
             for i in range(txt.id, 1, -1):
-                print(i)
+
                 try:
                     message = await c.get_messages(channel_id, i)
                     if METHOD == "droplink":
@@ -224,8 +223,6 @@ async def cancel(c, m):
                                 await message.edit_caption(link)
 
                     await asyncio.sleep(1)
-
-
                 except:
                     pass
 
