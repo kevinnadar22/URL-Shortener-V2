@@ -55,7 +55,7 @@ async def channel_link_handler(bot, message):
 					await message.edit_caption(link)
 
 		elif METHOD == "mdisk":
-			links = re.findall(r'https?://mdisk.me[^\s]+', message.text)
+			links = [1,2,3]
 			if len(links) == 0:
 				return
 
