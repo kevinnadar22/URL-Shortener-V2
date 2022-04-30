@@ -49,7 +49,7 @@
       "required": false
     },
     "CHANNEL_ID": {
-      "description": "Enter your Channel ID, Leave this to deafault if CHANNELS set to False",
+      "description": "Enter your Channel ID, Leave this to deafault if CHANNELS set to False. Separate each ID by Space.",
       "value": "",
       "required": false
     },
