@@ -12,7 +12,7 @@ async def get_shortlink(link, x):
     if "http" == https:
         https = "https"
         link = link.replace("http", https)
-    url = f'https://droplink.co/api'
+    url = f'https://droplink/api'
     params = {'api': DROPLINK_API,
               'url': link,
               'alias': x
@@ -29,6 +29,7 @@ async def get_shortlink(link, x):
 
 
 async def replace_link(text, x):
+    text = await replace_username(text)
     links = re.findall(r'https?://[^\s]+', text)
     for link in links:
 
@@ -75,6 +76,7 @@ async def get_mdisk(link):
 
 
 async def replace_mdisk_link(text):
+    text = await replace_username(text)
     links = re.findall(r'https?://mdisk.me[^\s]+', text)
     for link in links:
         mdisk_link = await get_mdisk(link)
