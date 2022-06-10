@@ -1,3 +1,4 @@
+from ast import comprehension
 from config import MDISK_API, DROPLINK_API, EXCLUDE_DOMAIN, INCLUDE_DOMAIN, USERNAME
 import re
 import aiohttp
@@ -99,6 +100,13 @@ async def mdisk_droplink_convertor(text):
 
 async def replace_username(text):
     usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
+
     for i in usernames:
         text = text.replace(i, f"@{USERNAME}")
+
+    telegram_links = re.findall(r'[(?:http|https)?://]*(?:t.me|telegram.me|telegram.dog)[^\s]+', text)
+
+    for i in telegram_links:
+        text = text.replace(i, f"@{USERNAME}")
+
     return text
