@@ -58,7 +58,7 @@ ABOUT_TEXT = """
 
 
 METHOD_MESSAGE = """
-Command Usage: /method <your method name>
+Command Usage: /method (your method name)
     
 Methods Available:
 > mdlink (Both mdisk and droplink)
