@@ -7,7 +7,7 @@
     "shortener"
   ],
   "website": "https://github.com/T2links/",
-  "repository": "https://github.com/T2links/",
+  "repository": "https://github.com/kevinnadar22/URL-Shortener-V2/tree/main",
   "env": {
     "BOT_TOKEN": {
       "description": "Your bot token from @botfather",
