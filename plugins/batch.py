@@ -1,14 +1,13 @@
 import asyncio
-import json
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from config import CHANNELS, ADMINS, SOURCE_CODE
-from utils import replace_link, replace_mdisk_link, mdisk_droplink_convertor
-from config import METHOD
+from utils import main_convertor_handler
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 import os
 import sys
 from pyrogram import Client, filters
 from translation import BATCH
+from database import db
 
 buttons = [
     [
@@ -29,9 +28,11 @@ channel_id = ""
 
 @Client.on_message(filters.private & filters.command('batch'))
 async def batch(c, m):
+    bot = await c.get_me()
+    user_method = await db.get_bot_method(bot.username)
     if m.from_user.id in ADMINS:
-        if METHOD == "":
-            await m.reply_text("Set your METHOD in Heroku vars")
+        if not user_method:
+            return await m.reply("Set your /method first")
         else:
             global channel_id
 
@@ -63,169 +64,51 @@ async def batch(c, m):
 
 
 @Client.on_callback_query(filters.regex(r'^cancel') | filters.regex(r'^batch'))
-async def cancel(c, m):
+async def cancel(c:Client, m:CallbackQuery):
+    bot = await c.get_me()
+    user_method = await db.get_bot_method(bot.username)
     global channel_id
     if m.data == "cancel":
         await m.message.delete()
+        return
     elif m.data == "batch":
         if CHANNELS is True:
             try:
                 txt = await c.send_message(channel_id, ".")
-
                 await txt.delete()
-
             except ChatWriteForbidden:
-                await m.message.edit("Bot is not an admin in the given channel")
-            await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",
+                return await m.message.edit("Bot is not an admin in the given channel")
+            txt = await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",)
 
-                                 )
+            success = 0
+            fail = 0
+            total = 0
+            empty=0
 
             for i in range(txt.id, 1, -1):
-
+                message = await c.get_messages(channel_id, i)
+                if message.empty:
+                    empty+=0
+                    pass
                 try:
-                    message = await c.get_messages(channel_id, i)
-                    if METHOD == "droplink":
-
-                        # reply markup - button post
-
-                        if message.reply_markup:
-                            txt = message.text
-                            reply_markup = json.loads(str(message.reply_markup))
-                            buttsons = []
-                            for i, markup in enumerate(reply_markup["inline_keyboard"]):
-                                buttons = []
-                                for j in markup:
-                                    text = j["text"]
-                                    url = j["url"]
-                                    url = await replace_link(url, x="")
-                                    button = InlineKeyboardButton(text, url=url)
-                                    buttons.append(button)
-                                buttsons.append(buttons)
-
-                            txt = await replace_link(txt, x="")
-                            await message.edit(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
-
-                        # For text messages
-
-                        elif message.text:
-                            text = message.text
-                            text = await replace_link(text, x="")
-                            await message.edit(text)
-
-                        # For media or document messages
-
-                        elif message.media or message.document:
-                            text = message.caption
-                            link = await replace_link(text, x="")
-                            if link == text:
-                                print("The given link is either excluded domain link or a droplink link")
-                            else:
-                                await message.edit_caption(link)
-
-                    elif METHOD == "mdisk":
-
-                        # reply markup - button post
-
-                        if message.reply_markup:
-                            txt = message.text
-                            reply_markup = json.loads(str(message.reply_markup))
-                            buttsons = []
-                            for i, markup in enumerate(reply_markup["inline_keyboard"]):
-                                buttons = []
-                                for j in markup:
-                                    text = j["text"]
-                                    url = j["url"]
-                                    url = await replace_mdisk_link(url)
-                                    button = InlineKeyboardButton(text, url=url)
-                                    buttons.append(button)
-                                buttsons.append(buttons)
-                    
-                            try:
-                                if message.text:
-                                    txt = await replace_link(txt, x="")
-                                    await message.edit(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
-                                elif message.caption:
-                                    txt = await replace_link(message.caption, x="")
-                                    if message.photo:
-                                        await message.edit_caption(photo=message.photo.file_id, caption=txt,
-                                                                  reply_markup=InlineKeyboardMarkup(buttsons))
-                                    elif message.document:
-                                        await message.edit_caption(photo=message.document.file_id, caption=txt,
-                                                                     reply_markup=InlineKeyboardMarkup(buttsons))
-                            except Exception as e:
-                                print(e)
-
-                        # For text messages
-
-                        elif message.text:
-                            text = message.text
-                            text = await replace_mdisk_link(text)
-                            await message.edit(text)
-
-                        # For media or document messages
-
-                        elif message.media or message.document:
-                            text = message.caption
-                            link = await replace_mdisk_link(text)
-                            if link == text:
-                                print("The given link is either excluded domain link or a droplink link")
-                            else:
-                                await message.edit_caption(link)
-
-                    elif METHOD == "mdlink":
-
-                        # reply markup - button post
-
-                        if message.reply_markup:
-                            txt = message.text
-                            reply_markup = json.loads(str(message.reply_markup))
-                            buttsons = []
-                            for i, markup in enumerate(reply_markup["inline_keyboard"]):
-                                buttons = []
-                                for j in markup:
-                                    text = j["text"]
-                                    url = j["url"]
-                                    url = await mdisk_droplink_convertor(url)
-                                    button = InlineKeyboardButton(text, url=url)
-                                    buttons.append(button)
-                                buttsons.append(buttons)
-
-                            try:
-                                if message.text:
-                                    txt = await mdisk_droplink_convertor(txt)
-                                    await message.edit(text=txt, reply_markup=InlineKeyboardMarkup(buttsons))
-                                elif message.caption:
-                                    txt = await mdisk_droplink_convertor(message.caption)
-                                    if message.photo:
-                                        await message.edit_caption(photo=message.photo.file_id, caption=txt,
-                                                                   reply_markup=InlineKeyboardMarkup(buttsons))
-                                    elif message.document:
-                                        await message.edit_caption(photo=message.document.file_id, caption=txt,
-                                                                   reply_markup=InlineKeyboardMarkup(buttsons))
-                            except Exception as e:
-                                print(e)
-
-                        # For text messages
-
-                        elif message.text:
-                            text = message.text
-                            text = await mdisk_droplink_convertor(text)
-                            await message.edit(text)
-
-                        # For media or document messages
-
-                        elif message.media or message.document:
-                            text = message.caption
-                            link = await mdisk_droplink_convertor(text)
-                            if link == text:
-                                print("The given link is either excluded domain link or a droplink link")
-                            else:
-                                await message.edit_caption(link)
-
+                    await main_convertor_handler(c=c, message=message, type=user_method, edit_caption=True)
+                    success += 1
                     await asyncio.sleep(1)
                 except:
-                    pass
+                    fail+=1
+                
+                total+=1
 
+            await asyncio.sleep(10)
+
+            msg = f"""
+            Batch Shortening Completed!
+            
+Total: {total}
+Success: {success}
+Failed: {fail}
+Empty: {empty}"""
+            await txt.edit(msg)
 
 @Client.on_message(filters.command('cancel'))
 async def stop_button(c, m):

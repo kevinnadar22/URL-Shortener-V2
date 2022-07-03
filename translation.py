@@ -40,6 +40,8 @@ admin in your channel.\n\nCommand usage: `/batch [channel id or username]`
 /help - The current command
 
 /about - About this bot
+
+/method - Set your method
 '''
 
 ABOUT_TEXT = """
@@ -52,3 +54,16 @@ ABOUT_TEXT = """
 📢 Support: [Talk Bot](https://t.me/t2linkspromotion_bot)
 🌐 Source Code: [GitHub](https://github.com/T2links)
 """
+
+
+
+METHOD_MESSAGE = """
+Command Usage: /method <your method name>
+    
+Methods Available:
+> mdlink (Both mdisk and droplink)
+> droplink (only droplink)
+> mdisk (only mdisk)
+    
+Current Method: {method}
+    """
