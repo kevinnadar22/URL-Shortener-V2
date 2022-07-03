@@ -21,10 +21,6 @@
       "description": "Get this value from https://my.telegram.org",
       "value": ""
     },
-    "METHOD": {
-      "description": "Select your preferred METHOD between droplink or mdisk. Enter exactly droplink or mdisk or mdlink (for both mdisk and droplink) in lowercase",
-      "value": ""
-    },
     "DROPLINK_API": {
       "description": "Enter your DROPLINK API KEY only if METHOD is selected to droplink. Get your API from https://droplink.co/member/tools/api",
       "value": "0"
@@ -66,6 +62,16 @@
       "description": "Your Telegram Channel Username without @",
       "value": "T2linkss",
       "required": false
+    },
+    "DATABASE_NAME": {
+      "description": "Name of the database",
+      "value": "MdiskConvertor",
+      "required": false
+    },
+    "DATABASE_URL":{
+      "description": "Your database URL from mongodb.com",
+      "value": "",
+      "required": true
     }
   },
   "addons": [],
