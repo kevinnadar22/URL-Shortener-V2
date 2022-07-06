@@ -15,3 +15,4 @@ SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
 CHANNELS = bool(os.environ.get("CHANNELS"))
 USERNAME = os.environ.get("USERNAME")
 REMOVE_EMOJI = os.environ.get('REMOVE_EMOJI', False)
+

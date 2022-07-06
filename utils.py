@@ -31,9 +31,10 @@ async def get_shortlink(link, x):
                 else:
                     return f"Error: {data['message']}"
 
-    except:
-        link = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
-        return link
+    except Exception as e:
+        print(e)
+        links = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
+        return links
 
 
 async def replace_link(text, x):
@@ -133,6 +134,8 @@ async def remove_emoji(string):
                                    u"\U000024C2-\U0001F251"
                                    "]+", flags=re.UNICODE)
         return emoji_pattern.sub('', string)
+    else:
+        return string
 
 
 

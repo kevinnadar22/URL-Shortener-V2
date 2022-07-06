@@ -55,7 +55,6 @@ async def private_link_handler(bot, message):
 
                 if message.reply_markup:  # reply markup - button post
                     txt = message.text
-                    print(message)
                     reply_markup = json.loads(str(message.reply_markup))
                     buttsons = []
                     for i, markup in enumerate(reply_markup["inline_keyboard"]):
@@ -115,7 +114,6 @@ async def private_link_handler(bot, message):
 
             elif METHOD == "mdlink":
                 # url shortener in private chat
-
                 if message.reply_markup:  # reply markup - button post
                     txt = message.text
 
