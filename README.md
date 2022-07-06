@@ -48,6 +48,8 @@ Pre Requisites
 * -> __Get your DROPLINK_KEY from https://droplink.co/member/tools/api.__
 * -> __Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot.__
 
+* -> __Get your MongoDB URI from https://mongodb.com__
+
 #### PR's Are Very Welcome
 
 ## Deploy <br>
