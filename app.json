@@ -72,6 +72,11 @@
       "description": "Your database URL from mongodb.com",
       "value": "",
       "required": true
+    },
+    "REMOVE_EMOJI":{
+      "description": "Set to true to remove the emojis from caption or text",
+      "value": "True",
+      "required": false
     }
   },
   "addons": [],

@@ -17,5 +17,3 @@ async def private_link_handler(c, message):
     user_method = await db.get_bot_method(bot.username)
     await main_convertor_handler(c, message, user_method)
 
-
-

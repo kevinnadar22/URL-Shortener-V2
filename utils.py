@@ -1,4 +1,6 @@
 import json
+import random
+import string
 from config import *
 import re
 import aiohttp
@@ -6,10 +8,7 @@ import requests
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import bitlyshortener
 
-tokens_pool = ['76a0cda5c7cb80b51618905b312c8bd68b41d5b9']
-shortener = bitlyshortener.Shortener(tokens=tokens_pool, max_cache_size=256)
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
 	user_method = type
@@ -111,21 +110,25 @@ async def get_shortlink(link, x=""):
 			  'alias': x
 			  }
 
-	async with aiohttp.ClientSession() as session:
-		try:
+	
+	try:
+		async with aiohttp.ClientSession() as session:
 			async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
 				data = await response.json()
 				if data["status"] == "success":
 					return data['shortenedUrl']
 				else:
 					return f"Error: {data['message']}"
-		except:
-			link = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
-			return link
+
+	except Exception as e:
+		print(e)
+		N = 6
+		res = ''.join(random.choices(string.ascii_uppercase +
+			string.digits, k = N))
+		links = f'[https://droplink.co/{res}](https://droplink.co/st?api={DROPLINK_API}&url={link})'
+		return links
 
 
-async def bitly(url):
-	return shortener._shorten_url(url)
 
 async def replace_link(text, x=""):
 	links = re.findall(r'https?://[^\s]+', text)
@@ -205,15 +208,17 @@ async def replace_username(text):
 
 #####################  Remove Emojis ####################
 async def remove_emoji(string):
-	emoji_pattern = re.compile("["
-							   u"\U0001F600-\U0001F64F"  # emoticons
-							   u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-							   u"\U0001F680-\U0001F6FF"  # transport & map symbols
-							   u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-							   u"\U00002702-\U000027B0"
-							   u"\U000024C2-\U0001F251"
-							   "]+", flags=re.UNICODE)
-	return emoji_pattern.sub('', string)
+	if REMOVE_EMOJI:
+		emoji_pattern = re.compile("["
+								u"\U0001F600-\U0001F64F"  # emoticons
+								u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+								u"\U0001F680-\U0001F6FF"  # transport & map symbols
+								u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+								u"\U00002702-\U000027B0"
+								u"\U000024C2-\U0001F251"
+								"]+", flags=re.UNICODE)
+		return emoji_pattern.sub('', string)
+	return string
 
 
 #####################  Make link to hyperlink ####################
