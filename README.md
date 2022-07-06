@@ -12,7 +12,7 @@
   </a>  
 </p>
 
-__This Is Just An Simple Advance Auto Filter Bot Complete Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
+__This Is Just An Simple Advance Shortener and Converter Bot Completely Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
 __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your MDisk Account__
 
@@ -21,18 +21,22 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 **__How To Use Me!?__**
 
-* -> Add me to your channel as admin with full previlages
+* -> Send any link or post of links
+
+* -> Add me to your channel as admin with full previlages to convert channel's post
 
 **Bot Commands :**
 
 
-  * -> `/start` - Start Command
+* -> `/start` - Start Command
   
 
-  * -> `/batch [channel id]` - To Short Every Links In The Post Of Your Channel
+* -> `/batch [channel id]` - To Short Every Links In The Post Of Your Channel
   
 
 * -> `/about` - About The Bot
+
+* -> `/method (mdlink, droplink, mdisk)` - To change the method 
 
 
 Pre Requisites 
@@ -46,6 +50,7 @@ Pre Requisites
 * -> __Select your preferred METHOD between droplink or mdisk.__
 
 * -> __Get your DROPLINK_KEY from https://droplink.co/member/tools/api.__
+
 * -> __Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot.__
 
 * -> __Get your MongoDB URI from https://mongodb.com__
@@ -69,7 +74,7 @@ Deploy to VPS
 git clone https://github.com/kevinnadar22/URL-Shortener-V2
 cd URL-Shortener-V2
 pip3 install -r requirements.txt
-# Change The Vars Of bot/config.py File Accordingly
+# Change The Vars Of config.py File Accordingly
 python3 -m bot
 </pre>
 
