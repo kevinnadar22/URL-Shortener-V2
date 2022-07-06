@@ -25,35 +25,46 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 * -> Add me to your channel as admin with full previlages to convert channel's post
 
-**Bot Commands :**
+## Commands
+
+```
+• /start - Check if I'm alive
+• /help - Help Command
+• /about - About Command
+• /method - To set your preferred method
+• /batch -100XX - to convert link for multiple posts
+```
+
+## Features
+
+- [x] Droplink Shortener
+- [x] Mdisk Convertor
+- [x] Channels Support
+- [x] Batch Support
+- [x] Multiple Methods Available
 
 
-* -> `/start` - Start Command
-  
+### Required Variables
+* `BOT_TOKEN`: Create a bot using [@BotFather](https://telegram.dog/BotFather), and get the Telegram API token.
+* `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps)
+* `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)
+* `DROPLINK_API`: Your [Droplink API](https://droplink.co/member/tools/api)
+* `MDISK_API`: Your [Mdisk API](https://t.me/VideoToolMoneyTreebot)
+* `ADMINS`: ID of Admins. Separate multiple Admins by comma
+* `DATABASE_URI`: [mongoDB](https://www.mongodb.com) URI. Get this value from [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)
+* `DATABASE_NAME`: Name of the database in [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)
 
-* -> `/batch [channel id]` - To Short Every Links In The Post Of Your Channel
-  
 
-* -> `/about` - About The Bot
+### Optional Variables
+* `CHANNELS`: Set True if you want channels to be available for converting
+* `CHANNEL_ID`: You channel list to convert posts. Seperate channels list by space
+* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the following domains list.
+* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the following domains list.
+* `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
+* `SOURCE_CODE`: Your Github repo
+* `USERNAME`: Your Channel username without @ to replace other usernames in posts
+* `REMOVE_EMOJI`: Set True if you want to remove emoji from posts
 
-* -> `/method (mdlink, droplink, mdisk)` - To change the method 
-
-
-Pre Requisites 
-------------------
-* -> __Your Bot Token From [@BotFather](http://www.telegram.dog/BotFather)__
-
-* -> __Your APP ID And API Harsh From [Telegram](http://www.my.telegram.org) or [@UseTGXBot](http://www.telegram.dog/UseTGXBot)__
-
-* -> __Your Telegram ID and ID of Users you want add as Admin__
-
-* -> __Select your preferred METHOD between droplink or mdisk.__
-
-* -> __Get your DROPLINK_KEY from https://droplink.co/member/tools/api.__
-
-* -> __Get your MDISK API KEY from https://t.me/VideoToolMoneyTreebot.__
-
-* -> __Get your MongoDB URI from https://mongodb.com__
 
 #### PR's Are Very Welcome
 
