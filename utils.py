@@ -1,13 +1,10 @@
 from ast import comprehension
+import random
+import string
 from config import MDISK_API, DROPLINK_API, EXCLUDE_DOMAIN, INCLUDE_DOMAIN, USERNAME, REMOVE_EMOJI
 import re
 import aiohttp
 import requests
-import bitlyshortener
-
-tokens_pool = ['76a0cda5c7cb80b51618905b312c8bd68b41d5b9']
-shortener = bitlyshortener.Shortener(tokens=tokens_pool, max_cache_size=256)
-
 ####################  droplink  ####################
 
 
@@ -33,7 +30,10 @@ async def get_shortlink(link, x):
 
     except Exception as e:
         print(e)
-        links = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
+        N = 6
+        res = ''.join(random.choices(string.ascii_uppercase +
+                             string.digits, k = N))
+        links = f'[https://droplink.co/{res}](https://droplink.co/st?api={DROPLINK_API}&url={link})'
         return links
 
 
@@ -138,6 +138,3 @@ async def remove_emoji(string):
         return string
 
 
-
-async def bitly(url):
-	return shortener._shorten_url(url)

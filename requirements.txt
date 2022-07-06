@@ -2,4 +2,3 @@ pyrogram
 TgCrypto
 aiohttp
 requests
-bitlyshortener
