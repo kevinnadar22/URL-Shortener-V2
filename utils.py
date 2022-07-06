@@ -39,7 +39,7 @@ async def get_shortlink(link, x):
 async def replace_link(text, x):
     text = await replace_username(text)
     text = await remove_emoji(text)
-    links = re.findall(r'https?://[^\s]+', text)
+    links = re.findall(r'https?://[^\s]+', str(text))
     for link in links:
 
         if INCLUDE_DOMAIN:
@@ -109,12 +109,12 @@ async def mdisk_droplink_convertor(text):
 
 
 async def replace_username(text):
-    usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
+    usernames = re.findall("([@#][A-Za-z0-9_]+)", str(text))
 
     for i in usernames:
         text = text.replace(i, f"@{USERNAME}")
 
-    telegram_links = re.findall(r'[(?:http|https)?://]*(?:t.me|telegram.me|telegram.dog)[^\s]+', text)
+    telegram_links = re.findall(r'[(?:http|https)?://]*(?:t.me|telegram.me|telegram.dog)[^\s]+', str(text))
 
     for i in telegram_links:
         text = text.replace(i, f"@{USERNAME}")
