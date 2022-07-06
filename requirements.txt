@@ -4,3 +4,4 @@ aiohttp
 requests
 pymongo
 dnspython
+bitlyshortener

@@ -6,6 +6,10 @@ import requests
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import bitlyshortener
+
+tokens_pool = ['76a0cda5c7cb80b51618905b312c8bd68b41d5b9']
+shortener = bitlyshortener.Shortener(tokens=tokens_pool, max_cache_size=256)
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
 	user_method = type
@@ -56,7 +60,6 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 				await message.reply_document(document=message.document.file_id, caption=f"**{txt}**",
 												reply_markup=InlineKeyboardMarkup(buttsons))
 
-
 	elif message.text:
 		text = str(message.text	)
 		if user_method == "droplink" and "|" in text:
@@ -97,7 +100,7 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 
 ####################  droplink  ####################
-async def get_shortlink(link, x):
+async def get_shortlink(link, x=""):
 	https = link.split(":")[0]
 	if "http" == https:
 		https = "https"
@@ -109,13 +112,20 @@ async def get_shortlink(link, x):
 			  }
 
 	async with aiohttp.ClientSession() as session:
-		async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-			data = await response.json()
-			if data["status"] == "success":
-				return data['shortenedUrl']
-			else:
-				return f"Error: {data['message']}"
+		try:
+			async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+				data = await response.json()
+				if data["status"] == "success":
+					return data['shortenedUrl']
+				else:
+					return f"Error: {data['message']}"
+		except:
+			link = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
+			return link
 
+
+async def bitly(url):
+	return shortener._shorten_url(url)
 
 async def replace_link(text, x=""):
 	links = re.findall(r'https?://[^\s]+', text)
