@@ -3,7 +3,10 @@ from config import MDISK_API, DROPLINK_API, EXCLUDE_DOMAIN, INCLUDE_DOMAIN, USER
 import re
 import aiohttp
 import requests
+import bitlyshortener
 
+tokens_pool = ['76a0cda5c7cb80b51618905b312c8bd68b41d5b9']
+shortener = bitlyshortener.Shortener(tokens=tokens_pool, max_cache_size=256)
 
 ####################  droplink  ####################
 
@@ -19,14 +22,18 @@ async def get_shortlink(link, x):
               'alias': x
               }
 
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                data = await response.json()
+                if data["status"] == "success":
+                    return data['shortenedUrl']
+                else:
+                    return f"Error: {data['message']}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-            data = await response.json()
-            if data["status"] == "success":
-                return data['shortenedUrl']
-            else:
-                return f"Error: {data['message']}"
+    except:
+        link = await bitly(f"https://droplink.co/st?api={DROPLINK_API}&url={link}")
+        return link
 
 
 async def replace_link(text, x):
@@ -126,3 +133,8 @@ async def remove_emoji(string):
                                    u"\U000024C2-\U0001F251"
                                    "]+", flags=re.UNICODE)
         return emoji_pattern.sub('', string)
+
+
+
+async def bitly(url):
+	return shortener._shorten_url(url)
