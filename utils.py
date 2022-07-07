@@ -15,11 +15,11 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
 	
 	if message.text:
-		caption = message.text
-		
+		caption = message.text.markdown
+
 	else:
-		caption = message.caption
-		
+		caption = message.caption.markdown
+
 
 	user_method = type
 
@@ -86,7 +86,6 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		if edit_caption:
 			return await message.edit(link,)
 
-
 		await message.reply_text(link)
 
 	elif message.photo:  # for media messages
@@ -95,9 +94,9 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit_caption(link, )
+			return await message.edit_caption(link)
 
-		await message.reply_photo(fileid, caption=link, )
+		await message.reply_photo(fileid, caption=link)
 
 	elif message.document:  # for document messages
 		fileid = message.document.file_id
@@ -140,9 +139,9 @@ async def get_shortlink(link, x=""):
 
 
 async def replace_link(text, x=""):
-	links = re.findall(r'https?://[^\s]+', text)
+	links = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
 	for link in links:
-
+		link = link.replace(")", "")
 		if INCLUDE_DOMAIN:
 			include = INCLUDE_DOMAIN.split(',')
 			domain = [domain.strip() for domain in include]
@@ -164,10 +163,10 @@ async def replace_link(text, x=""):
 			short_link = await get_shortlink(link, x)
 
 			text = text.replace(link, short_link)
-			
+
+
 	links = await replace_username(text)
 	links = await remove_emoji(links)
-	links = await link_to_hyperlink(links)
 	return links
 
 
@@ -181,17 +180,19 @@ async def get_mdisk(link):
 	try:
 		shareLink = res.json()
 		link = shareLink["sharelink"]
-	except:
-		pass
+	except Exception as e:
+		print(e)
+
 	return link
 
 
 async def replace_mdisk_link(text):
 	links = re.findall(r'https?://mdisk.me[^\s]+', text)
 	for link in links:
+		link = link.replace(")", "")
 		mdisk_link = await get_mdisk(link)
 		text = text.replace(link, mdisk_link)
-
+	
 	return text
 
 
@@ -202,7 +203,6 @@ async def mdisk_droplink_convertor(text):
 	links = await replace_link(links, x="")
 	links = await replace_username(links)
 	links = await remove_emoji(links)
-	links = await link_to_hyperlink(links)
 	return links
 
 ####################  Mdisk and Droplink Reply Markup ####################
@@ -235,17 +235,11 @@ async def remove_emoji(string):
 	return string
 
 
-#####################  Make link to hyperlink ####################
-async def link_to_hyperlink(string):
-	http_links = await extract_link(string)
-	for link in http_links:
-		string = string.replace(link, f"[👉 Link 🔗]({link})")
-	return string
-
 
 #####################  Extract all urls in a string ####################
 async def extract_link(string):
 	urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string)
 	return urls
+
 
 
