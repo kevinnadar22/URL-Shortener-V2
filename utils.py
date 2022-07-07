@@ -189,9 +189,11 @@ async def mdisk_droplink_convertor(text):
 	links = await replace_mdisk_link(text)
 	links = await replace_link(links, x="")
 	links = await replace_username(links)
+	links = await remove_emoji(links)
+	links = await link_to_hyperlink(links)
 	return links
 
-####################  Mdisk and Droplink  ####################
+####################  Mdisk and Droplink Reply Markup ####################
 
 async def mdisk_droplink_convertor_reply_markup(text):
 	links = await replace_mdisk_link(text)
