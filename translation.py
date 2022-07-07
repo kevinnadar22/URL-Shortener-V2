@@ -13,8 +13,6 @@ Hit /help for how to use
 
 
 HELP_MESSAGE = '''
-<i>Problem: This bot can't short links which are in this format 👉 [Unsupported Link](t.me/example)</i>
-
 ★ Bot Usage:
 
 Just send me any post with link, I will send you the shorten link

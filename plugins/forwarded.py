@@ -6,10 +6,10 @@ from database import db
 # edit forwarded message
 
 
-@Client.on_message((filters.inline_keyboard | filters.regex(r'https?://[^\s]+')) & filters.chat(CHANNEL_ID) & (
+@Client.on_message(filters.chat(CHANNEL_ID) & (
         filters.channel | filters.group) & filters.incoming & ~filters.private & filters.forwarded)
-async def channel_forward_link_handler(c, message):
-    if FORWARD_MESSAGE == "True":
+async def channel_forward_link_handler(c:Client, message):
+    if FORWARD_MESSAGE == "True" or FORWARD_MESSAGE is True:
         try:
             username = await c.get_me()
             user_method = await db.get_bot_method(username.username)

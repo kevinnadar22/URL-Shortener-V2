@@ -222,7 +222,7 @@ async def replace_username(text):
 
 #####################  Remove Emojis ####################
 async def remove_emoji(string):
-	if REMOVE_EMOJI:
+	if REMOVE_EMOJI is True or REMOVE_EMOJI == "True":
 		emoji_pattern = re.compile("["
 								u"\U0001F600-\U0001F64F"  # emoticons
 								u"\U0001F300-\U0001F5FF"  # symbols & pictographs

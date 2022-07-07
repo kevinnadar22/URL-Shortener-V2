@@ -27,12 +27,12 @@ else:
     MDISK_API = '6LZq851sXoPHuwqgiKQq'
     INCLUDE_DOMAIN = os.environ.get("INCLUDE_DOMAIN")
     EXCLUDE_DOMAIN = os.environ.get("EXCLUDE_DOMAIN")
-    CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
-    FORWARD_MESSAGE = bool(os.environ.get("FORWARD_MESSAGE"))
+    CHANNEL_ID = [-1001756552101, ]
+    FORWARD_MESSAGE = bool(os.environ.get("FORWARD_MESSAGE", "True"))
     ADMINS = [1861030649, 1513534640]
     SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
-    CHANNELS = bool(os.environ.get("CHANNELS"))
+    CHANNELS = bool(os.environ.get("CHANNELS", "True"))
     USERNAME = os.environ.get("USERNAME", "T2inkss")
-    REMOVE_EMOJI = os.environ.get('REMOVE_EMOJI', False)
+    REMOVE_EMOJI = os.environ.get('REMOVE_EMOJI', "False")
     DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
     DATABASE_URL = os.environ.get("DATABASE_URL", 'mongodb://localhost:27017')
