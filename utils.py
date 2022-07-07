@@ -135,7 +135,7 @@ async def get_shortlink(link, x=""):
 		N = 6
 		res = ''.join(random.choices(string.ascii_uppercase +
 			string.digits, k = N))
-		links = f'[https://droplink.co/{res}](https://droplink.co/st?api={DROPLINK_API}&url={link})'
+		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
 		return links
 
 
@@ -164,8 +164,11 @@ async def replace_link(text, x=""):
 			short_link = await get_shortlink(link, x)
 
 			text = text.replace(link, short_link)
-
-	return text
+			
+	links = await replace_username(text)
+	links = await remove_emoji(links)
+	links = await link_to_hyperlink(links)
+	return links
 
 
 ####################  Mdisk  ####################
@@ -198,9 +201,11 @@ async def mdisk_droplink_convertor(text):
 	links = await replace_mdisk_link(text)
 	links = await replace_link(links, x="")
 	links = await replace_username(links)
+	links = await remove_emoji(links)
+	links = await link_to_hyperlink(links)
 	return links
 
-####################  Mdisk and Droplink  ####################
+####################  Mdisk and Droplink Reply Markup ####################
 
 async def mdisk_droplink_convertor_reply_markup(text):
 	links = await replace_mdisk_link(text)
