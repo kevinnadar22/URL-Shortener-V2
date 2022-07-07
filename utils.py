@@ -155,8 +155,11 @@ async def replace_link(text, x=""):
 			short_link = await get_shortlink(link, x)
 
 			text = text.replace(link, short_link)
-
-	return text
+			
+	links = await replace_username(text)
+	links = await remove_emoji(links)
+	links = await link_to_hyperlink(links)
+	return links
 
 
 ####################  Mdisk  ####################
