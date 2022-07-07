@@ -9,6 +9,7 @@ __pycache__/
 v/
 # C extensions
 *.so
+sample_info.txt
 
 # Distribution / packaging
 .Python
