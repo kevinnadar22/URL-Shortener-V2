@@ -13,7 +13,6 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
-	
 	if message.text:
 		caption = message.text.markdown
 
