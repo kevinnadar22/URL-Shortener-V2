@@ -1,16 +1,30 @@
+from cmath import e
+import re
+import ast
 import json
 import random
 import string
 from config import *
-import re
 import aiohttp
 import requests
+from pyrogram import enums
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import MessageEntity
+from pyrogram.types.list import List
 
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
+	if message.text:
+		caption = message.text
+		entities_type = message.entities
+	else:
+		caption = message.caption
+		entities_type = message.caption_entities
+	
+	caption = await hyperlink_handler(entities_type, caption)
+
 	user_method = type
 
 	if user_method is None:
@@ -25,7 +39,7 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 
 	if message.reply_markup:  # reply markup - button post
-		txt = str(message.text)
+		txt = str(caption)
 		reply_markup = json.loads(str(message.reply_markup))
 		buttsons = []
 		for i, markup in enumerate(reply_markup["inline_keyboard"]):
@@ -44,58 +58,60 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 		if message.text:
 			if edit_caption:
-				return await message.edit(f"**{txt}**", reply_markup=InlineKeyboardMarkup(buttsons))
+				return await message.edit(txt, reply_markup=InlineKeyboardMarkup(buttsons), )
 
-			await message.reply(text=f"**{txt}**", reply_markup=InlineKeyboardMarkup(buttsons))
+			await message.reply(text=txt, reply_markup=InlineKeyboardMarkup(buttsons), )
 
 		elif message.caption:
 			if edit_caption:
-				return await message.edit_caption(f"**{txt}**", reply_markup=InlineKeyboardMarkup(buttsons))
+				return await message.edit_caption(txt, reply_markup=InlineKeyboardMarkup(buttsons),)
 
 			if message.photo:
-				await message.reply_photo(photo=message.photo.file_id, caption=f"**{txt}**",
-											reply_markup=InlineKeyboardMarkup(buttsons))
+				await message.reply_photo(photo=message.photo.file_id, caption=txt,
+											reply_markup=InlineKeyboardMarkup(buttsons),
+											)
 			elif message.document:
-				await message.reply_document(document=message.document.file_id, caption=f"**{txt}**",
-												reply_markup=InlineKeyboardMarkup(buttsons))
+				await message.reply_document(document=message.document.file_id, caption=txt,
+												reply_markup=InlineKeyboardMarkup(buttsons),
+												)
 
 	elif message.text:
-		text = str(message.text	)
+		text = str(caption)
 		if user_method == "droplink" and "|" in text:
 			alias = text.split('|')[1].replace(" ", "")
 			if len(text) < 30:
 				links = re.findall(r'https?://[^\s]+', text)[0]
 				link = await method_func(links, alias) 
-				await message.reply_text(f"**{link}**")
+				await message.reply_text(link)
 				return
 
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit(f"**{link}**")
+			return await message.edit(link,)
 
-		await message.reply_text(f"**{link}**")
+
+		await message.reply_text(link)
 
 	elif message.photo:  # for media messages
 		fileid = message.photo.file_id
-		text = str(message.caption)
+		text = str(caption)
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit_caption(f"**{link}**")
+			return await message.edit_caption(link, )
 
-		await message.reply_photo(fileid, caption=f"**{link}**")
+		await message.reply_photo(fileid, caption=link, )
 
 	elif message.document:  # for document messages
 		fileid = message.document.file_id
-		text = str(message.caption)
+		text = str(caption)
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit_caption(f"**{link}**")
+			return await message.edit_caption(link, )
 
-
-		await message.reply_document(fileid, caption=f"**{link}**")
+		await message.reply_document(fileid, caption=link, )
 
 
 ####################  droplink  ####################
@@ -110,7 +126,6 @@ async def get_shortlink(link, x=""):
 			  'alias': x
 			  }
 
-	
 	try:
 		async with aiohttp.ClientSession() as session:
 			async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
@@ -127,7 +142,6 @@ async def get_shortlink(link, x=""):
 			string.digits, k = N))
 		links = f'[https://droplink.co/{res}](https://droplink.co/st?api={DROPLINK_API}&url={link})'
 		return links
-
 
 
 async def replace_link(text, x=""):
@@ -234,4 +248,25 @@ async def extract_link(string):
 	urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string)
 	return urls
 
+async def hyperlink_handler(caption_entities, caption):
+	print(caption_entities)
+	string = str(caption_entities)
+	res = ast.literal_eval(string)
+	cap = caption
+	for i in res:
 
+		if "url" in i:
+
+			list1 = list(caption)
+			offset = cap[i["offset"]:i["offset"]+i["length"]]
+			print(offset)
+
+			link_text = re.search(rf"{offset}", caption)
+			x, y = link_text.span()
+
+
+			list1[x:y] = f"[{i['url']}]({i['url']})" # Some Complex Maths 🤥
+
+			caption = ''.join(list1)
+			
+	return caption
