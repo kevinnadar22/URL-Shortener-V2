@@ -1,4 +1,4 @@
-from cmath import e
+
 import re
 import ast
 import json
@@ -7,23 +7,19 @@ import string
 from config import *
 import aiohttp
 import requests
-from pyrogram import enums
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.types import MessageEntity
-from pyrogram.types.list import List
 
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
+	
 	if message.text:
 		caption = message.text
-		entities_type = message.entities
+		
 	else:
 		caption = message.caption
-		entities_type = message.caption_entities
-	
-	caption = await hyperlink_handler(entities_type, caption)
+		
 
 	user_method = type
 
@@ -136,7 +132,6 @@ async def get_shortlink(link, x=""):
 					return f"Error: {data['message']}"
 
 	except Exception as e:
-		print(e)
 		N = 6
 		res = ''.join(random.choices(string.ascii_uppercase +
 			string.digits, k = N))
@@ -248,25 +243,4 @@ async def extract_link(string):
 	urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string)
 	return urls
 
-async def hyperlink_handler(caption_entities, caption):
-	print(caption_entities)
-	string = str(caption_entities)
-	res = ast.literal_eval(string)
-	cap = caption
-	for i in res:
 
-		if "url" in i:
-
-			list1 = list(caption)
-			offset = cap[i["offset"]:i["offset"]+i["length"]]
-			print(offset)
-
-			link_text = re.search(rf"{offset}", caption)
-			x, y = link_text.span()
-
-
-			list1[x:y] = f"[{i['url']}]({i['url']})" # Some Complex Maths 🤥
-
-			caption = ''.join(list1)
-			
-	return caption
