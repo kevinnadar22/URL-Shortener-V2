@@ -6,11 +6,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-v/
+
 # C extensions
 *.so
 sample_info.txt
-
+bin/
 # Distribution / packaging
 .Python
 build/
