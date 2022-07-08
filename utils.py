@@ -1,16 +1,12 @@
-
 import re
-import ast
 import json
-import random
-import string
-from config import *
 import aiohttp
 import requests
 from pyrogram import Client
+from config import *
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-
+import pyshorteners
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
 
@@ -22,15 +18,18 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 	user_method = type
 
+# Checking if the user has set his method or not. If not, it will reply with a message.
 	if user_method is None:
 		return await message.reply(text="Set your /method first")
 
+# A dictionary which contains the methods to be called.
 	METHODS = {
 		"mdisk": replace_mdisk_link,
 		"droplink": replace_link,
 		"mdlink": mdisk_droplink_convertor
 	}
 
+	# Replacing the username with your username.
 	caption = await replace_username(caption)
 
 	method_func = METHODS[user_method]
@@ -100,7 +99,8 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 		await message.reply_photo(fileid, caption=str(link))
 
-	elif message.document:  # for document messages
+# For document messages.
+	elif message.document:  
 		fileid = message.document.file_id
 		text = str(caption)
 		link = await method_func(text)
@@ -133,8 +133,9 @@ async def get_shortlink(link, x=""):
 					return f"Error: {data['message']}"
 
 	except Exception as e:
+		print(e)
 		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
-		return links
+		return await tiny_url_main(links)
 
 
 async def replace_link(text, x=""):
@@ -207,11 +208,12 @@ async def mdisk_droplink_convertor_reply_markup(text):
 
 ####################  Replace Username  ####################
 async def replace_username(text):
-	usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
-	for i in usernames:
-		text = text.replace(i, f"@{USERNAME}")
+	if USERNAME:
+		usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
+		for i in usernames:
+			text = text.replace(i, f"@{USERNAME}")
 	return text
-
+	
 
 #####################  Extract all urls in a string ####################
 async def extract_link(string):
@@ -220,3 +222,9 @@ async def extract_link(string):
 
 
 
+# Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
+
+# TinyUrl 
+async def tiny_url_main(url):
+	s = pyshorteners.Shortener()
+	return s.tinyurl.short(url)
