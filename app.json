@@ -1,13 +1,13 @@
 {
   "name": "Url-Shortener-bot-V2",
   "description": "Make short link by using Shortener using API key",
-  "logo": "https://i.ibb.co/z6Rs1dz/automation-inspiration-URLshortener-00-hero.jpg",
+  "logo": "https://i.ibb.co/1mwchh9/Screenshot-2022-07-08-at-11-06-34-AM.png",
   "keywords": [
     "telegram",
     "shortener"
   ],
   "website": "https://github.com/T2links/",
-  "repository": "https://github.com/T2links/",
+  "repository": "https://github.com/kevinnadar22/URL-Shortener-V2",
   "env": {
     "BOT_TOKEN": {
       "description": "Your bot token from @botfather",

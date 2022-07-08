@@ -12,6 +12,11 @@
   </a>  
 </p>
 
+<p align="center">
+    <img width="50%" style="border-radius:50%" src="https://i.ibb.co/1mwchh9/Screenshot-2022-07-08-at-11-06-34-AM.png">
+
+</p>
+
 __This Is Just An Simple Advance Shortener and Converter Bot Completely Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
 __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your MDisk Account__
@@ -74,9 +79,10 @@ You can deploy this bot anywhere.
 <p>Deploy To Heroku<P>
 <p>
 
-<a href="https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2">
+<a href="https://heroku.com/deploy">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
+
 </p>
 <br>
 Deploy to VPS
