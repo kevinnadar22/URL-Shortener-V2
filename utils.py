@@ -13,12 +13,12 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
+
 	if message.text:
 		caption = message.text.markdown
 
 	else:
 		caption = message.caption.markdown
-
 
 	user_method = type
 
@@ -30,6 +30,9 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		"droplink": replace_link,
 		"mdlink": mdisk_droplink_convertor
 	}
+
+	caption = await replace_username(caption)
+
 	method_func = METHODS[user_method]
 
 
@@ -83,9 +86,10 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit(link,)
+			return await message.edit(link)
 
-		await message.reply_text(link)
+		print(link)
+		await message.reply_text(str(link))
 
 	elif message.photo:  # for media messages
 		fileid = message.photo.file_id
@@ -103,9 +107,9 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit_caption(link, )
+			return await message.edit_caption(link)
 
-		await message.reply_document(fileid, caption=link, )
+		await message.reply_document(fileid, caption=str(link))
 
 
 ####################  droplink  ####################
@@ -130,9 +134,6 @@ async def get_shortlink(link, x=""):
 					return f"Error: {data['message']}"
 
 	except Exception as e:
-		N = 6
-		res = ''.join(random.choices(string.ascii_uppercase +
-			string.digits, k = N))
 		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
 		return links
 
@@ -163,10 +164,7 @@ async def replace_link(text, x=""):
 
 			text = text.replace(link, short_link)
 
-
-	links = await replace_username(text)
-	links = await remove_emoji(links)
-	return links
+	return text
 
 
 ####################  Mdisk  ####################
@@ -191,7 +189,6 @@ async def replace_mdisk_link(text):
 		link = link.replace(")", "")
 		mdisk_link = await get_mdisk(link)
 		text = text.replace(link, mdisk_link)
-	
 	return text
 
 
@@ -200,8 +197,6 @@ async def replace_mdisk_link(text):
 async def mdisk_droplink_convertor(text):
 	links = await replace_mdisk_link(text)
 	links = await replace_link(links, x="")
-	links = await replace_username(links)
-	links = await remove_emoji(links)
 	return links
 
 ####################  Mdisk and Droplink Reply Markup ####################
@@ -217,22 +212,6 @@ async def replace_username(text):
 	for i in usernames:
 		text = text.replace(i, f"@{USERNAME}")
 	return text
-
-
-#####################  Remove Emojis ####################
-async def remove_emoji(string):
-	if REMOVE_EMOJI is True or REMOVE_EMOJI == "True":
-		emoji_pattern = re.compile("["
-								u"\U0001F600-\U0001F64F"  # emoticons
-								u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-								u"\U0001F680-\U0001F6FF"  # transport & map symbols
-								u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-								u"\U00002702-\U000027B0"
-								u"\U000024C2-\U0001F251"
-								"]+", flags=re.UNICODE)
-		return emoji_pattern.sub('', string)
-	return string
-
 
 
 #####################  Extract all urls in a string ####################

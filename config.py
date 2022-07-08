@@ -15,5 +15,3 @@ CHANNELS = os.environ.get("CHANNELS", "False")
 USERNAME = os.environ.get("USERNAME", "")
 DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
 DATABASE_URL = os.environ.get("DATABASE_URL")
-REMOVE_EMOJI = os.environ.get("REMOVE_EMOJI", "False")
-
