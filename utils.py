@@ -56,20 +56,20 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 
 		if message.text:
 			if edit_caption:
-				return await message.edit(txt, reply_markup=InlineKeyboardMarkup(buttsons), )
+				return await message.edit(str(txt), reply_markup=InlineKeyboardMarkup(buttsons), )
 
-			await message.reply(text=txt, reply_markup=InlineKeyboardMarkup(buttsons), )
+			await message.reply(text=str(txt), reply_markup=InlineKeyboardMarkup(buttsons), )
 
 		elif message.caption:
 			if edit_caption:
-				return await message.edit_caption(txt, reply_markup=InlineKeyboardMarkup(buttsons),)
+				return await message.edit_caption(str(txt), reply_markup=InlineKeyboardMarkup(buttsons),)
 
 			if message.photo:
-				await message.reply_photo(photo=message.photo.file_id, caption=txt,
+				await message.reply_photo(photo=message.photo.file_id, caption=str(txt),
 											reply_markup=InlineKeyboardMarkup(buttsons),
 											)
 			elif message.document:
-				await message.reply_document(document=message.document.file_id, caption=txt,
+				await message.reply_document(document=message.document.file_id, caption=str(txt),
 												reply_markup=InlineKeyboardMarkup(buttsons),
 												)
 
@@ -80,15 +80,14 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 			if len(text) < 30:
 				links = re.findall(r'https?://[^\s]+', text)[0]
 				link = await method_func(links, alias) 
-				await message.reply_text(link)
+				await message.reply_text(str(link))
 				return
 
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit(link)
+			return await message.edit(str(link))
 
-		print(link)
 		await message.reply_text(str(link))
 
 	elif message.photo:  # for media messages
@@ -97,9 +96,9 @@ async def main_convertor_handler(c:Client, message:Message, type:str, edit_capti
 		link = await method_func(text)
 
 		if edit_caption:
-			return await message.edit_caption(link)
+			return await message.edit_caption(str(link))
 
-		await message.reply_photo(fileid, caption=link)
+		await message.reply_photo(fileid, caption=str(link))
 
 	elif message.document:  # for document messages
 		fileid = message.document.file_id
