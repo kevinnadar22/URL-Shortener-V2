@@ -15,5 +15,8 @@ async def private_link_handler(c, message):
 
     bot = await c.get_me()
     user_method = await db.get_bot_method(bot.username)
-    await main_convertor_handler(c, message, user_method)
+    try:
+        await main_convertor_handler(c, message, user_method)
+    except Exception as e:
+        print(e)
 

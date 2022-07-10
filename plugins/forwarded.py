@@ -3,6 +3,7 @@ from pyrogram import Client, filters
 from config import CHANNEL_ID, FORWARD_MESSAGE
 from utils import main_convertor_handler
 from database import db
+from helpers import temp
 # edit forwarded message
 
 
@@ -11,8 +12,7 @@ from database import db
 async def channel_forward_link_handler(c:Client, message):
     if FORWARD_MESSAGE == "True" or FORWARD_MESSAGE is True:
         try:
-            username = await c.get_me()
-            user_method = await db.get_bot_method(username.username)
+            user_method = await db.get_bot_method(temp.BOT_USERNAME)
             await main_convertor_handler(c, message, user_method)
             await message.delete()
         except Exception as e:

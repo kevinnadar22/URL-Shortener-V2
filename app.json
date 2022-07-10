@@ -30,12 +30,12 @@
       "value": "0"
     },
     "INCLUDE_DOMAIN": {
-      "description": "Use this option if you want to short only links from the given domains list. Separate each domain by comma, Works only when mode is selected to droplink",
+      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink",
       "value": "",
       "required": false
     },
     "EXCLUDE_DOMAIN": {
-      "description": "Use this option if you wish to short every link on your website but exclude only the links from the given domains list. Separate each domain by comma, Works only when mode is selected to droplink",
+      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink or mdlink",
       "value": "",
       "required": false
     },
@@ -60,7 +60,7 @@
     },
     "USERNAME": {
       "description": "Your Telegram Channel Username without @",
-      "value": "T2linkss",
+      "value": "",
       "required": false
     },
     "DATABASE_NAME": {
@@ -69,7 +69,7 @@
       "required": false
     },
     "DATABASE_URL":{
-      "description": "Your database URL from mongodb.com",
+      "description": "Your database URI from mongodb.com",
       "value": "",
       "required": true
     }

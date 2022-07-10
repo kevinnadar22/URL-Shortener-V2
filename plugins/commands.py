@@ -4,11 +4,11 @@ from translation import *
 from config import ADMINS
 from pyrogram.types import Message
 from database import db
+from helpers import temp
 
 @Client.on_message(filters.command('start'))
-async def start(c, m):
-    bot = await c.get_me()
-    user_method = await db.get_bot_method(bot.username)
+async def start(c:Client, m:Message):
+    user_method = await db.get_bot_method(temp.BOT_USERNAME)
     if not user_method:
         mode = "None"
     else:
@@ -29,9 +29,8 @@ async def about_command(c, m):
 
 @Client.on_message(filters.command('method') & filters.chat(ADMINS) & filters.private)
 async def method_handler(c:Client, m:Message):
-    user = await c.get_me()
-    print(user.username)
-    user_method = await db.get_bot_method(user.username)
+    user = temp.BOT_USERNAME
+    user_method = await db.get_bot_method(user)
     if len(m.command) == 1:    
         return await m.reply_text(METHOD_MESSAGE.format(method=user_method))
     if len(m.command) == 2:
@@ -40,8 +39,8 @@ async def method_handler(c:Client, m:Message):
         if method_name not in ['mdisk', 'mdlink', 'droplink']:
             return await m.reply_text(METHOD_MESSAGE.format(method=user_method))
 
-        if not await db.get_bot_method(user.username):
-            await db.add_method(user.username, method_name)
+        if not await db.get_bot_method(user):
+            await db.add_method(user, method_name)
         else:
-            await db.update_method(user.username, method_name)
-        await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user.username))
+            await db.update_method(user, method_name)
+        await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user))

@@ -65,11 +65,10 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 * `CHANNELS`: Set True if you want channels to be available for converting
 * `CHANNEL_ID`: You channel list to convert posts. Seperate channels list by space
 * `INCLUDE_DOMAIN`: Use this option if you want to short only links from the following domains list.
-* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your website but exclude only the links from the following domains list.
+* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your channel but exclude only the links from the following domains list.
 * `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
 * `SOURCE_CODE`: Your Github repo
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
-* `REMOVE_EMOJI`: Set True if you want to remove emoji from posts
 
 
 #### PR's Are Very Welcome
