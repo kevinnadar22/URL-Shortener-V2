@@ -78,7 +78,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 <br>
 You can deploy this bot anywhere.
-<br><br>
+<br>
 
 
 
