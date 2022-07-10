@@ -72,13 +72,13 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 
 #### PR's Are Very Welcome
-<br>
+
 
 ## Deploy 
 
-<br>
+
 You can deploy this bot anywhere.
-<br>
+<br><br>
 
 
 
