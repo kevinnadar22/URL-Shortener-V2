@@ -40,7 +40,9 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 • /batch -100XX - to convert link for multiple posts
 ```
 
-## Features
+## About 
+
+### Features
 
 - [x] Droplink Shortener
 - [x] Mdisk Convertor
