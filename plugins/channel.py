@@ -19,6 +19,6 @@ async def channel_link_handler(c:Client, message):
 				for chat_id in ADMINS:
 					await c.send_message(chat_id=chat_id, text="Set your /method first")
 				return
-			await main_convertor_handler(c, message, user_method, True)
+			await main_convertor_handler(message, user_method, True)
 		except Exception as e:
 			print(e)

@@ -13,7 +13,7 @@ async def channel_forward_link_handler(c:Client, message):
     if FORWARD_MESSAGE == "True" or FORWARD_MESSAGE is True:
         try:
             user_method = await db.get_bot_method(temp.BOT_USERNAME)
-            await main_convertor_handler(c, message, user_method)
+            await main_convertor_handler(message, user_method)
             await message.delete()
         except Exception as e:
             print(e)

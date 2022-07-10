@@ -107,6 +107,5 @@ Selling The Codes To Other People For Money Is *Strictly Prohibited*.
 
 
 ## Credits
-
  - Thanks To [CrazyBotsz/Adv-Auto-Filter-Bot-V2](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2) For His Awesome README.md Template
  - [Thanks To Me](https://github.com/Kevinnadar22)

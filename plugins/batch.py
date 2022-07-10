@@ -91,7 +91,7 @@ async def cancel(c:Client, m:CallbackQuery):
                     empty+=0
                     pass
                 try:
-                    await main_convertor_handler(c=c, message=message, type=user_method, edit_caption=True)
+                    await main_convertor_handler(message=message, type=user_method, edit_caption=True)
                     success += 1
                     await asyncio.sleep(1)
                 except:

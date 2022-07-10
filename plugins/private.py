@@ -2,6 +2,7 @@ from pyrogram import Client, filters
 from utils import main_convertor_handler
 from config import ADMINS, SOURCE_CODE
 from database import db
+from helpers import temp
 
 
 # Private Chat
@@ -9,14 +10,12 @@ from database import db
 @Client.on_message(filters.private & filters.incoming)
 async def private_link_handler(c, message):
     if message.from_user.id not in ADMINS:
-        return await message.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n"
-                                 f"[Source Code]({SOURCE_CODE})")
+        return await message.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})")
 
 
-    bot = await c.get_me()
-    user_method = await db.get_bot_method(bot.username)
+    user_method = await db.get_bot_method(temp.BOT_USERNAME)
     try:
-        await main_convertor_handler(c, message, user_method)
+        await main_convertor_handler(message, user_method)
     except Exception as e:
         print(e)
 

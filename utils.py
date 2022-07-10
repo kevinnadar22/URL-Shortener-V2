@@ -8,7 +8,7 @@ from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import pyshorteners
 
-async def main_convertor_handler(c:Client, message:Message, type:str, edit_caption:bool=False):
+async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False):
 	
 	caption = None
 
