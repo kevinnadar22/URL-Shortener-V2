@@ -84,10 +84,10 @@ You can deploy this bot anywhere.
 
 
 
-|                                                                                                                 | Name              | Type          | Lowest-Price Plan             | Deploy                                                  |
+|                                                                                                                 | Name              | Deploy                                                  |
 | --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | ----------------------------- | ------------------------------------------------------- |
-| [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                            | Heroku            | Container     | Free, 1 CPU, 512 MB RAM       | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
-| ![VPS](assets/img/vps.png) | VPS | Container     | N/A         | [see guide](/guides/vps.md) |
+| [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                            | Heroku          | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
+| ![VPS](assets/img/vps.png) | VPS | [see guide](/guides/vps.md) |
 
 
 
