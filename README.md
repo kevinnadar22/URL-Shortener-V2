@@ -72,40 +72,43 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 
 #### PR's Are Very Welcome
+<br>
 
-## Deploy <br>
+## Deploy 
+
+<br>
 You can deploy this bot anywhere.
+<br><br>
 
-<p>Deploy To Heroku<P>
-<p>
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)
+
+|                                                                                                                 | Name              | Type          | Lowest-Price Plan             | Deploy                                                  |
+| --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | ----------------------------- | ------------------------------------------------------- |
+| [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                            | Heroku            | Container     | Free, 1 CPU, 512 MB RAM       | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
+| ![VPS](assets/img/vps.png) | VPS | Container     | N/A         | [see guide](/guides/vps.md) |
+|  
+
+
 
 </p>
-<br>
-Deploy to VPS
-<p>
-<pre>
-git clone https://github.com/kevinnadar22/URL-Shortener-V2
-cd URL-Shortener-V2
-pip3 install -r requirements.txt
-# Change The Vars Of config.py File Accordingly
-python3 -m bot
-</pre>
+
 
 
 ## Support   
+
 Contact Our [DEV](https://www.telegram.dog/ask_admin001) For Support/Assistance    
    
 Report Bugs, Give Feature Requests There..   
 Do Fork And Star The Repository If You Liked It.
 
 ## Disclaimer
+
 [![GNU Affero General Public License v3.0](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/agpl-3.0.en.html#header)    
 Licensed under [GNU AGPL v3.0.](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2/blob/main/LICENSE)
 Selling The Codes To Other People For Money Is *Strictly Prohibited*.
 
 
 ## Credits
+
  - Thanks To [CrazyBotsz/Adv-Auto-Filter-Bot-V2](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2) For His Awesome README.md Template
  - [Thanks To Me](https://github.com/Kevinnadar22)
