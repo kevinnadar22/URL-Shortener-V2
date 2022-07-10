@@ -86,26 +86,31 @@ You can deploy this bot anywhere.
 | --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | ----------------------------- | ------------------------------------------------------- |
 | [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                            | Heroku            | Container     | Free, 1 CPU, 512 MB RAM       | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
 | ![VPS](assets/img/vps.png) | VPS | Container     | N/A         | [see guide](/guides/vps.md) |
-|
 
 
 
+# Tech Stack
 
-## Support   
+**Language:** Python 3.9.9
+
+**Library:** Pyrogram 2.0.30
+
+
+# Support   
 
 Contact Our [DEV](https://www.telegram.dog/ask_admin001) For Support/Assistance    
    
 Report Bugs, Give Feature Requests There..   
 Do Fork And Star The Repository If You Liked It.
 
-## Disclaimer
+# Disclaimer
 
 [![GNU Affero General Public License v3.0](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/agpl-3.0.en.html#header)    
 Licensed under [GNU AGPL v3.0.](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2/blob/main/LICENSE)
 Selling The Codes To Other People For Money Is *Strictly Prohibited*.
 
 
-## Credits
+# Credits
 
  - Thanks To [CrazyBotsz/Adv-Auto-Filter-Bot-V2](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2) For His Awesome README.md Template
  - [Thanks To Me](https://github.com/Kevinnadar22)
