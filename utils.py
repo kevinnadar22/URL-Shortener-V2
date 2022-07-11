@@ -59,7 +59,7 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
 	elif message.media:
 
 		if edit_caption:
-			return await message.edit_caption(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup)
+			return await message.edit_caption(shortenedText, reply_markup=reply_markup)
 
 		media = getattr(message, message.media.value)
 		fileid = media.file_id
