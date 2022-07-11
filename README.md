@@ -73,7 +73,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
 
 
-#### PR's Are Very Welcome
+**PR's Are Very Welcome**
 
 
 ## Deploy 
