@@ -143,3 +143,7 @@ cython_debug/
 
 /gplink_env
 /.vscode
+
+bin
+info.txt
+sample_info.txt
