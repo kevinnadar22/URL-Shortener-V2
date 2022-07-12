@@ -1,21 +1,68 @@
 # URL Shortener Bot V2
 
 <p align="center">
-  <a href="https://github.com/kevinnadar22/URL-Shortener-V2/stargazers">
-    <img src="https://img.shields.io/github/stars/kevinnadar22/URL-Shortener-V2?style=social">
 
+![Fork](https://img.shields.io/github/forks/kevinnadar22/URL-Shortener-V2?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/kevinnadar22/URL-Shortener-V2?color=%23&style=for-the-badge)
+![License](https://img.shields.io/github/license/kevinnadar22/URL-Shortener-V2?style=for-the-badge)
+![Issues](https://img.shields.io/github/issues/kevinnadar22/URL-Shortener-V2?style=for-the-badge)
+
+</p>
+
+---
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/kevinnadar22/URL-Shortener-V2">
+    <img src="https://i.ibb.co/1mwchh9/Screenshot-2022-07-08-at-11-06-34-AM.png" alt="Logo" width="80" height="80">
   </a>
-  
-  <a href="https://github.com/kevinnadar22/URL-Shortener-V2/fork">
-    <img src="https://img.shields.io/github/forks/kevinnadar22/URL-Shortener-V2?label=Fork&style=social">
 
-  </a>  
-</p>
+  <h3 align="center">URL Shortener Bot V2</h3>
 
-<p align="center">
-    <img width="25%" style="border-radius:50%" src="https://i.ibb.co/1mwchh9/Screenshot-2022-07-08-at-11-06-34-AM.png">
+  <p align="center">
+    A Shortener and Convertor Bot
+    <br />
+    ·
+    <a href="https://www.telegram.dog/ask_admin001">Report Bug</a>
+    ·
+    <a href="https://github.com/kevinnadar22/URL-Shortener-V2#features">Features</a>
+    ·
+    <a href="https://github.com/kevinnadar22/URL-Shortener-V2#deploy">Deploy</a>
+    ·
+    <a href="https://github.com/kevinnadar22/URL-Shortener-V2#required-variables">Variables</a>
+  </p>
+</div>
 
-</p>
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#commands">Commands</a></li>
+    <li>
+        <a href="#about">About</a>
+        <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#required-variables">Required Variables</a></li>
+        <li><a href="#optional-variables">Optional Variables</a></li>
+      </ul>
+      </li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#credits">Credits</a></li>
+  </ol>
+</details>
+
+
+---
+
+## Description
 
 __This Is Just An Simple Advance Shortener and Converter Bot Completely Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
@@ -64,13 +111,16 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 
 ### Optional Variables
-* `CHANNELS`: Set True if you want channels to be available for converting
+* `CHANNELS`: Set True if you want channels to be available for converting 
 * `CHANNEL_ID`: Your channel list to convert posts. Seperate channels list by space
 * `INCLUDE_DOMAIN`: Use this option if you want to short only links from the following domains list.
 * `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your channel but exclude only the links from the following domains list.
 * `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
 * `SOURCE_CODE`: Your Github repo
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
+* `HEADER_TEXT`: This text will be added on top of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
+* `FOOTER_TEXT`: This text will be added on bottom of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
+* `BANNER_IMAGE`: All images of media posts will be replaced with this image. Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. See More
 
 
 **PR's Are Very Welcome**
@@ -82,8 +132,6 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 You can deploy this bot anywhere.
 
 
-
-
 |                                                                                                                 | Name              | Deploy        |
 | --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | 
 | [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                          | Heroku            | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
@@ -93,9 +141,9 @@ You can deploy this bot anywhere.
 
 ## Tech Stack
 
-**Language:** Python 3.9.9
+**Language:** [Python](https://www.python.org/) 3.9.9
 
-**Library:** Pyrogram 2.0.30
+**Library:** [Pyrogram](https://github.com/pyrogram/pyrogram) 2.0.30
 
 
 ## Support   
@@ -113,6 +161,4 @@ Selling The Codes To Other People For Money Is *Strictly Prohibited*.
 
 
 ## Credits
-
- - Thanks To [CrazyBotsz/Adv-Auto-Filter-Bot-V2](https://github.com/CrazyBotsz/Adv-Auto-Filter-Bot-V2) For His Awesome README.md Template
  - [Thanks To Me](https://github.com/Kevinnadar22)

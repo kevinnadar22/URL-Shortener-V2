@@ -1,9 +1,6 @@
-## Deploy in your Virtual Private Server
+## Deploy in your Virtual Private Server or Run Locally
 
 <br>
-
-
-## Run Locally
 
 Clone the project
 

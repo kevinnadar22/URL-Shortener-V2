@@ -20,6 +20,7 @@ class Bot(Client):
         me = await self.get_me()
         self.username = '@' + me.username
         temp.BOT_USERNAME = me.username
+        temp.FIRST_NAME = me.first_name
         print(f"{self.username} running...")
 
 
