@@ -140,10 +140,8 @@ async def get_shortlink(link, x=""):
 					return f"Error: {data['message']}"
 
 	except Exception as e:
-
 		logger.error(e)
 		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
-
 		return await tiny_url_main(links)
 
 
@@ -219,9 +217,8 @@ async def replace_username(text):
 		usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
 		for i in usernames:
 			text = text.replace(i, f"@{USERNAME}")
-			
-		return text	
-
+	return text
+	
 
 #####################  Extract all urls in a string ####################
 async def extract_link(string):
