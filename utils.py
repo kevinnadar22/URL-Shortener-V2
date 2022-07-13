@@ -149,14 +149,14 @@ async def replace_link(text, x=""):
 	links = await extract_link(text)
 	for link in links:
 		if INCLUDE_DOMAIN:
-			include = INCLUDE_DOMAIN.split(',')
+			include = INCLUDE_DOMAIN
 			domain = [domain.strip() for domain in include]
 			if any(i in link for i in domain):
 				short_link = await get_shortlink(link, x)
 				text = text.replace(link, short_link)
 
 		elif EXCLUDE_DOMAIN:
-			exclude = EXCLUDE_DOMAIN.split(',')
+			exclude = EXCLUDE_DOMAIN
 			domain = [domain.strip() for domain in exclude]
 			if any(i in link for i in domain):
 				pass
