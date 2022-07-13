@@ -1,6 +1,3 @@
-from email import message
-import os
-import sys
 import asyncio
 from database import db
 from translation import BATCH
@@ -23,14 +20,12 @@ cancel_button = [[
 
 @Client.on_message(filters.private & filters.command('batch'))
 async def batch(c, m):
-    bot = await c.get_me()
-    user_method = await db.get_bot_method(bot.username)
+    user_method = await db.get_bot_method(temp.BOT_USERNAME)
     if m.from_user.id in ADMINS:
         if not user_method:
             return await m.reply("Set your /method first")
         else:
-
-            if CHANNELS is True:
+            if CHANNELS is True or CHANNELS == "True":
                 if len(m.command) < 2:
                     await m.reply_text(BATCH)
                 else:
@@ -51,7 +46,7 @@ async def batch(c, m):
 
                     await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
 
-            elif CHANNELS is False:
+            elif CHANNELS is False or CHANNELS == "False":
                 await m.reply(text="Set your CHANNELS var to True in HEROKU to use this command")
     elif m.from_user.id not in ADMINS:
         await m.reply_text(f"""This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})""")
