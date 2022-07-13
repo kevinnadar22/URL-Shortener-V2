@@ -80,11 +80,11 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 ## Commands
 
 ```
-• /start - Check if I'm alive
-• /help - Help Command
-• /about - About Command
-• /method - To set your preferred method
-• /batch -100XX - to convert link for multiple posts
+/start - Check if I'm alive
+/help - Help Command
+/about - About Command
+/method - To set your preferred method
+/batch -100XX - to convert link for multiple posts
 ```
 
 ## About 
@@ -116,12 +116,14 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 * `INCLUDE_DOMAIN`: Use this option if you want to short only links from the following domains list.
 * `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your channel but exclude only the links from the following domains list.
 * `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
-* `SOURCE_CODE`: Your Github repo
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
+
+### Extra Variables
+* `SOURCE_CODE`: Your Github repo
 * `HEADER_TEXT`: This text will be added on top of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
 * `FOOTER_TEXT`: This text will be added on bottom of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
-* `BANNER_IMAGE`: All images of media posts will be replaced with this image. Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. See More
-
+* `BANNER_IMAGE`: All images of media posts will be replaced with this image. Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. 
+* `WELCOME_IMAGE`: Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. 
 
 **PR's Are Very Welcome**
 
