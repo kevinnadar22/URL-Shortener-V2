@@ -120,7 +120,7 @@ async def get_shortlink(link, x=""):
 	if "http" == https:
 		https = "https"
 		link = link.replace("http", https)
-	url = f'https://shorturllink.in/api'
+	url = f'https://droplink.co/api'
 	params = {'api': DROPLINK_API,
 			  'url': link,
 			  'alias': x
@@ -137,7 +137,7 @@ async def get_shortlink(link, x=""):
 
 	except Exception as e:
 		print(e)
-		links = f'https://urlsopen.com/st?api={DROPLINK_API}&url={link}'
+		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
 		return await tiny_url_main(links)
 
 
