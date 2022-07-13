@@ -53,6 +53,7 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
 	# Adding header and footer
 	shortenedText = f"{HEADER_TEXT}\n{shortenedText}\n{FOOTER_TEXT}"
 
+
 	# Used to get the file_id of the media. If the media is a photo and BANNER_IMAGE is set, it will
 	# replace the file_id with the BANNER_IMAGE.
 	if message.media:
@@ -229,3 +230,5 @@ async def extract_link(string):
 async def tiny_url_main(url):
 	s = pyshorteners.Shortener()
 	return s.tinyurl.short(url)
+
+
