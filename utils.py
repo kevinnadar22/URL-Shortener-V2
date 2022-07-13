@@ -164,7 +164,7 @@ async def replace_link(text, x=""):
 			short_link = await get_shortlink(link, x)
 			text = text.replace(link, short_link)
 
-	return text
+	return f"**text**"
 
 
 ####################  Mdisk  ####################
@@ -191,7 +191,7 @@ async def replace_mdisk_link(text):
 		mdisk_link = await get_mdisk(link)
 		text = text.replace(link, mdisk_link)
 
-	return text
+	return f"**text**"
 
 ####################  Mdisk and Droplink  ####################
 
