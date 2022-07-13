@@ -1,7 +1,6 @@
 {
   "name": "Url-Shortener-bot-V2",
   "description": "Make short link by using Shortener using API key",
-  "stack": "container",
   "logo": "https://i.ibb.co/1mwchh9/Screenshot-2022-07-08-at-11-06-34-AM.png",
   "keywords": [
     "telegram",
