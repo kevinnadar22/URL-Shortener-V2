@@ -30,16 +30,16 @@
       "description": "Enter your MDISK API KEY only if METHOD is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
       "value": "0"
     },
-    // "INCLUDE_DOMAIN": {
-    //   "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink",
-    //   "value": "",
-    //   "required": false
-    // },
-    // "EXCLUDE_DOMAIN": {
-    //   "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink or mdlink",
-    //   "value": "",
-    //   "required": false
-    // },
+    "INCLUDE_DOMAIN": {
+      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink",
+      "value": "",
+      "required": false
+    },
+    "EXCLUDE_DOMAIN": {
+      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink or mdlink",
+      "value": "",
+      "required": false
+    },
     "CHANNELS": {
       "description": "Enter True if you want the bot to work in Channels also else Leave it as it is",
       "value": "",
