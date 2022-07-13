@@ -6,6 +6,9 @@ from config import WELCOME_IMAGE
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 @Client.on_message(filters.command('start'))
 async def start(c:Client, m:Message):
@@ -60,5 +63,6 @@ async def method_handler(c:Client, m:Message):
             await db.add_method(user, method_name)
         else:
             await db.update_method(user, method_name)
+        logger.info("Updated method to %s", method_name)
         await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user))
 

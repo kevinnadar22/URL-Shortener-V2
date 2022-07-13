@@ -4,6 +4,10 @@ from config import ADMINS, CHANNEL_ID, FORWARD_MESSAGE
 from utils import main_convertor_handler
 from database import db
 from helpers import temp
+
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 # edit forwarded message
 
 
@@ -21,4 +25,4 @@ async def channel_forward_link_handler(c:Client, message):
                 await main_convertor_handler(message, user_method)
             await message.delete()
         except Exception as e:
-            print(e)
+            logger.error(e)

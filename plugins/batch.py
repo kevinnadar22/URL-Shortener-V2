@@ -9,6 +9,12 @@ from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
 
+# Logger
+
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
 lock = asyncio.Lock()
 
 
@@ -113,7 +119,7 @@ async def cancel(c:Client, m:CallbackQuery):
                         continue
 
             except Exception as e:
-                print(e)
+                logger.error(e)
             else:
                 await asyncio.sleep(10)
                 msg = f"Batch Shortening Completed!\n\nTotal: `{total}`\nSuccess: `{success}`\nFailed: `{fail}`\nEmpty: `{empty}`"

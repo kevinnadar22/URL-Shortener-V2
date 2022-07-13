@@ -4,6 +4,13 @@ from utils import main_convertor_handler
 from database import db
 from helpers import temp
 
+
+
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
+
 # Channel
 
 @Client.on_message(~filters.forwarded & filters.chat(CHANNEL_ID) & (
@@ -21,4 +28,4 @@ async def channel_link_handler(c:Client, message):
 			else:
 				await main_convertor_handler(message, user_method, True)
 		except Exception as e:
-			print(e)
+			logger.error(e)
