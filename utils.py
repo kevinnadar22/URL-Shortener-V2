@@ -124,7 +124,7 @@ async def get_shortlink(link, x=""):
 	if "http" == https:
 		https = "https"
 		link = link.replace("http", https)
-	url = f'https://shorturllink.in/api'
+	url = f'https://droplink.co/api'
 	params = {'api': DROPLINK_API,
 			  'url': link,
 			  'alias': x
@@ -197,7 +197,7 @@ async def replace_mdisk_link(text):
 		mdisk_link = await get_mdisk(link)
 		text = text.replace(link, mdisk_link)
 
-	return f"**text**"
+	return text
 
 ####################  Mdisk and Droplink  ####################
 
@@ -220,11 +220,6 @@ async def replace_username(text):
 		for i in usernames:
 			text = text.replace(i, f"@{USERNAME}")
 			
-			
-		telegram_links = re.findall(r'[(?:http|https)?://]*(?:t.me|telegram.me|telegram.dog|youtu.be|instagram.com|youtube.com|s.channelcom.tech)[^\s]+', text)
-
-		for i in telegram_links:
-			text = text.replace(i, f"@{USERNAME}")
 		return text	
 
 
