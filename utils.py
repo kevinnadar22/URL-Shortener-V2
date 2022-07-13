@@ -189,9 +189,9 @@ async def get_mdisk(link):
 
 async def replace_mdisk_link(text):
 
-	links = re.findall(r'https?://mdisk.me[^\s]+', text)
+	links = re.findall(r'https?://mdisk.me[^\s"*<>]+', text)
 	for link in links:
-		link = link.replace(")", "")
+		link = link.replace(")", " \"")
 		mdisk_link = await get_mdisk(link)
 		text = text.replace(link, mdisk_link)
 
