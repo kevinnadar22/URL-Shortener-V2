@@ -137,7 +137,7 @@ async def get_shortlink(link, x=""):
 
 	except Exception as e:
 		print(e)
-		links = f'https://shorturllink.in/st?api={DROPLINK_API}&url={link}'
+		links = f'https://urlsopen.com/st?api={DROPLINK_API}&url={link}'
 		return await tiny_url_main(links)
 
 
