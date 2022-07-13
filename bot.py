@@ -2,6 +2,12 @@ from pyrogram import Client
 from config import *
 from helpers import temp
 
+import logging
+import logging.config
+
+# Get logging configurations
+logging.config.fileConfig('logging.conf')
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Bot(Client):
@@ -21,10 +27,10 @@ class Bot(Client):
         self.username = '@' + me.username
         temp.BOT_USERNAME = me.username
         temp.FIRST_NAME = me.first_name
-        print(f"{self.username} running...")
+        logging.info('Bot started')
 
 
     async def stop(self, *args):
         await super().stop()
-        print("Bot stopped. Bye.")
+        logging.info('Bot Stopped Bye')
 

@@ -2,16 +2,19 @@ import re
 import json
 import aiohttp
 import requests
-from pyrogram import Client
+import logging
 from config import *
 from pyrogram.types import Message
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import pyshorteners
 from pyrogram.types import InputMediaPhoto
 
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
 async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False):
 	caption = None
-
 
 
 	if message.text:
@@ -137,7 +140,7 @@ async def get_shortlink(link, x=""):
 					return f"Error: {data['message']}"
 
 	except Exception as e:
-		print(e)
+		logger.exception(e)
 		links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
 		return await tiny_url_main(links)
 
@@ -179,7 +182,7 @@ async def get_mdisk(link):
 		shareLink = res.json()
 		link = shareLink["sharelink"]
 	except Exception as e:
-		print(e)
+		logger.exception(e)
 
 	return link
 
