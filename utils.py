@@ -233,5 +233,3 @@ async def extract_link(string):
 async def tiny_url_main(url):
 	s = pyshorteners.Shortener()
 	return s.tinyurl.short(url)
-
-

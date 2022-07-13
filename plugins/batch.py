@@ -10,13 +10,12 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
 
 # Logger
-
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
+
+
 
 lock = asyncio.Lock()
-
 
 cancel_button = [[
     InlineKeyboardButton('Cancel 🔐', callback_data='cancel_process')
@@ -59,7 +58,7 @@ async def batch(c, m):
 
 
 @Client.on_callback_query(filters.regex(r'^cancel') | filters.regex(r'^batch'))
-async def cancel(c:Client, m:CallbackQuery):
+async def batch_handler(c:Client, m:CallbackQuery):
 
     user_method = await db.get_bot_method(temp.BOT_USERNAME)
 
@@ -67,7 +66,6 @@ async def cancel(c:Client, m:CallbackQuery):
         await m.message.delete()
         return
     elif m.data.startswith('batch'): 
-
         if lock.locked():
             return await m.answer('Wait until previous process complete.', show_alert=True)
             
@@ -83,48 +81,50 @@ async def cancel(c:Client, m:CallbackQuery):
 
         txt = await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",)
 
+        logger.info(f"Batch Shortening Started for {channel_id}")
+
         success = 0
         fail = 0
         total = 0
         empty=0
 
-        channel_posts = AsyncIter(await c.get_messages(channel_id, (range(id, 1, -1))))
+        total_messages = (range(1,id))
 
-        temp.CANCEL = False
+        try:
+            for i in range(0, len(total_messages), 200):
+                channel_posts = AsyncIter(await c.get_messages(channel_id, total_messages[i:i+200]))
 
-        async with lock:
+                temp.CANCEL = False
 
-            try:
+                async with lock:
+                        async for message in channel_posts:
+                            print(message.id)
+                            if temp.CANCEL == True:
+                                break
 
-                async for message in channel_posts:
+                            if message.media or message.text:
+                                try:
+                                    await main_convertor_handler(message=message, type=user_method, edit_caption=True)
+                                    success += 1
+                                except:
+                                    logger.error(e)
+                                    fail+=1
+                                await asyncio.sleep(1)
+                            else:
+                                empty += 1
+                            total+=1
 
-                    if temp.CANCEL == True:
-                        break
+                            if total % 10 == 0:
+                                msg = f"Batch Shortening in Process !\n\nTotal: {total}\nSuccess: {success}\nFailed: {fail}\nEmpty: {empty}\n\nTo cancel the batch: /cancel"
+                                await txt.edit((msg))
+        except Exception as e:
+            logger.error(e)
+        else:
+            await asyncio.sleep(10)
+            msg = f"Batch Shortening Completed!\n\nTotal: `{total}`\nSuccess: `{success}`\nFailed: `{fail}`\nEmpty: `{empty}`"
+            await txt.edit(msg)
+            logger.info(f"Batch Shortening Completed for {channel_id}")
 
-                    if message.media or message.text:
-                        try:
-                            await main_convertor_handler(message=message, type=user_method, edit_caption=True)
-                            success += 1
-                        except:
-                            print(e)
-                            fail+=1
-                        await asyncio.sleep(1)
-                    else:
-                        empty += 1
-                    total+=1
-
-                    if total % 10 == 0:
-                        msg = f"Batch Shortening in Process !\n\nTotal: {total}\nSuccess: {success}\nFailed: {fail}\nEmpty: {empty}\n\nTo cancel the batch: /cancel"
-                        await txt.edit((msg))
-                        continue
-
-            except Exception as e:
-                logger.error(e)
-            else:
-                await asyncio.sleep(10)
-                msg = f"Batch Shortening Completed!\n\nTotal: `{total}`\nSuccess: `{success}`\nFailed: `{fail}`\nEmpty: `{empty}`"
-                await txt.edit(msg)
-        
 
 
 @Client.on_message(filters.command('cancel'))
@@ -137,3 +137,4 @@ async def stop_button(c, m):
         )
         await asyncio.sleep(5)
         await msg.edit("Batch Shortening Stopped Successfully 👍")
+        logger.info(f"Batch Shortening Stopped Successfully 👍")

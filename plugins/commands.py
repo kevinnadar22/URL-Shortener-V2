@@ -44,7 +44,6 @@ async def about_command(c, m):
     bot = await c.get_me()
     if WELCOME_IMAGE:
         return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=ABOUT_REPLY_MARKUP, disable_web_page_preview=True)
-    
     await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=ABOUT_REPLY_MARKUP, disable_web_page_preview=True)
 
 @Client.on_message(filters.command('method') & filters.chat(ADMINS) & filters.private)
