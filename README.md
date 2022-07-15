@@ -96,6 +96,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 - [x] Channels Support
 - [x] Batch Support
 - [x] Multiple Methods Available
+- [x] Bypass Shortener Links
 - [x] [Hyperlink Support](https://example.com/)
 
 
