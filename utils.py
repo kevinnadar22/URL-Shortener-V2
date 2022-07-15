@@ -288,7 +288,7 @@ async def droplink_bypass(url):
                 async with client.get(url, headers=h) as res:
 
 
-                    bs4 = BeautifulSoup(await res.content.read(), 'lxml')
+                    bs4 = BeautifulSoup(await res.content.read(), 'html.parser')
                     inputs = bs4.find_all('input')
                     data = { input.get('name'): input.get('value') for input in inputs }
 
