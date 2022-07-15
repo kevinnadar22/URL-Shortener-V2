@@ -25,3 +25,4 @@ HEADER_TEXT = os.environ.get("HEADER_TEXT", '')
 FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
 BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
+LINK_BYPASS = True if os.environ.get("LINK_BYPASS") == "True" else False

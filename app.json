@@ -30,16 +30,6 @@
       "description": "Enter your MDISK API KEY only if METHOD is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
       "value": "0"
     },
-    "INCLUDE_DOMAIN": {
-      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink",
-      "value": "",
-      "required": false
-    },
-    "EXCLUDE_DOMAIN": {
-      "description": "Refer to README.md about this var. Separate each domain by comma, Works only when mode is selected to droplink or mdlink",
-      "value": "",
-      "required": false
-    },
     "CHANNELS": {
       "description": "Enter True if you want the bot to work in Channels also else Leave it as it is",
       "value": "",
@@ -73,6 +63,11 @@
       "description": "Your database URI from mongodb.com",
       "value": "",
       "required": true
+    },
+    "LINK_BYPASS":{
+      "description": "Enter True if you want other shortener links to be bypassed. Read README for more information",
+      "value": "False",
+      "required": false
     }
   },
   "addons": [],

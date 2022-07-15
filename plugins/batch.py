@@ -8,6 +8,7 @@ from config import CHANNELS, ADMINS, SOURCE_CODE
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
+import datetime
 
 # Logger
 import logging
@@ -79,6 +80,8 @@ async def batch_handler(c:Client, m:CallbackQuery):
         except PeerIdInvalid:
             return await m.message.edit("Given channel ID is invalid")
 
+        start_time = datetime.datetime.now()
+
         txt = await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",)
 
         logger.info(f"Batch Shortening Started for {channel_id}")
@@ -98,7 +101,6 @@ async def batch_handler(c:Client, m:CallbackQuery):
 
                 async with lock:
                         async for message in channel_posts:
-                            print(message.id)
                             if temp.CANCEL == True:
                                 break
 
@@ -119,9 +121,13 @@ async def batch_handler(c:Client, m:CallbackQuery):
                                 await txt.edit((msg))
         except Exception as e:
             logger.error(e)
-        else:
+            await m.message.reply("Error Occured while processing batch: `%s`" % e.message)
+        finally:
+            end_time = datetime.datetime.now()
             await asyncio.sleep(10)
-            msg = f"Batch Shortening Completed!\n\nTotal: `{total}`\nSuccess: `{success}`\nFailed: `{fail}`\nEmpty: `{empty}`"
+            t = end_time - start_time
+            time_taken = str(datetime.timedelta(seconds=t.seconds))
+            msg = f"Batch Shortening Completed!\n\nTime Taken - `{time_taken}`\n\nTotal: `{total}`\nSuccess: `{success}`\nFailed: `{fail}`\nEmpty: `{empty}`"
             await txt.edit(msg)
             logger.info(f"Batch Shortening Completed for {channel_id}")
 
