@@ -77,6 +77,8 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 * -> Add me to your channel as admin with full previlages to convert channel's post
 
+> For more information about usages, see the [documentation](https://github.com/kevinnadar22/URL-Shortener-V2/wiki/Usage) 
+
 ## Commands
 
 ```
@@ -112,25 +114,9 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 
 ### Optional Variables
-* `CHANNELS`: Set True if you want channels to be available for converting 
-* `CHANNEL_ID`: Your channel list to convert posts. Seperate channels list by space
-* `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
-* `LINK_BYPASS`: Enter True if you want to Bypass Shortener Website Links. Default is False. Available websites: droplink.co. Note: Entering True means every link will atleast take upto 6 seconds to bypass. So enable accordingly. Only Links of available website will be bypassed.
-* Droplink URLS won't be bypassed in Heroku server as droplink is not responding to Heroku Servers
-* `USERNAME`: Your Channel username without @ to replace other usernames in posts
 
-### Extra Variables
-* `INCLUDE_DOMAIN`: Use this option if you want to short only links from the following domains list.
-* `EXCLUDE_DOMAIN`: Use this option if you wish to short every link on your channel but exclude only the links from the following domains list.
-* `SOURCE_CODE`: Your Github repo
-* `HEADER_TEXT`: This text will be added on top of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
-* `FOOTER_TEXT`: This text will be added on bottom of every post caption or text. [HTML](https://docs.pyrogram.org/topics/text-formatting#html-style) and [Markdown](https://docs.pyrogram.org/topics/text-formatting#markdown-style) Supported. See More
-* `BANNER_IMAGE`: All images of media posts will be replaced with this image. Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. 
-* `WELCOME_IMAGE`: Enter [telegraph](https://t.me/AVTelegraphBot) or any direct image links. 
+> For more information about optional variables see the [wiki documentation](https://github.com/kevinnadar22/URL-Shortener-V2/wiki/About#optional-variables)
 
-
-
-**PR's Are Very Welcome**
 
 
 ## Deploy 
