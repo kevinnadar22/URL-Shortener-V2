@@ -6,3 +6,4 @@ pyshorteners==1.0.1
 TgCrypto==1.2.3
 requests
 bs4
+lxml

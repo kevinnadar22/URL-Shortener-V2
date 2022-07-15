@@ -1,5 +1,4 @@
 import asyncio
-from cmath import log
 import re
 import json
 import aiohttp
@@ -9,7 +8,6 @@ import requests
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-import time
 from urllib.parse import urlparse
 
 from config import *
