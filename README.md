@@ -103,6 +103,9 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 
 ### Required Variables
+
+> See [sample_info.py](https://github.com/kevinnadar22/URL-Shortener-V2/blob/main/sample_info.py) for more clarification
+
 * `BOT_TOKEN`: Create a bot using [@BotFather](https://telegram.dog/BotFather), and get the Telegram API token.
 * `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps)
 * `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)
@@ -116,7 +119,6 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 ### Optional Variables
 
 > For more information about optional variables see the [wiki documentation](https://github.com/kevinnadar22/URL-Shortener-V2/wiki/About#optional-variables)
-
 
 
 ## Deploy 
