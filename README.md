@@ -115,6 +115,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 * `CHANNEL_ID`: Your channel list to convert posts. Seperate channels list by space
 * `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
 * `LINK_BYPASS`: Enter True if you want to Bypass Shortener Website Links. Default is False. Available websites: droplink.co. Note: Entering True means every link will atleast take upto 6 seconds to bypass. So enable accordingly. Only Links of available website will be bypassed.
+* Droplink URLS won't be bypassed in Heroku server as droplink is not responding to Heroku Servers
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
 
 ### Extra Variables
