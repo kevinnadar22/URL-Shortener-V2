@@ -1,28 +1,21 @@
-import os
-
-
-# Mandatory variables for the bot to start
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-DROPLINK_API = os.environ.get("DROPLINK_API")
-MDISK_API = os.environ.get("MDISK_API")
-ADMINS = list(int(i.strip()) for i in os.environ.get("ADMINS").split(",")) if os.environ.get("ADMINS") else []
-DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-
-
-#  Optionnal variables
-INCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("INCLUDE_DOMAIN").split(",")) if os.environ.get("INCLUDE_DOMAIN") else []
-EXCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("EXCLUDE_DOMAIN").split(",")) if os.environ.get("EXCLUDE_DOMAIN") else []
-CHANNELS = os.environ.get("CHANNELS", "False")
-CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
-FORWARD_MESSAGE = os.environ.get("FORWARD_MESSAGE", "False")
-SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2")
-USERNAME = os.environ.get("USERNAME", None)
-HEADER_TEXT = os.environ.get("HEADER_TEXT", '')
-FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
-BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
-WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
-LINK_BYPASS = True if os.environ.get("LINK_BYPASS") == "True" else False
+API_ID = 4106161
+API_HASH = "bf05f7a4f0a6ac3bc75afb4c89c44be6"
+BOT_TOKEN = '5287186160:AAHbNHvvTQenrZW7-0oDO-5RfR8K60u3__A'
+METHOD = 'mdlink'
+DROPLINK_API ='1aab74171e9891abd0ba799e3fd568c9598a79e1'
+MDISK_API = 'wrnTC42yTIz7eRTARaxM'
+INCLUDE_DOMAIN = None
+EXCLUDE_DOMAIN = None
+CHANNEL_ID = [-1001756552101]
+FORWARD_MESSAGE = True
+ADMINS = [1861030649, ]
+SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
+CHANNELS = True
+USERNAME = 'T2inkss'
+DATABASE_NAME = 'MdiskConvertor'
+DATABASE_URL = 'mongodb://localhost:27017'
+HEADER_TEXT = '**hello** <i>hello</i> `mono` ||spoiler||'
+FOOTER_TEXT = 'this is a test footer '
+BANNER_IMAGE = 'https://img.freepik.com/free-vector/online-cinema-banner-with-open-clapper-board-film-strip_1419-2242.jpg?w=2000'
+WELCOME_IMAGE = '' #https://telegra.ph/file/bf4b36043cb5cde644ba2.jpg
+LINK_BYPASS = True

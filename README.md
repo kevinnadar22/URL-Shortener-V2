@@ -114,7 +114,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 * `CHANNELS`: Set True if you want channels to be available for converting 
 * `CHANNEL_ID`: Your channel list to convert posts. Seperate channels list by space
 * `FORWARD_MESSAGE`: Set True if you want forwarded posts to be converted in your channels
-* `LINK_BYPASS`: Enter True if you want to Bypass Shortener Website Links. Default is False. Available websites: droplink.co. _Note_: **Entering True means every link will atleast take upto 6 seconds to bypass. So enable accordingly. Only Links of available website will be bypassed.**
+* `LINK_BYPASS`: Enter True if you want to Bypass Shortener Website Links. Default is False. Available websites: droplink.co. Note: Entering True means every link will atleast take upto 6 seconds to bypass. So enable accordingly. Only Links of available website will be bypassed.
 * `USERNAME`: Your Channel username without @ to replace other usernames in posts
 
 ### Extra Variables
