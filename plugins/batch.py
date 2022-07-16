@@ -108,7 +108,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
                                 try:
                                     await main_convertor_handler(message=message, type=user_method, edit_caption=True)
                                     success += 1
-                                except:
+                                except Exception as e:
                                     logger.error(e)
                                     fail+=1
                                 await asyncio.sleep(1)
