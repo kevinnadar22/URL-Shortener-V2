@@ -16,13 +16,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 #  Optionnal variables
 INCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("INCLUDE_DOMAIN").split(",")) if os.environ.get("INCLUDE_DOMAIN") else []
 EXCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("EXCLUDE_DOMAIN").split(",")) if os.environ.get("EXCLUDE_DOMAIN") else []
-CHANNELS = True if os.environ.get("CHANNELS") == "True" else False
-print(type(os.environ.get("CHANNELS")))
-print(os.environ.get("CHANNELS"))
-print(CHANNELS)
-print(type(CHANNELS))
-x = True if os.environ.get("CHANNELS") == "True" else False
-print(x)
+CHANNELS = bool(os.environ.get("CHANNELS", False))
 CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
 FORWARD_MESSAGE = True if os.environ.get("FORWARD_MESSAGE") == "True" else False
 SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2")
