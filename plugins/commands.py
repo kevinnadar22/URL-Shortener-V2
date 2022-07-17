@@ -7,6 +7,8 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import logging
+
+from utils import broadcast_admins
 logger = logging.getLogger(__name__)
 
 
@@ -26,7 +28,7 @@ async def start(c:Client, m:Message):
     await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
 
 
-@Client.on_message(filters.command('help'))
+@Client.on_message(filters.command('help') & filters.chat(ADMINS))
 async def help_command(c, m):
     s = HELP_MESSAGE.format(
             firstname=temp.FIRST_NAME,
@@ -62,6 +64,11 @@ async def method_handler(c:Client, m:Message):
             await db.add_method(user, method_name)
         else:
             await db.update_method(user, method_name)
+
         logger.info("Updated method to %s", method_name)
+        
+        b_msg = "Method changed successfully to `{method}` for @{username} by {mention}".format(method=method_name.upper(), username=user, mention=m.from_user.mention)
+        await broadcast_admins(c, b_msg, m.from_user.id)
+
         await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user))
 

@@ -325,6 +325,14 @@ async def is_droplink_url(url):
     return domain
 
 
-async def broadcast_admins(c: Client, Message):
-    for i in ADMINS:
+async def broadcast_admins(c: Client, Message, sender=False):
+
+    admins = ADMINS[:]
+    
+    if sender:
+        admins.remove(sender)
+
+    for i in admins:
         await c.send_message(i, Message)
+
+    return

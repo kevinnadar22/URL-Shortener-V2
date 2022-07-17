@@ -47,7 +47,9 @@ async def on_callback_query(bot:Client, query:CallbackQuery):
 
 ])
         logger.info("Updated method to %s", method_name)
-        await broadcast_admins(bot, "Method changed successfully to `{method}` for @{username} by {mention}".format(method=method_name.upper(), username=user, mention=query.from_user.mention))
+        b_msg = "Method changed successfully to `{method}` for @{username} by {mention}".format(method=method_name.upper(), username=user, mention=query.from_user.mention)
+        await broadcast_admins(bot, b_msg, query.from_user.id)
+        
         await query.message.edit("Method changed successfully to `{method}` for @{username}".format(method=method_name, username=user), reply_markup=REPLY_MARKUP)
     elif query.data == 'method_command':
         user = temp.BOT_USERNAME

@@ -1,5 +1,4 @@
-import os
+ADMINS = [1234, 4565]
 
-os.environ['CHANNELS'] = "True"
-x = True if os.environ.get('CHANNELS') == 'True' else False
-print(x)
+ADMINS.remove(1234)
+print(ADMINS)
