@@ -21,6 +21,8 @@ print(type(os.environ.get("CHANNELS")))
 print(os.environ.get("CHANNELS"))
 print(CHANNELS)
 print(type(CHANNELS))
+x = True if os.environ.get("CHANNELS") == "True" else False
+print(x)
 CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
 FORWARD_MESSAGE = True if os.environ.get("FORWARD_MESSAGE") == "True" else False
 SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2")
