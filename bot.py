@@ -1,6 +1,7 @@
 from pyrogram import Client
 from config import *
 from helpers import temp
+from utils import broadcast_admins
 
 import logging
 import logging.config
@@ -27,10 +28,12 @@ class Bot(Client):
         self.username = '@' + me.username
         temp.BOT_USERNAME = me.username
         temp.FIRST_NAME = me.first_name
+        await broadcast_admins(self, '** Bot started successfully **')
         logging.info('Bot started')
 
 
     async def stop(self, *args):
+        await broadcast_admins(self, '** Bot Stopped Bye **')
         await super().stop()
         logging.info('Bot Stopped Bye')
 

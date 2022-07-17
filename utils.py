@@ -2,6 +2,7 @@ import asyncio
 import re
 import json
 import aiohttp
+from pyrogram import Client
 import requests
 
 
@@ -322,3 +323,8 @@ async def is_droplink_url(url):
     domain = urlparse(url).netloc
     domain = url if "droplink.co" in domain else False
     return domain
+
+
+async def broadcast_admins(c: Client, Message):
+    for i in ADMINS:
+        await c.send_message(i, Message)
