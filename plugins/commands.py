@@ -23,7 +23,7 @@ async def start(c:Client, m:Message):
         return await m.reply_photo(photo=WELCOME_IMAGE, caption=t, reply_markup=START_MESSAGE_REPLY_MARKUP)
 
     t = START_MESSAGE.format(m.from_user.mention, mode)
-    await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP)
+    await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('help'))
@@ -35,7 +35,7 @@ async def help_command(c, m):
             owner="@ask_admin001" )
     if WELCOME_IMAGE:
         return await m.reply_photo(photo=WELCOME_IMAGE, caption=s, reply_markup=HELP_REPLY_MARKUP)
-    await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP)
+    await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP, disable_web_page_preview=True)
     
 
 
