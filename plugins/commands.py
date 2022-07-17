@@ -1,7 +1,7 @@
 from translation import *
 from config import ADMINS, SOURCE_CODE
 from database import db
-from helpers import Helpers, temp
+from helpers import temp
 from config import WELCOME_IMAGE
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -72,3 +72,16 @@ async def method_handler(c:Client, m:Message):
 
         await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user))
 
+
+@Client.on_message(filters.command('restart') & filters.chat(ADMINS) & filters.private)
+async def restart_handler(c: Client, m:Message):
+    RESTARTE_MARKUP = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton('Sure', callback_data=f'restart'),
+        InlineKeyboardButton('No', callback_data=f'delete'),
+
+    ],
+
+])
+
+    await m.reply("Are you sure you want to restart / re-deploy the server?", reply_markup=RESTARTE_MARKUP)

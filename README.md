@@ -87,6 +87,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 /about - About Command
 /method - To set your preferred method
 /batch -100XX - to convert link for multiple posts
+/restart - restart / re-deploy the server
 ```
 
 ## About 
@@ -100,6 +101,7 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 - [x] Multiple Methods Available
 - [x] Bypass Shortener Links
 - [x] [Hyperlink Support](https://example.com/)
+- [x] [Request Features](https://t.me/ask_admin001)
 
 
 ### Required Variables

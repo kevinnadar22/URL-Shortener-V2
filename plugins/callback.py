@@ -1,3 +1,4 @@
+import asyncio
 from database import db
 from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
@@ -5,6 +6,8 @@ from helpers import temp, Helpers
 from config import SOURCE_CODE
 from translation import ADMINS_MESSAGE, BACK_REPLY_MARKUP, BATCH_MESSAGE, CHANNELS_LIST_MESSAGE, CUSTOM_ALIAS_MESSAGE, HELP_MESSAGE, HELP_REPLY_MARKUP, ABOUT_TEXT, ABOUT_REPLY_MARKUP, METHOD_MESSAGE, METHOD_REPLY_MARKUP, OTHER_INFO_MESSAGE, START_MESSAGE, START_MESSAGE_REPLY_MARKUP
 from utils import broadcast_admins
+import os
+import sys
 
 import logging
 logger = logging.getLogger(__name__)
@@ -84,4 +87,8 @@ async def on_callback_query(bot:Client, query:CallbackQuery):
             mdisk_api=await h.user_mdisk_api,
         ), reply_markup=BACK_REPLY_MARKUP, disable_web_page_preview=True)
 
+    elif query.data == 'restart':
+        await query.message.edit('**Restarting.....**')
+        await asyncio.sleep(5)
+        os.execl(sys.executable, sys.executable, *sys.argv)
     await query.answer()
