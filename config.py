@@ -18,12 +18,11 @@ INCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("INCLUDE_DOMAIN").split(
 EXCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("EXCLUDE_DOMAIN").split(",")) if os.environ.get("EXCLUDE_DOMAIN") else []
 CHANNELS = bool(os.environ.get("CHANNELS", False))
 CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
-FORWARD_MESSAGE = True if os.environ.get("FORWARD_MESSAGE") == "True" else False
+FORWARD_MESSAGE =  bool(os.environ.get("FORWARD_MESSAGE", False))
 SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2")
 USERNAME = os.environ.get("USERNAME", None)
 HEADER_TEXT = os.environ.get("HEADER_TEXT", '')
 FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
 BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
-LINK_BYPASS = True if os.environ.get("LINK_BYPASS") == "True" else False
-
+LINK_BYPASS = bool(os.environ.get("LINK_BYPASS", False))
