@@ -31,29 +31,26 @@ async def batch(c, m):
         if not user_method:
             return await m.reply("Set your /method first")
         else:
-            if CHANNELS is True or CHANNELS == "True":
-                if len(m.command) < 2:
-                    await m.reply_text(BATCH)
-                else:
-                    channel_id = m.command[1]
-                    if channel_id.startswith("@"):
-                        channel_id = channel_id.split("@")[1]
-                    elif channel_id.startswith("-100"):
-                        channel_id = int(channel_id)
+            if len(m.command) < 2:
+                await m.reply_text(BATCH)
+            else:
+                channel_id = m.command[1]
+                if channel_id.startswith("@"):
+                    channel_id = channel_id.split("@")[1]
+                elif channel_id.startswith("-100"):
+                    channel_id = int(channel_id)
 
-                    buttons = [
+                buttons = [
 [
-    InlineKeyboardButton('Batch Short 🏕', callback_data=f'batch#{str(channel_id)}')
+InlineKeyboardButton('Batch Short 🏕', callback_data=f'batch#{str(channel_id)}')
 ],
 [
-    InlineKeyboardButton('Cancel 🔐', callback_data='cancel')
+InlineKeyboardButton('Cancel 🔐', callback_data='cancel')
 ]
 ]
 
-                    await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
+                return await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
 
-            elif CHANNELS is False or CHANNELS == "False":
-                await m.reply(text="Set your CHANNELS var to True in HEROKU to use this command")
     elif m.from_user.id not in ADMINS:
         await m.reply_text(f"""This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})""")
 
