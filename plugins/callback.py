@@ -4,6 +4,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from helpers import temp, Helpers
 from config import SOURCE_CODE
 from translation import ADMINS_MESSAGE, BACK_REPLY_MARKUP, BATCH_MESSAGE, CHANNELS_LIST_MESSAGE, CUSTOM_ALIAS_MESSAGE, HELP_MESSAGE, HELP_REPLY_MARKUP, ABOUT_TEXT, ABOUT_REPLY_MARKUP, METHOD_MESSAGE, METHOD_REPLY_MARKUP, OTHER_INFO_MESSAGE, START_MESSAGE, START_MESSAGE_REPLY_MARKUP
+from utils import broadcast_admins
 
 import logging
 logger = logging.getLogger(__name__)
@@ -46,7 +47,8 @@ async def on_callback_query(bot:Client, query:CallbackQuery):
 
 ])
         logger.info("Updated method to %s", method_name)
-        await query.message.edit("Method changed successfully to {method} for @{username}".format(method=method_name, username=user), reply_markup=REPLY_MARKUP)
+        await broadcast_admins(bot, "Method changed successfully to `{method}` for @{username} by {mention}".format(method=method_name.upper(), username=user, mention=query.from_user.mention))
+        await query.message.edit("Method changed successfully to `{method}` for @{username}".format(method=method_name, username=user), reply_markup=REPLY_MARKUP)
     elif query.data == 'method_command':
         user = temp.BOT_USERNAME
         method_name = await db.get_bot_method(user)
