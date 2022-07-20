@@ -1,6 +1,4 @@
 aiohttp==3.8.1
-dnspython==2.2.1
-pymongo==4.1.1
 Pyrogram==2.0.30
 pyshorteners==1.0.1
 TgCrypto==1.2.3
