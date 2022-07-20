@@ -3,10 +3,10 @@ import re
 import json
 import aiohttp
 from pyrogram import Client
-import requests
 
 
-import requests
+
+from mdisky import Mdisk
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from urllib.parse import urlparse
@@ -20,6 +20,9 @@ from pyrogram.types import InputMediaPhoto
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
+
+
+mdisk = Mdisk(MDISK_API)
 
 async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False):
     caption = None
@@ -203,28 +206,10 @@ async def replace_link(text, x=""):
 
 ####################  Mdisk  ####################
 
-async def get_mdisk(link):
-    url = 'https://diskuploader.mypowerdisk.com/v1/tp/cp'
-    param = {'token': MDISK_API, 'link': link
-             }
-    res = requests.post(url, json=param)
-    try:
-        shareLink = res.json()
-        link = shareLink["sharelink"]
-    except Exception as e:
-        logger.exception(e)
-
-    return link
 
 
 async def replace_mdisk_link(text):
-
-    links = re.findall(r'https?://mdisk.me[^\s"*<>]+', text)
-    for link in links:
-        link = link.replace(")", " \"")
-        mdisk_link = await get_mdisk(link)
-        text = text.replace(link, mdisk_link)
-
+    text = await mdisk.convert_from_text(text, True)
     return text
 
 ####################  Mdisk and Droplink  ####################
@@ -334,5 +319,4 @@ async def broadcast_admins(c: Client, Message, sender=False):
 
     for i in admins:
         await c.send_message(i, Message)
-
     return

@@ -1,4 +1,0 @@
-ADMINS = [1234, 4565]
-
-ADMINS.remove(1234)
-print(ADMINS)
