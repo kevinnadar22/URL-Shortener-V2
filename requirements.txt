@@ -5,4 +5,4 @@ Pyrogram==2.0.30
 pyshorteners==1.0.1
 TgCrypto==1.2.3
 bs4
-mdisky==0.0.5
+mdisky
