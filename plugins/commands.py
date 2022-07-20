@@ -1,6 +1,6 @@
 import datetime
 from translation import *
-from config import ADMINS, SOURCE_CODE
+from config import ADMINS, SOURCE_CODE, HEROKU_API_KEY, HEROKU_APP_NAME, HEROKU
 from database import db
 from helpers import temp
 from config import WELCOME_IMAGE
@@ -9,7 +9,7 @@ from pyrogram.types import Message
 
 import logging
 
-from utils import broadcast_admins, get_size
+from utils import broadcast_admins, get_size, getHerokuDetails
 logger = logging.getLogger(__name__)
 
 
@@ -101,6 +101,8 @@ async def stats_handler(c: Client, m:Message):
     t = runtime - temp.START_TIME
     runtime = str(datetime.timedelta(seconds=t.seconds))
 
+
+
     msg = f"""
 **- Total Posts:** `{link_stats['posts']}`
 **- Total Links:** `{link_stats['links']}`
@@ -111,6 +113,10 @@ async def stats_handler(c: Client, m:Message):
 
 **- Runtime:** `{runtime}`
 """
+    if HEROKU:
+        heroku = await getHerokuDetails(HEROKU_API_KEY, HEROKU_APP_NAME)
+        msg += f"\n- **Heroku Stats:**\n{heroku}"
+
     return await txt.edit(msg)
 
 

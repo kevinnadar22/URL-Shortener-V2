@@ -8,7 +8,6 @@ def is_enabled(value, default):
     else:
         return default
 
-
 # Mandatory variables for the bot to start
 API_ID = int(os.environ.get("API_ID"))
 API_HASH = os.environ.get("API_HASH")
@@ -18,7 +17,6 @@ MDISK_API = os.environ.get("MDISK_API")
 ADMINS = list(int(i.strip()) for i in os.environ.get("ADMINS").split(",")) if os.environ.get("ADMINS") else []
 DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
 DATABASE_URL = os.environ.get("DATABASE_URL")
-
 
 
 #  Optionnal variables
@@ -34,3 +32,6 @@ FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
 BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
 LINK_BYPASS = is_enabled((os.environ.get('LINK_BYPASS', "False")), False)
+HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
+HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
+HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False

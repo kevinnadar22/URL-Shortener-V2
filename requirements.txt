@@ -5,3 +5,4 @@ TgCrypto==1.2.3
 bs4
 mdisky
 motor==2.5.1
+heroku3

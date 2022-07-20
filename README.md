@@ -88,6 +88,8 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 /method - To set your preferred method
 /batch -100XX - to convert link for multiple posts
 /restart - restart / re-deploy the server
+/stats - Stats of the server and bot
+/logs - Send the log messages
 ```
 
 ## About 
