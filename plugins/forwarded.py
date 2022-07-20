@@ -1,7 +1,7 @@
 
 from pyrogram import Client, filters
 from config import ADMINS, CHANNEL_ID, CHANNELS, FORWARD_MESSAGE
-from utils import main_convertor_handler
+from utils import main_convertor_handler, update_stats
 from database import db
 from helpers import temp
 
@@ -23,6 +23,9 @@ async def channel_forward_link_handler(c:Client, message):
                 return
             else:
                 await main_convertor_handler(message, user_method)
-            await message.delete()
+                await message.delete()
+                # Updating DB stats
+                await update_stats(message, user_method)
+
         except Exception as e:
             logger.error(e)

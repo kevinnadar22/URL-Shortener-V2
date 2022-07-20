@@ -3,7 +3,7 @@ from database import db
 from translation import BATCH
 from helpers import AsyncIter, temp
 from pyrogram import Client, filters
-from utils import main_convertor_handler
+from utils import main_convertor_handler, update_stats
 from config import CHANNELS, ADMINS, SOURCE_CODE
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
@@ -105,6 +105,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
                                 try:
                                     await main_convertor_handler(message=message, type=user_method, edit_caption=True)
                                     success += 1
+                                    await update_stats(message, user_method)
                                 except Exception as e:
                                     logger.error(e)
                                     fail+=1

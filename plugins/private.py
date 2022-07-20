@@ -1,6 +1,6 @@
 
 from pyrogram import Client, filters
-from utils import main_convertor_handler
+from utils import main_convertor_handler, update_stats
 from config import ADMINS, SOURCE_CODE
 from database import db
 from helpers import temp
@@ -21,6 +21,11 @@ async def private_link_handler(c, message):
     try:
         txt = await message.reply('`Cooking... It will take some time if you have enabled Link Bypass`', quote=True)
         await main_convertor_handler(message, user_method)
+
+        # Updating DB stats
+        await update_stats(message, user_method)
+
+
     except Exception as e:
         await message.reply("Error while trying to convert links %s:" % e, quote=True)
         logger.exception(e)

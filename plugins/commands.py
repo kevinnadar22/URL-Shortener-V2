@@ -1,3 +1,4 @@
+import datetime
 from translation import *
 from config import ADMINS, SOURCE_CODE
 from database import db
@@ -8,7 +9,7 @@ from pyrogram.types import Message
 
 import logging
 
-from utils import broadcast_admins
+from utils import broadcast_admins, get_size
 logger = logging.getLogger(__name__)
 
 
@@ -85,3 +86,38 @@ async def restart_handler(c: Client, m:Message):
 ])
 
     await m.reply("Are you sure you want to restart / re-deploy the server?", reply_markup=RESTARTE_MARKUP)
+
+
+@Client.on_message(filters.command('stats') & filters.chat(ADMINS) & filters.private)
+async def stats_handler(c: Client, m:Message):
+    txt = await m.reply('`Fetching stats...`')
+    size = await db.get_db_size()
+    free = 536870912 - size
+    size = await get_size(size)
+    free = await get_size(free)
+    link_stats = await db.get_bot_stats()
+    runtime = datetime.datetime.now()
+
+    t = runtime - temp.START_TIME
+    runtime = str(datetime.timedelta(seconds=t.seconds))
+
+    msg = f"""
+**- Total Posts:** `{link_stats['posts']}`
+**- Total Links:** `{link_stats['links']}`
+**- Total Mdisk Links:** `{link_stats['mdisk_links']}`
+**- Total Droplink Links:** `{link_stats['droplink_links']}`
+**- Used Storage:** `{size}`
+**- Total Free Storage:** `{free}`
+
+**- Runtime:** `{runtime}`
+"""
+    return await txt.edit(msg)
+
+
+@Client.on_message(filters.command('logs') & filters.user(ADMINS) & filters.private)
+async def log_file(bot, message):
+    """Send log file"""
+    try:
+        await message.reply_document('TelegramBot.log')
+    except Exception as e:
+        await message.reply(str(e))

@@ -1,6 +1,6 @@
 # temp db for banned 
-import re
-from database import db
+
+import database
 from config import ADMINS, CHANNEL_ID, CHANNELS, EXCLUDE_DOMAIN, FOOTER_TEXT, HEADER_TEXT, MDISK_API, DROPLINK_API, INCLUDE_DOMAIN, USERNAME
 
 
@@ -8,6 +8,7 @@ class temp(object): # Eva Maria Idea of Temping
     BOT_USERNAME = None
     CANCEL = False
     FIRST_NAME = None
+    START_TIME = None
     
 class AsyncIter:    
     def __init__(self, items):    
@@ -39,7 +40,7 @@ class Helpers:
     
     @property
     async def user_method(self):
-        user_method = await db.get_bot_method(self.username)
+        user_method = await database.db.get_bot_method(self.username)
         if user_method:
             return user_method
         return "None"

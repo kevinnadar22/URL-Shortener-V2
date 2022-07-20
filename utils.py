@@ -3,7 +3,7 @@ import re
 import json
 import aiohttp
 from pyrogram import Client
-
+from database import db
 
 
 from mdisky import Mdisk
@@ -240,7 +240,6 @@ async def extract_link(string):
     urls = re.findall(regex, string)
     return ["".join(x) for x in urls]
 
-
 # Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
 
 # TinyUrl 
@@ -319,3 +318,28 @@ async def broadcast_admins(c: Client, Message, sender=False):
     for i in admins:
         await c.send_message(i, Message)
     return
+
+async def get_size(size):
+    """Get size in readable format"""
+    units = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB"]
+    size = float(size)
+    i = 0
+    while size >= 1024.0 and i < len(units):
+        i += 1
+        size /= 1024.0
+    return "%.2f %s" % (size, units[i])
+
+async def update_stats(m:Message, method):
+    reply_markup = json.loads(str(m.reply_markup)) if m.reply_markup else ''
+    message = m.caption.html if m.caption else m.text.html
+
+    mdisk_links = re.findall(r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message + reply_markup)
+    droplink_links = await extract_link(message + reply_markup)
+    total_links = len(droplink_links)
+
+    await db.update_posts(1)
+
+    if method == 'mdisk': droplink_links = []
+    if method == 'droplink': mdisk_links = []
+
+    await db.update_links(total_links, len(droplink_links), len(mdisk_links))

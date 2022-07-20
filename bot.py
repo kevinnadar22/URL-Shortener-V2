@@ -1,5 +1,7 @@
+import datetime
 from pyrogram import Client
 from config import *
+from database import db
 from helpers import temp
 from utils import broadcast_admins
 
@@ -9,7 +11,6 @@ import logging.config
 # Get logging configurations
 logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
-
 
 class Bot(Client):
 
@@ -22,12 +23,17 @@ class Bot(Client):
         plugins=dict(root="plugins")
         )
 
-    async def start(self):
+    async def start(self):  
+        temp.START_TIME = datetime.datetime.now()
         await super().start()
         me = await self.get_me()
         self.username = '@' + me.username
         temp.BOT_USERNAME = me.username
         temp.FIRST_NAME = me.first_name
+
+        if not await db.get_bot_stats():
+            await db.create_stats()
+            
         await broadcast_admins(self, '** Bot started successfully **')
         logging.info('Bot started')
 
