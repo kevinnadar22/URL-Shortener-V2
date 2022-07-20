@@ -206,11 +206,10 @@ async def replace_link(text, x=""):
 
 ####################  Mdisk  ####################
 
-
-
 async def replace_mdisk_link(text):
     text = await mdisk.convert_from_text(text, True)
     return text
+
 
 ####################  Mdisk and Droplink  ####################
 
