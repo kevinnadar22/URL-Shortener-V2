@@ -1,9 +1,9 @@
 import asyncio
 from database import db
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from helpers import temp, Helpers
-from config import SOURCE_CODE
+from config import ADMINS, SOURCE_CODE
 from translation import ADMINS_MESSAGE, BACK_REPLY_MARKUP, BATCH_MESSAGE, CHANNELS_LIST_MESSAGE, CUSTOM_ALIAS_MESSAGE, HELP_MESSAGE, HELP_REPLY_MARKUP, ABOUT_TEXT, ABOUT_REPLY_MARKUP, METHOD_MESSAGE, METHOD_REPLY_MARKUP, OTHER_INFO_MESSAGE, START_MESSAGE, START_MESSAGE_REPLY_MARKUP
 from utils import broadcast_admins
 import os
@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 
 @Client.on_callback_query()
 async def on_callback_query(bot:Client, query:CallbackQuery):
+
+    if query.from_user.id not in ADMINS:
+        return await query.message.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})")
 
     h = Helpers()
     await query.answer("Loading...")

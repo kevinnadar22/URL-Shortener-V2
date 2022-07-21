@@ -16,6 +16,9 @@ logger = logging.getLogger(__name__)
 @Client.on_message(filters.command('start'))
 async def start(c:Client, m:Message):
 
+    if m.from_user.id not in ADMINS:
+        return await m.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})")
+
     user_method = await db.get_bot_method(temp.BOT_USERNAME)
     if not user_method:
         mode = "None"
@@ -29,7 +32,7 @@ async def start(c:Client, m:Message):
     await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
 
 
-@Client.on_message(filters.command('help') & filters.chat(ADMINS))
+@Client.on_message(filters.command('help') & filters.user(ADMINS))
 async def help_command(c, m):
     s = HELP_MESSAGE.format(
             firstname=temp.FIRST_NAME,
@@ -41,15 +44,14 @@ async def help_command(c, m):
     await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP, disable_web_page_preview=True)
     
 
-
-@Client.on_message(filters.command('about'))
+@Client.on_message(filters.command('about') & filters.user(ADMINS))
 async def about_command(c, m):
     bot = await c.get_me()
     if WELCOME_IMAGE:
         return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=ABOUT_REPLY_MARKUP, disable_web_page_preview=True)
     await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=ABOUT_REPLY_MARKUP, disable_web_page_preview=True)
 
-@Client.on_message(filters.command('method') & filters.chat(ADMINS) & filters.private)
+@Client.on_message(filters.command('method') & filters.user(ADMINS) & filters.private)
 async def method_handler(c:Client, m:Message):
     user = temp.BOT_USERNAME
     user_method = await db.get_bot_method(user)
@@ -74,7 +76,7 @@ async def method_handler(c:Client, m:Message):
         await m.reply("Method changed successfully to {method} for @{username}".format(method=method_name, username=user))
 
 
-@Client.on_message(filters.command('restart') & filters.chat(ADMINS) & filters.private)
+@Client.on_message(filters.command('restart') & filters.user(ADMINS) & filters.private)
 async def restart_handler(c: Client, m:Message):
     RESTARTE_MARKUP = InlineKeyboardMarkup([
     [
@@ -88,7 +90,7 @@ async def restart_handler(c: Client, m:Message):
     await m.reply("Are you sure you want to restart / re-deploy the server?", reply_markup=RESTARTE_MARKUP)
 
 
-@Client.on_message(filters.command('stats') & filters.chat(ADMINS) & filters.private)
+@Client.on_message(filters.command('stats') & filters.user(ADMINS) & filters.private)
 async def stats_handler(c: Client, m:Message):
     txt = await m.reply('`Fetching stats...`')
     size = await db.get_db_size()
