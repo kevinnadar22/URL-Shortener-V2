@@ -150,8 +150,8 @@ async def replace_link(text, x=""):
             include = INCLUDE_DOMAIN
             domain = [domain.strip() for domain in include]
             if any(i in link for i in domain):
-                short_link = await shortzy.convert(link, x)
-                text = text.replace(long_url, short_link, silently_fail=True)
+                short_link = await shortzy.convert(link, x, silently_fail=True)
+                text = text.replace(long_url, short_link)
 
         # Exclude domain validation 
         elif EXCLUDE_DOMAIN:
@@ -160,8 +160,8 @@ async def replace_link(text, x=""):
             if any(i in link for i in domain):
                 pass
             else:
-                short_link = await shortzy.convert(link, x)
-                text = text.replace(long_url, short_link, silently_fail=True)
+                short_link = await shortzy.convert(link, x, silently_fail=True)
+                text = text.replace(long_url, short_link)
 
         # if not include domain and exlude domain
         else:
