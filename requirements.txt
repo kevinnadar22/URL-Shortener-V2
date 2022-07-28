@@ -7,3 +7,4 @@ TgCrypto==1.2.3
 bs4
 mdisky
 heroku3
+shortzy

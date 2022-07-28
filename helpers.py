@@ -9,7 +9,8 @@ class temp(object): # Eva Maria Idea of Temping
     CANCEL = False
     FIRST_NAME = None
     START_TIME = None
-    
+
+
 class AsyncIter:    
     def __init__(self, items):    
         self.items = items    
@@ -23,7 +24,6 @@ class AsyncIter:
             return next(self.iter)
         except StopIteration:
             raise StopAsyncIteration
-
 
 
 class Helpers:

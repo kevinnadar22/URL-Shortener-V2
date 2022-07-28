@@ -1,37 +1,24 @@
-import os
-
-def is_enabled(value, default):
-    if value.lower() in ["true", "yes", "1", "enable", "y"]:
-        return True
-    elif value.lower() in ["false", "no", "0", "disable", "n"]:
-        return False
-    else:
-        return default
-
-# Mandatory variables for the bot to start
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-DROPLINK_API = os.environ.get("DROPLINK_API")
-MDISK_API = os.environ.get("MDISK_API")
-ADMINS = list(int(i.strip()) for i in os.environ.get("ADMINS").split(",")) if os.environ.get("ADMINS") else []
-DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-
-#  Optionnal variables
-INCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("INCLUDE_DOMAIN").split(",")) if os.environ.get("INCLUDE_DOMAIN") else []
-EXCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("EXCLUDE_DOMAIN").split(",")) if os.environ.get("EXCLUDE_DOMAIN") else []
-CHANNELS = is_enabled((os.environ.get('CHANNELS', "True")), True)
-CHANNEL_ID = list(int(i.strip()) for i in os.environ.get("CHANNEL_ID").split(" ")) if os.environ.get("CHANNEL_ID") else []
-FORWARD_MESSAGE = is_enabled((os.environ.get('FORWARD_MESSAGE', "False")), False)
-SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2")
-USERNAME = os.environ.get("USERNAME", None)
-HEADER_TEXT = os.environ.get("HEADER_TEXT", '')
-FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
-BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
-WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
-LINK_BYPASS = is_enabled((os.environ.get('LINK_BYPASS', "False")), False)
-HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
-HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
-HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False
+API_ID = 15815675
+API_HASH = "59094496b00eca3c42eb2d2140b63cd0"
+BOT_TOKEN = '5559188292:AAGJpI9CtQ92bGTVH92n6nPvP6C-A5uWhqg'
+METHOD = 'mdlink'
+DROPLINK_API ='1aab74171e9891abd0ba799e3fd568c9598a79e1'
+MDISK_API = 'jOOYK5dSjq337iVoRWsP'
+INCLUDE_DOMAIN = None
+EXCLUDE_DOMAIN = None
+CHANNEL_ID = [-1001603906069, -1001703438661, -1001444912886]
+FORWARD_MESSAGE = True
+ADMINS = [5473041412, ]
+SOURCE_CODE = "https://github.com/kevinnadar22/URL-Shortener-V2"
+CHANNELS = True
+USERNAME = 'T2inkss'
+DATABASE_NAME = 'MdiskConvertor'
+DATABASE_URL = 'mongodb://localhost:27017'
+HEADER_TEXT = '**hello** <i>hello</i> `mono` ||spoiler||'
+FOOTER_TEXT = 'this is a test footer '
+BANNER_IMAGE = 'https://img.freepik.com/free-vector/online-cinema-banner-with-open-clapper-board-film-strip_1419-2242.jpg?w=2000'
+WELCOME_IMAGE = '' #https://telegra.ph/file/bf4b36043cb5cde644ba2.jpg
+LINK_BYPASS = True
+HEROKU_API_KEY = '60927657-cee6-4885-aadf-276d3a6a0577'
+HEROKU_APP_NAME = 'mdlinkc'
+HEROKU = True 
