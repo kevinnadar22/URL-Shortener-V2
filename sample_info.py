@@ -9,7 +9,6 @@ DATABASE_NAME = 'MdiskConvertor'
 DATABASE_URL = 'mongodb+srv://username:pwd@cluster0.xxxx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 
-
 #  Optionnal variables
 INCLUDE_DOMAIN = ['amazon.com', 'instagram.com']
 EXCLUDE_DOMAIN = ['t.me', 'telegram.me']

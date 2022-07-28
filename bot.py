@@ -1,8 +1,9 @@
 import datetime
+import asyncio
 from pyrogram import Client
 from config import *
 from database import db
-from helpers import temp
+from helpers import temp, ping_server
 from utils import broadcast_admins
 
 import logging
@@ -21,10 +22,19 @@ if REPLIT:
     
     @app.route('/')
     def main():
+        
+        runtime = datetime.datetime.now()
+        t = runtime - temp.START_TIME
+        runtime = str(datetime.timedelta(seconds=t.seconds))
+        
         res = {
             "status":"running",
             "hosted":"replit.com",
+            "repl":REPLIT,
+            "bot":temp.BOT_USERNAME,
+            "runtime":runtime
         }
+        
         return jsonify(res)
 
     def run():
@@ -50,6 +60,8 @@ class Bot(Client):
 
         if REPLIT:
             await keep_alive()
+            
+            asyncio.create_task(ping_server())
  
         temp.START_TIME = datetime.datetime.now()
         await super().start()
