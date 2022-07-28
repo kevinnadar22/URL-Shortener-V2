@@ -35,3 +35,4 @@ LINK_BYPASS = is_enabled((os.environ.get('LINK_BYPASS', "False")), False)
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
 HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False
+BASE_SITE = os.environ.get("BASE_SITE", "droplink.co")

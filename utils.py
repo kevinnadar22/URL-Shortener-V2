@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 mdisk = Mdisk(MDISK_API)
-shortzy = Shortzy(DROPLINK_API)
+shortzy = Shortzy(DROPLINK_API, BASE_SITE)
 
 async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False):
     caption = None
