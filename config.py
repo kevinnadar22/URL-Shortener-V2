@@ -36,3 +36,6 @@ HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
 HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False
 BASE_SITE = os.environ.get("BASE_SITE", "droplink.co")
+REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None)
+REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None)
+REPLIT = True if REPLIT_APP_NAME and REPLIT_USERNAME else False

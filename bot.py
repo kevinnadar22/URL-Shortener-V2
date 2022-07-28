@@ -12,6 +12,30 @@ import logging.config
 logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 
+
+
+if REPLIT:
+    from flask import Flask, jsonify
+    from threading import Thread
+    
+    app = Flask('')
+    
+    @app.route('/')
+    def main():
+        res = {
+            "status":"running",
+            "hosted":"replit.com",
+        }
+        return jsonify(res)
+
+    def run():
+      app.run(host="0.0.0.0", port=8000)
+    
+    async def keep_alive():
+      server = Thread(target=run)
+      server.start()
+
+
 class Bot(Client):
 
     def __init__(self):
@@ -24,6 +48,10 @@ class Bot(Client):
         )
 
     async def start(self):  
+
+        if REPLIT:
+            await keep_alive()
+ 
         temp.START_TIME = datetime.datetime.now()
         await super().start()
         me = await self.get_me()
