@@ -13,7 +13,6 @@ logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 
 
-
 if REPLIT:
     from flask import Flask, jsonify
     from threading import Thread
