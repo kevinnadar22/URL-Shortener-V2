@@ -18,7 +18,6 @@ ADMINS = list(int(i.strip()) for i in os.environ.get("ADMINS").split(",")) if os
 DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-
 #  Optionnal variables
 INCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("INCLUDE_DOMAIN").split(",")) if os.environ.get("INCLUDE_DOMAIN") else []
 EXCLUDE_DOMAIN = list(i.strip() for i in os.environ.get("EXCLUDE_DOMAIN").split(",")) if os.environ.get("EXCLUDE_DOMAIN") else []
@@ -32,10 +31,15 @@ FOOTER_TEXT = os.environ.get("FOOTER_TEXT", '')
 BANNER_IMAGE = os.environ.get("BANNER_IMAGE", '')
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '')
 LINK_BYPASS = is_enabled((os.environ.get('LINK_BYPASS', "False")), False)
+BASE_SITE = os.environ.get("BASE_SITE", "droplink.co")
+
+#  Heroku Config
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
-HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False
-BASE_SITE = os.environ.get("BASE_SITE", "droplink.co")
+HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME and "DYNOS" in os.environ else False
+
+#  Replit Config
 REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None)
 REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None)
-REPLIT = True if REPLIT_APP_NAME and REPLIT_USERNAME else False
+REPLIT = f"https://{REPLIT_APP_NAME.lower()}.{REPLIT_USERNAME}.repl.co" if REPLIT_APP_NAME and REPLIT_USERNAME else False
+PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))

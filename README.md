@@ -108,16 +108,17 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 
 ### Required Variables
 
-> See [sample_info.py](https://github.com/kevinnadar22/URL-Shortener-V2/blob/main/sample_info.py) for more clarification
 
-* `BOT_TOKEN`: Create a bot using [@BotFather](https://telegram.dog/BotFather), and get the Telegram API token.
-* `API_ID`: Get this value from [telegram.org](https://my.telegram.org/apps)
-* `API_HASH`: Get this value from [telegram.org](https://my.telegram.org/apps)
-* `DROPLINK_API`: Your [Droplink API](https://droplink.co/member/tools/api)
-* `MDISK_API`: Your [Mdisk API](https://t.me/VideoToolMoneyTreebot)
-* `ADMINS`: ID of Admins. Separate multiple Admins by comma
-* `DATABASE_URI`: [mongoDB](https://www.mongodb.com) URI. Get this value from [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)
-* `DATABASE_NAME`: Name of the database in [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)
+| Variable Name                        | Value                                                                                                                                                          |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `API_ID` (required)                  | Telegram api_id obtained from <https://my.telegram.org/apps>.                                                                                                  |
+| `API_HASH` (required)                | Telegram api_hash obtained from <https://my.telegram.org/apps>.                                                                                                |
+| `BOT_TOKEN` (required)          | Create a bot using @BotFather, and get the Telegram API token.                                                                                                                                     |
+| `DROPLINK_API` (required)          |  Your [Droplink API](https://droplink.co/member/tools/api). (required) if method is droplink or mdlink 
+| `MDISK_API` (required)                    | Your [Mdisk API](https://t.me/VideoToolMoneyTreebot). (required) if method is mdisk or mdlink                                                                                                 |
+| `ADMINS` (required)                   | ID of Admins. Separate multiple Admins by comma                                                                                               |
+| `DATABASE_URI` (required)         | [mongoDB](https://www.mongodb.com) URI. Get this value from [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)                                                                               |
+| `DATABASE_NAME` (required)        | Name of the database in [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)                                                                                                     
 
 
 ### Optional Variables
@@ -133,6 +134,7 @@ You can deploy this bot anywhere.
 
 |                                                                                                                 | Name              | Deploy        |
 | --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | 
+| ![Replit](assets/img/replit.jpg) | Replit (Recommended) | [see guide](/guides/replit.md) |
 | [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                          | Heroku            | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
 | ![VPS](assets/img/vps.png) | VPS | [see guide](/guides/vps.md) |
 

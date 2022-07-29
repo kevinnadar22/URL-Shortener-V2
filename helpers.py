@@ -1,7 +1,12 @@
 # temp db for banned 
 
 import database
-from config import ADMINS, CHANNEL_ID, CHANNELS, EXCLUDE_DOMAIN, FOOTER_TEXT, HEADER_TEXT, MDISK_API, DROPLINK_API, INCLUDE_DOMAIN, USERNAME
+from config import ADMINS, CHANNEL_ID, CHANNELS, EXCLUDE_DOMAIN, FOOTER_TEXT, HEADER_TEXT, MDISK_API, DROPLINK_API, INCLUDE_DOMAIN, USERNAME, REPLIT_APP_NAME, REPLIT_USERNAME, REPLIT, PING_INTERVAL
+
+import asyncio
+import logging
+import aiohttp
+import traceback
 
 
 class temp(object): # Eva Maria Idea of Temping
@@ -93,3 +98,19 @@ class Helpers:
     async def get_username(self):
         return USERNAME
 
+
+
+async def ping_server():
+    sleep_time = PING_INTERVAL
+    while True:
+        await asyncio.sleep(sleep_time)
+        try:
+            async with aiohttp.ClientSession(
+                timeout=aiohttp.ClientTimeout(total=10)
+            ) as session:
+                async with session.get(REPLIT) as resp:
+                    logging.info("Pinged server with response: {}".format(resp.status))
+        except TimeoutError:
+            logging.warning("Couldn't connect to the site URL..!")
+        except Exception:
+            traceback.print_exc()
