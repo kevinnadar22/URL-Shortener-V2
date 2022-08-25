@@ -22,14 +22,6 @@
       "description": "Get this value from https://my.telegram.org",
       "value": ""
     },
-    "DROPLINK_API": {
-      "description": "Enter your DROPLINK API KEY only if METHOD is selected to droplink. Get your API from https://droplink.co/member/tools/api",
-      "value": "0"
-    },
-    "MDISK_API": {
-      "description": "Enter your MDISK API KEY only if METHOD is selected to mdisk. Get your API_ID from t.me/VideoToolMoneyTreebot",
-      "value": "0"
-    },
     "CHANNELS": {
       "description": "Enter True if you want the bot to work in Channels also else Leave it as it is",
       "value": "",
@@ -40,19 +32,14 @@
       "value": "",
       "required": false
     },
-    "FORWARD_MESSAGE": {
-      "description": "Enter True if you want to edit forwarded message also in your channel. Entering True will delete the forwarded post in your channel and repost it with shorten link. Leave this to deafault if CHANNELS set to False",
-      "value": "",
-      "required": false
-    },
     "ADMINS": {
       "description": "Your Telegram ID and ID of Users you want add as Admin. Separate each ID by comma.",
-      "value": ""
-    },
-    "USERNAME": {
-      "description": "Your Telegram Channel Username without @",
       "value": "",
       "required": false
+    },
+    "OWNER_ID": {
+      "description": "ID of the Bot Owner",
+      "value": ""
     },
     "DATABASE_NAME": {
       "description": "Name of the database",
@@ -64,8 +51,19 @@
       "value": "",
       "required": true
     },
-    "LINK_BYPASS":{
-      "description": "Enter True if you want other shortener links to be bypassed. Read README for more information",
+    "UPDATE_CHANNEL":{
+      "description": "Enter the username or id of the channel for force subscription. Leave blank to disable",
+      "value": "-100xxx",
+      "required": false
+    },
+    "LOG_CHANNEL":{
+      "description": "Enter Your Log Channel id for information about users",
+      "value": "-100xx",
+      "required": true
+    }
+    ,
+    "IS_PRIVATE":{
+      "description": "Enter True if you want to restrict access to other users",
       "value": "False",
       "required": false
     }

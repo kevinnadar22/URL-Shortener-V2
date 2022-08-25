@@ -1,13 +1,16 @@
-import datetime
 import asyncio
-from pyrogram import Client
-from config import *
-from database import db
-from helpers import temp, ping_server
-from utils import broadcast_admins
-
+import datetime
 import logging
 import logging.config
+import sys
+
+from pyrogram import Client
+from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate
+
+from config import *
+from database import db
+from helpers import ping_server, temp
+from utils import broadcast_admins
 
 # Get logging configurations
 logging.config.fileConfig('logging.conf')
@@ -15,8 +18,9 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 if REPLIT:
-    from flask import Flask, jsonify
     from threading import Thread
+
+    from flask import Flask, jsonify
     
     app = Flask('')
     
@@ -56,16 +60,24 @@ class Bot(Client):
         plugins=dict(root="plugins")
         )
 
-    async def start(self):  
-
+    async def start(self): 
         if REPLIT:
             await keep_alive()
             
             asyncio.create_task(ping_server())
- 
+
         temp.START_TIME = datetime.datetime.now()
         await super().start()
+
+        if UPDATE_CHANNEL:
+            try:
+                self.invite_link = await self.create_chat_invite_link(UPDATE_CHANNEL)
+            except:
+                logging.error("Make sure to make the bot in your update channel %s" % UPDATE_CHANNEL)
+                sys.exit(1)
+
         me = await self.get_me()
+        self.owner = await self.get_users(int(OWNER_ID))
         self.username = '@' + me.username
         temp.BOT_USERNAME = me.username
         temp.FIRST_NAME = me.first_name

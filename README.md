@@ -64,6 +64,8 @@
 
 ## Description
 
+>__Now this bot can be used by users also. Only admin has access to channel support. Bot Owner API will be used in channel post converting. You can restrict users from using this bot by setting env `IS_PRIVATE` to True__
+
 __This Is Just An Simple Advance Shortener and Converter Bot Completely Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
 __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your MDisk Account__
@@ -80,16 +82,31 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 > For more information about usages, see the [documentation](https://github.com/kevinnadar22/URL-Shortener-V2/wiki/Usage) 
 
 ## Commands
-
 ```
-/start - Check if I'm alive
-/help - Help Command
-/about - About Command
-/method - To set your preferred method
-/batch -100XX - to convert link for multiple posts
-/restart - restart / re-deploy the server
-/stats - Stats of the server and bot
-/logs - Send the log messages
+start - start it
+help - help Command
+about - about Command
+method - to set your preferred method
+shortener_api - set shortener api
+mdisk_api - set mdisk api
+header - set header
+footer - set footer
+username - set username to replace others
+banner_image - set banner image
+me - know about you
+base_site - change base site
+include_domain - set include domain
+exclude_domain - set exclude domain
+stats - Stats of the server and bot
+
+Admin only use commands
+
+batch -100XX - to convert link for multiple posts
+logs - Send the log messages
+restart - restart / re-deploy the server
+ban - to ban users 
+unban - to unban users 
+info - get user info
 ```
 
 ## About 
@@ -113,10 +130,9 @@ __Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `API_ID` (required)                  | Telegram api_id obtained from <https://my.telegram.org/apps>.                                                                                                  |
 | `API_HASH` (required)                | Telegram api_hash obtained from <https://my.telegram.org/apps>.                                                                                                |
-| `BOT_TOKEN` (required)          | Create a bot using @BotFather, and get the Telegram API token.                                                                                                                                     |
-| `DROPLINK_API` (required)          |  Your [Droplink API](https://droplink.co/member/tools/api). (required) if method is droplink or mdlink 
-| `MDISK_API` (required)                    | Your [Mdisk API](https://t.me/VideoToolMoneyTreebot). (required) if method is mdisk or mdlink                                                                                                 |
-| `ADMINS` (required)                   | ID of Admins. Separate multiple Admins by comma                                                                                               |
+| `BOT_TOKEN` (required)          | Create a bot using @BotFather, and get the Telegram API token. |                                                                             
+| `ADMINS`                  | ID of Admins. Separate multiple Admins by comma                                                                                               |
+| `OWNER_ID` (required)                   | ID of Owner.                                                                                          |
 | `DATABASE_URI` (required)         | [mongoDB](https://www.mongodb.com) URI. Get this value from [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)                                                                               |
 | `DATABASE_NAME` (required)        | Name of the database in [mongoDB](https://www.mongodb.com). For more help watch this [video](https://youtu.be/1G1XwEOnxxo)                                                                                                     
 

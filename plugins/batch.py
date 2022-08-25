@@ -1,12 +1,13 @@
 import asyncio
 from database import db
+from database.users import get_user
 from translation import BATCH
 from helpers import AsyncIter, temp
 from pyrogram import Client, filters
-from utils import main_convertor_handler, update_stats
+from utils import main_convertor_handler, update_stats, user_api_check
 from config import CHANNELS, ADMINS, SOURCE_CODE
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, Message
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
 import datetime
 
@@ -25,22 +26,26 @@ cancel_button = [[
 
 
 @Client.on_message(filters.private & filters.command('batch'))
-async def batch(c, m):
-    user_method = await db.get_bot_method(temp.BOT_USERNAME)
-    if m.from_user.id in ADMINS:
-        if not user_method:
-            return await m.reply("Set your /method first")
-        else:
-            if len(m.command) < 2:
-                await m.reply_text(BATCH)
-            else:
-                channel_id = m.command[1]
-                if channel_id.startswith("@"):
-                    channel_id = channel_id.split("@")[1]
-                elif channel_id.startswith("-100"):
-                    channel_id = int(channel_id)
+async def batch(c, m: Message):
 
-                buttons = [
+    if m.from_user.id not in ADMINS: return await m.reply_text("Works only for admins")
+
+    user_id = m.from_user.id    
+    user = await get_user(user_id)
+
+    vld = await user_api_check(user)
+
+    if len(m.command) < 2:
+        await m.reply_text(BATCH)
+    else:
+        if vld is not True: return await m.reply_text(vld)
+        channel_id = m.command[1]
+        if channel_id.startswith("@"):
+            channel_id = channel_id.split("@")[1]
+        elif channel_id.startswith("-100"):
+            channel_id = int(channel_id)
+
+        buttons = [
 [
 InlineKeyboardButton('Batch Short 🏕', callback_data=f'batch#{str(channel_id)}')
 ],
@@ -49,16 +54,16 @@ InlineKeyboardButton('Cancel 🔐', callback_data='cancel')
 ]
 ]
 
-                return await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
-
-    elif m.from_user.id not in ADMINS:
-        await m.reply_text(f"""This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})""")
+        return await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
 
 
-@Client.on_callback_query(filters.regex(r'^cancel') | filters.regex(r'^batch'))
+@Client.on_callback_query(filters.regex(r'^cancel') | filters.regex(r'^batch') & filters.user(ADMINS))
 async def batch_handler(c:Client, m:CallbackQuery):
 
-    user_method = await db.get_bot_method(temp.BOT_USERNAME)
+    user_id = m.from_user.id    
+    user = await get_user(user_id)
+
+    user_method = user["method"]
 
     if m.data == "cancel":
         await m.message.delete()
@@ -76,6 +81,9 @@ async def batch_handler(c:Client, m:CallbackQuery):
             return await m.message.edit("Bot is not an admin in the given channel")
         except PeerIdInvalid:
             return await m.message.edit("Given channel ID is invalid")
+        except Exception as e:
+            logging.exception(e)
+            return await m.message.edit(e)
 
         start_time = datetime.datetime.now()
 
@@ -93,9 +101,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
         try:
             for i in range(0, len(total_messages), 200):
                 channel_posts = AsyncIter(await c.get_messages(channel_id, total_messages[i:i+200]))
-
                 temp.CANCEL = False
-
                 async with lock:
                         async for message in channel_posts:
                             if temp.CANCEL == True:
@@ -103,7 +109,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
 
                             if message.media or message.text:
                                 try:
-                                    await main_convertor_handler(message=message, type=user_method, edit_caption=True)
+                                    await main_convertor_handler(message=message, type=user_method, edit_caption=True, user=user)
                                     success += 1
                                     await update_stats(message, user_method)
                                 except Exception as e:

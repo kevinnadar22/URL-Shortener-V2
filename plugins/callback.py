@@ -1,27 +1,130 @@
 import asyncio
-from database import db
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from helpers import temp, Helpers
-from config import ADMINS, SOURCE_CODE
-from translation import ADMINS_MESSAGE, BACK_REPLY_MARKUP, BATCH_MESSAGE, CHANNELS_LIST_MESSAGE, CUSTOM_ALIAS_MESSAGE, HELP_MESSAGE, HELP_REPLY_MARKUP, ABOUT_TEXT, ABOUT_REPLY_MARKUP, METHOD_MESSAGE, METHOD_REPLY_MARKUP, OTHER_INFO_MESSAGE, START_MESSAGE, START_MESSAGE_REPLY_MARKUP
-from utils import broadcast_admins
+import logging
 import os
+import re
 import sys
 
-import logging
+from config import ADMINS, OWNER_ID, SOURCE_CODE, UPDATE_CHANNEL
+from database import update_user_info
+from database.users import get_user
+from helpers import Helpers, temp
+from pyrogram import Client, filters
+from pyrogram.errors import UserNotParticipant
+from pyrogram.types import (CallbackQuery, InlineKeyboardButton,
+                            InlineKeyboardMarkup)
+from translation import (ABOUT_REPLY_MARKUP, ABOUT_TEXT, ADMINS_MESSAGE,
+                         BACK_REPLY_MARKUP, BATCH_MESSAGE,
+                         CHANNELS_LIST_MESSAGE, CUSTOM_ALIAS_MESSAGE,
+                         HELP_MESSAGE, HELP_REPLY_MARKUP, METHOD_MESSAGE,
+                         METHOD_REPLY_MARKUP, START_MESSAGE,
+                         START_MESSAGE_REPLY_MARKUP)
+from utils import get_me_button
+
 logger = logging.getLogger(__name__)
 
+
+
+
+@Client.on_callback_query(filters.regex('sub_refresh'))
+async def refresh_cb(c, m):
+    owner = c.owner
+    if UPDATE_CHANNEL:
+        try:
+            user = await c.get_chat_member(UPDATE_CHANNEL, m.from_user.id)
+            if user.status == "kicked":
+               try:
+                   await m.message.edit("**Hey you are banned**")
+               except:
+                   pass
+               return
+        except UserNotParticipant:
+            await m.answer('You have not yet joined our channel. First join and then press refresh button', show_alert=True)
+            return
+        except Exception as e:
+            print(e)
+            await m.message.edit(f"Something Wrong. Please try again later or contact {owner.mention(style='md')}")
+            return
+    await m.message.delete()
+
+
+@Client.on_callback_query(filters.regex(r"^ban"))
+async def ban_cb_handler(c:Client,m: CallbackQuery):
+    try:
+        user_id = m.data.split("#")[1]
+        user = await get_user(int(user_id))
+
+        if user:
+            if not user["banned"]:
+                await update_user_info(user_id, {"banned": True})
+                try:
+                    owner = await c.get_users(int(OWNER_ID))
+                    await c.send_message(user_id, f"You are now banned from the bot by Admin. Contact {owner.mention(style='md')} regarding this")
+                except Exception as e:
+                    logging.error(e)
+                reply_markup = InlineKeyboardMarkup( [
+                [
+                    InlineKeyboardButton('Unban', callback_data=f'unban#{user_id}'),
+                    InlineKeyboardButton('Close', callback_data='delete'),
+                ]
+            ])
+                await m.edit_message_reply_markup(reply_markup)
+                await m.answer(f"User [{user_id}] has been banned from the bot", show_alert=True)
+            else:
+                await m.answer("User is already banned", show_alert=True)
+        else:
+            await m.answer("User doesn't exist", show_alert=True)
+    except Exception as e:
+        logging.exception(e, exc_info=True)
+
+@Client.on_callback_query(filters.regex(r"^unban"))
+async def unban_cb_handler(c,m: CallbackQuery):
+    user_id = m.data.split("#")[1]
+    user = await get_user(int(user_id))
+
+    if user:
+        if user["banned"]:
+            await update_user_info(user_id, {"banned": False})
+            try:
+                await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")
+            except Exception as e:
+                pass
+            reply_markup = InlineKeyboardMarkup( [
+                [
+                    InlineKeyboardButton('Ban', callback_data=f'ban#{user_id}'),
+                    InlineKeyboardButton('Close', callback_data='delete'),
+                ]
+            ])
+            await m.edit_message_reply_markup(reply_markup)
+            await m.answer("User is unbanned", show_alert=True)
+        else:
+            await m.answer("User is not banned yet", show_alert=True)
+
+    else:
+        await m.answer("User doesn't exist", show_alert=True)
+
+
+@Client.on_callback_query(filters.regex(r"^setgs"))
+async def user_setting_cb(c,query: CallbackQuery):
+    _, setting, toggle, user_id = query.data.split('#')
+    myvalues = {setting:True if toggle == "True" else False}
+    await update_user_info(user_id, myvalues)
+    user = await get_user(user_id)
+    buttons = await get_me_button(user)
+    reply_markup = InlineKeyboardMarkup(buttons)
+    try:
+        await query.message.edit_reply_markup(reply_markup)
+        setting = (re.sub(r"is|_", " ", setting)).title()
+        toggle = "Enabled" if toggle == "True" else "Disabled"
+        await query.answer(f"{setting} {toggle} Successfully", show_alert=True)
+    except Exception as e:
+        logging.error("Error occurred while updating user information", exc_info=True)
 
 @Client.on_callback_query()
 async def on_callback_query(bot:Client, query:CallbackQuery):
 
-    if query.from_user.id not in ADMINS:
-        return await query.message.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})")
-
+    user_id = query.from_user.id
     h = Helpers()
-    await query.answer("Loading...")
-
+    user = await get_user(user_id)
     if query.data == 'delete':
         await query.message.delete()
 
@@ -37,61 +140,55 @@ async def on_callback_query(bot:Client, query:CallbackQuery):
         await query.message.edit(ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=ABOUT_REPLY_MARKUP, disable_web_page_preview=True)
 
     elif query.data == 'start_command':
-        await query.message.edit(START_MESSAGE.format(query.message.from_user.mention, await h.user_method), reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
+        new_user = await get_user(query.from_user.id)
+        tit = START_MESSAGE.format(query.from_user.mention, new_user["method"], new_user["base_site"])
+        await query.message.edit(tit, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
 
     elif query.data.startswith('change_method'):
         method_name = query.data.split('#')[1]
         user = temp.BOT_USERNAME
-        if not await db.get_bot_method(user):
-            await db.add_method(user, method_name)
-        else:
-            await db.update_method(user, method_name)
+        await update_user_info(user_id, {"method": method_name })
         REPLY_MARKUP = InlineKeyboardMarkup([
     [
         InlineKeyboardButton('Back', callback_data=f'method_command')
     ],
-
 ])
-        logger.info("Updated method to %s", method_name)
-        b_msg = "Method changed successfully to `{method}` for @{username} by {mention}".format(method=method_name.upper(), username=user, mention=query.from_user.mention)
-        await broadcast_admins(bot, b_msg, query.from_user.id)
         
-        await query.message.edit("Method changed successfully to `{method}` for @{username}".format(method=method_name, username=user), reply_markup=REPLY_MARKUP)
+        await query.message.edit("Method changed successfully to `{method}`".format(method=method_name, username=user), reply_markup=REPLY_MARKUP)
+
     elif query.data == 'method_command':
-        user = temp.BOT_USERNAME
-        method_name = await db.get_bot_method(user)
-        await query.message.edit(METHOD_MESSAGE.format(method=method_name), reply_markup=METHOD_REPLY_MARKUP)
+        s = METHOD_MESSAGE.format(method=user["method"], shortener=user["base_site"],)
+        return await query.message.edit(s, reply_markup=METHOD_REPLY_MARKUP)
+
     elif query.data == 'cbatch_command':
+        if user_id not in ADMINS:
+            return await query.message.edit("Works only for admins", reply_markup=BACK_REPLY_MARKUP)
+
         await query.message.edit(BATCH_MESSAGE, reply_markup=BACK_REPLY_MARKUP)
 
     elif query.data == 'alias_conf':
         await query.message.edit(CUSTOM_ALIAS_MESSAGE, reply_markup=BACK_REPLY_MARKUP, disable_web_page_preview=True)
 
     elif query.data == 'admins_list':
+        if user_id not in ADMINS:
+            return await query.message.edit("Works only for admins", reply_markup=BACK_REPLY_MARKUP)
+
         await query.message.edit(ADMINS_MESSAGE.format(
             admin_list=await h.get_admins
         ), reply_markup=BACK_REPLY_MARKUP)
 
     elif query.data == 'channels_list':
+        if user_id not in ADMINS:
+            return await query.message.edit("Works only for admins", reply_markup=BACK_REPLY_MARKUP)
+
         await query.message.edit(CHANNELS_LIST_MESSAGE.format(
             channels=await h.get_channels
         ), reply_markup=BACK_REPLY_MARKUP)
 
-    elif query.data == 'other_info':
-        await query.message.edit(OTHER_INFO_MESSAGE.format(
-            included_domain=await h.get_included_domain,
-            excluded_domain=await h.get_excluded_domain,
-            source_code=SOURCE_CODE,
-            username=await h.get_username,
-            header_text=await h.header_text,
-            footer_text=await h.footer_text,
-            method=await h.user_method,
-            droplink_api=await h.user_droplink_api,
-            mdisk_api=await h.user_mdisk_api,
-        ), reply_markup=BACK_REPLY_MARKUP, disable_web_page_preview=True)
 
     elif query.data == 'restart':
         await query.message.edit('**Restarting.....**')
         await asyncio.sleep(5)
         os.execl(sys.executable, sys.executable, *sys.argv)
+
     await query.answer()

@@ -1,32 +1,36 @@
 import asyncio
+import json
+import logging
 import random
 import re
-import json
+from urllib.parse import urlparse
+
 import aiohttp
 import heroku3
-from pyrogram import Client
-from database import db
-
-from shortzy import Shortzy
-from mdisky import Mdisk
+import pyshorteners
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
-from urllib.parse import urlparse
+from mdisky import Mdisk
+from pyrogram import Client
+from pyrogram.enums import ParseMode
+from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
+from pyrogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
+                            InputMediaPhoto, Message)
+from shortzy import Shortzy
 
 from config import *
-from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import pyshorteners
-from pyrogram.types import InputMediaPhoto
+from database import db
 
-import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-mdisk = Mdisk(MDISK_API)
-shortzy = Shortzy(DROPLINK_API, BASE_SITE)
 
-async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False):
+async def main_convertor_handler(message:Message, type:str, edit_caption:bool=False, user=None):
+    if user:
+        header_text = user["header_text"].replace(r'\n', '\n') if user["is_header_text"] else ""
+        footer_text = user["footer_text"].replace(r'\n', '\n') if user["is_footer_text"] else ""
+        username = user["username"] if user["is_username"] else None
+        banner_image = user["banner_image"] if user["is_banner_image"] else None
+
     caption = None
 
     if message.text:
@@ -34,12 +38,11 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
     elif message.caption:
         caption = message.caption.html
 
-
     # Checking if the message has any link or not. If it doesn't have any link, it will return.
     if len(await extract_link(caption)) <=0 and not message.reply_markup:
         return
 
-    user_method = type
+    user_method = user["method"]
 
     # Checking if the user has set his method or not. If not, it will reply with a message.
     if user_method is None:
@@ -50,40 +53,39 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
 
     # A dictionary which contains the methods to be called.
     METHODS = {
-        "mdisk": mdisk.convert_from_text,
-        "droplink": replace_link,
+        "mdisk": mdisk_api_handler,
+        "shortener": replace_link,
         "mdlink": mdisk_droplink_convertor
     }
 
     # Replacing the username with your username.
-    caption = await replace_username(caption)
+    caption = await replace_username(caption, username)
 
     # Getting the function for the user's method
     method_func = METHODS[user_method] 
 
     # converting urls
-    shortenedText = await method_func(caption)
+    shortenedText = await method_func(user, caption)
 
     # converting reply_markup urls
-    reply_markup = await reply_markup_handler(message, method_func)
+    reply_markup = await reply_markup_handler(message, method_func, user=user)
 
     # Adding header and footer
-    shortenedText = f"{HEADER_TEXT}\n{shortenedText}\n{FOOTER_TEXT}"
 
+    shortenedText = f"{header_text}\n{shortenedText}\n{footer_text}"
 
     # Used to get the file_id of the media. If the media is a photo and BANNER_IMAGE is set, it will
     # replace the file_id with the BANNER_IMAGE.
     if message.media:
         medias = getattr(message, message.media.value)
         fileid = medias.file_id
-        if message.photo and BANNER_IMAGE:
-            fileid = BANNER_IMAGE
+        if message.photo and banner_image:
+            fileid = banner_image
             if edit_caption:
-                fileid = InputMediaPhoto(BANNER_IMAGE, caption=shortenedText)
+                fileid = InputMediaPhoto(banner_image, caption=shortenedText)
         
-
     if message.text:
-        if user_method in ["droplink", "mdlink"] :
+        if user_method in ["shortener", "mdlink"] :
             if '|' not in caption:
                 pass
             else:
@@ -99,26 +101,26 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
         if edit_caption:
             return await message.edit(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup)
 
-        return await message.reply(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup, quote=True)
+        return await message.reply(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup, quote=True, parse_mode=ParseMode.HTML)
 
     elif message.media:
 
         if edit_caption:
-            if BANNER_IMAGE and message.photo:
+            if banner_image and message.photo:
                 return await message.edit_media(media=fileid)
 
-            return await message.edit_caption(shortenedText, reply_markup=reply_markup)
+            return await message.edit_caption(shortenedText, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
         if message.document:
-            return await message.reply_document(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True)
+            return await message.reply_document(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True, parse_mode=ParseMode.HTML)
 
         
         elif message.photo:
-            return await message.reply_photo(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True)
+            return await message.reply_photo(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True, parse_mode=ParseMode.HTML)
 
 
 # Reply markup 
-async def reply_markup_handler(message:Message, method_func):
+async def reply_markup_handler(message:Message, method_func, user):
     if message.reply_markup:
         reply_markup = json.loads(str(message.reply_markup))
         buttsons = []
@@ -127,7 +129,7 @@ async def reply_markup_handler(message:Message, method_func):
             for j in markup:
                 text = j["text"]
                 url = j["url"]
-                url = await method_func(url)
+                url = await method_func(user=user, text=url)
                 button = InlineKeyboardButton(text, url=url)
                 buttons.append(button)
             buttsons.append(buttons)
@@ -135,62 +137,68 @@ async def reply_markup_handler(message:Message, method_func):
         return reply_markup
 
 
-#  ----- droplink ----
+async def mdisk_api_handler(user, text):
+    api_key = user["mdisk_api"]
+    mdisk = Mdisk(api_key)
+    return await mdisk.convert_from_text(text)
 
-async def replace_link(text, x=""):
+async def replace_link(user, text, x=""):
 
+    api_key = user["shortener_api"]
+    base_site = user["base_site"]
+
+    shortzy = Shortzy(api_key, base_site)
+    
     links = await extract_link(text)
 
     for link in links:
 
+        https  = link.split(":")[0]
+
+        if "http" == https:
+            https = "https"
+            link = link.replace("http", https)
+
         long_url = link
 
         # Include domain validation 
-        if INCLUDE_DOMAIN:
-            include = INCLUDE_DOMAIN
+        if user["include_domain"]:
+            include = user["include_domain"]
             domain = [domain.strip() for domain in include]
             if any(i in link for i in domain):
-                try:
-                    short_link = await shortzy.convert(link, x)
-                except:
-                    short_link = await tiny_url_main(await shortzy.get_quick_link(link))
+                short_link = await shortzy.convert(link, x)
                 text = text.replace(long_url, short_link)
 
         # Exclude domain validation 
-        elif EXCLUDE_DOMAIN:
-            exclude = EXCLUDE_DOMAIN
+        elif user["exclude_domain"]:
+            exclude = user["exclude_domain"]
             domain = [domain.strip() for domain in exclude]
             if any(i in link for i in domain):
                 pass
             else:
-                try:
-                    short_link = await shortzy.convert(link, x)
-                except:
-                    short_link = await tiny_url_main(await shortzy.get_quick_link(link))
-                text = text.replace(long_url, short_link)
-
-        # if not include domain and exlude domain
-        else:
-            try:
                 short_link = await shortzy.convert(link, x)
-            except:
-                short_link = await tiny_url_main(await shortzy.get_quick_link(link))
+                text = text.replace(long_url, short_link)
+        else:
+            short_link = await shortzy.convert(link, x)
             text = text.replace(long_url, short_link)
 
     return text
 
 ####################  Mdisk and Droplink  ####################
-async def mdisk_droplink_convertor(text, alias=""):
-    links = await mdisk.convert_from_text(text)
-    links = await replace_link(links, x=alias)
+async def mdisk_droplink_convertor(user, text, alias=""):
+    links = await mdisk_api_handler(user, text)
+    links = await replace_link(user, links, x=alias)
     return links
 
 ####################  Replace Username  ####################
-async def replace_username(text):
-    if USERNAME:
+async def replace_username(text, username):
+    if username:
         usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
         for i in usernames:
-            text = text.replace(i, f"@{USERNAME}")
+            text = text.replace(i, f"@{username}")
+        pvt_links = re.findall('https?://t.me+.[^\s]*', text)
+        for i in pvt_links:
+            text = text.replace(i, f"@{username}")
     return text
     
 
@@ -200,8 +208,8 @@ async def extract_link(string):
     urls = re.findall(regex, string)
     return ["".join(x) for x in urls]
 
-# Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
 
+# Incase website server fails, bot will return https://droplink.co/st?api={API}&url={link} 
 # TinyUrl 
 async def tiny_url_main(url):
     s = pyshorteners.Shortener()
@@ -223,40 +231,27 @@ async def droplink_bypass(url):
         # client = aiohttp.ClientSession()
         async with aiohttp.ClientSession() as client:
             async with client.get(url) as res:
-                
                 ref = re.findall("action[ ]{0,}=[ ]{0,}['|\"](.*?)['|\"]", await res.text())[0]
-
                 h = {'referer': ref}
-
                 # res = client.get(url, headers=h)
                 async with client.get(url, headers=h) as res:
-
-
                     bs4 = BeautifulSoup(await res.content.read(), 'html.parser')
-
                     inputs = bs4.find_all('input')
-                    
                     data = { input.get('name'): input.get('value') for input in inputs }
-
                     h = {
                         'content-type': 'application/x-www-form-urlencoded',
                         'x-requested-with': 'XMLHttpRequest'
                     }
                     p = urlparse(url)
                     final_url = f'{p.scheme}://{p.netloc}/links/go'
-
                     await asyncio.sleep(3.1)
-
                     # res = client.post(final_url, data=data, headers=h).json()
                     async with client.post(final_url, data=data, headers=h) as res:
-
                         res = await res.json()
                         if res['status'] == 'success':
                             return res['url']
                         else:
                             raise Exception("Error while bypassing droplink {0}: {1}".format(url, res['message']))
-
-
     except Exception as e:
         raise Exception("Error while bypassing droplink {0}: {1}".format(url, e))
 
@@ -268,14 +263,16 @@ async def is_droplink_url(url):
 
 
 async def broadcast_admins(c: Client, Message, sender=False):
-
     admins = ADMINS[:]
     
     if sender:
         admins.remove(sender)
 
     for i in admins:
-        await c.send_message(i, Message)
+        try:
+            await c.send_message(i, Message)
+        except PeerIdInvalid:
+            logging.info(f"{i} have not yet started the bot")
     return
 
 async def get_size(size):
@@ -289,18 +286,14 @@ async def get_size(size):
     return "%.2f %s" % (size, units[i])
 
 async def update_stats(m:Message, method):
-    reply_markup = json.loads(str(m.reply_markup)) if m.reply_markup else ''
+    reply_markup = str(m.reply_markup) if m.reply_markup else ''
     message = m.caption.html if m.caption else m.text.html
-
     mdisk_links = re.findall(r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message + reply_markup)
     droplink_links = await extract_link(message + reply_markup)
     total_links = len(droplink_links)
-
     await db.update_posts(1)
-
     if method == 'mdisk': droplink_links = []
-    if method == 'droplink': mdisk_links = []
-
+    if method == 'shortener': mdisk_links = []
     await db.update_links(total_links, len(droplink_links), len(mdisk_links))
 
 
@@ -404,3 +397,44 @@ async def getHerokuDetails(h_api_key, h_app_name):
     except Exception as g:
         logger.error(g)
         return None
+
+
+async def get_me_button(user):
+    user_id = user["user_id"]
+    buttons = []
+    try:
+        buttons =  [
+                [
+                    InlineKeyboardButton('Header Text',
+                                        callback_data=f'ident'),
+                    InlineKeyboardButton('✅ Enable' if not user["is_header_text"] else '❌ Disable',
+                                        callback_data=f'setgs#is_header_text#{not user["is_header_text"]}#{str(user_id)}')
+                ],
+                [
+                    InlineKeyboardButton('Footer Text', callback_data='ident'),
+                    InlineKeyboardButton('✅ Enable' if not user["is_footer_text"] else '❌ Disable',
+                                        callback_data=f'setgs#is_footer_text#{not user["is_footer_text"]}#{str(user_id)}')
+                ],
+                [
+                    InlineKeyboardButton('Username',
+                                        callback_data=f'ident'),
+                    InlineKeyboardButton('✅ Enable' if not user["is_username"] else '❌ Disable',
+                                        callback_data=f'setgs#is_username#{not user["is_username"]}#{str(user_id)}')
+                ],
+                [
+                    InlineKeyboardButton('Banner Image', callback_data=f'ident'),
+                    InlineKeyboardButton('✅ Enable' if not user["is_banner_image"] else '❌ Disable',
+                                        callback_data=f'setgs#is_banner_image#{not user["is_banner_image"]}#{str(user_id)}')
+                ],
+            ]
+    except Exception as e:
+        print(e)
+    return buttons
+
+async def user_api_check(user):
+    user_method =  user["method"]
+    text = ""
+    if user_method in ["mdisk" , "mdlink"] and not user["mdisk_api"]: text += "\n\nSet your /mdisk_api to continue..."
+    if user_method in ["shortener" , "mdlink"] and not user["shortener_api"]:text += f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
+    if not user_method: text = "\n\nSet your /method first"
+    return text if text else True

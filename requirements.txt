@@ -8,3 +8,5 @@ bs4
 mdisky
 heroku3
 shortzy
+aiofiles
+validators

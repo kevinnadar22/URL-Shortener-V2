@@ -1,34 +1,52 @@
 
-from pyrogram import Client, filters
-from utils import main_convertor_handler, update_stats
-from config import ADMINS, SOURCE_CODE
-from database import db
-from helpers import temp
 import logging
+
+from config import LOG_CHANNEL
+from database.users import get_user
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from utils import (extract_link, main_convertor_handler, update_stats, user_api_check)
+
+from plugins.filters import is_private
 
 logger = logging.getLogger(__name__)
 
 
 # Private Chat
-
-@Client.on_message(filters.private & filters.incoming)
-async def private_link_handler(c, message):
-    if message.from_user.id not in ADMINS:
-        return await message.reply_text(f"This bot works only for ADMINS of this bot. Make your own Bot.\n\n[Source Code]({SOURCE_CODE})")
-        
-    user_method = await db.get_bot_method(temp.BOT_USERNAME)
-
+@Client.on_message(filters.private & filters.incoming & is_private)
+async def private_link_handler(c, message:Message):
     try:
-        txt = await message.reply('`Cooking... It will take some time if you have enabled Link Bypass`', quote=True)
-        await main_convertor_handler(message, user_method)
+        user = await get_user(message.from_user.id)
+        if user["banned"]:return await message.reply_text("You are banned to use this bot.")
+        if message.text and message.text.startswith('/'):return
+        
+        if message.text:
+            caption = message.text.html
+        elif message.caption:
+            caption = message.caption.html
 
-        # Updating DB stats
-        await update_stats(message, user_method)
+        if len(await extract_link(caption)) <=0 and not message.reply_markup:
+            return
+        user_method = user["method"]
+        vld = await user_api_check(user)
+        if vld is not True: return await message.reply_text(vld)
 
+        try:
+            txt = await message.reply('`Cooking... It will take some time if you have enabled Link Bypass`', quote=True)
+            await main_convertor_handler(message, user_method, user=user)
+            # Updating DB stats
+            await update_stats(message, user_method)
+            bin_caption = f"""{caption}
 
+#NewPost
+From User :- {message.from_user.mention} [`{message.from_user.id}`]"""
+
+            if LOG_CHANNEL and message.media:await message.copy(LOG_CHANNEL, bin_caption) 
+            elif message.text and LOG_CHANNEL:await c.send_message(LOG_CHANNEL, bin_caption)
+        except Exception as e:
+            await message.reply("Error while trying to convert links %s:" % e, quote=True)
+            logger.exception(e)
+        finally:
+            await txt.delete()
     except Exception as e:
-        await message.reply("Error while trying to convert links %s:" % e, quote=True)
-        logger.exception(e)
-    finally:
-        await txt.delete()
-
+        logging.exception(e, exc_info=True)
