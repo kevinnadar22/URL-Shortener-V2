@@ -10,3 +10,4 @@ heroku3
 shortzy
 aiofiles
 validators
+python-dotenv
