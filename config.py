@@ -47,4 +47,4 @@ HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME and "DYNOS" in os.environ el
 REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None) # your replit username 
 REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None) # your replit app name 
 REPLIT = f"https://{REPLIT_APP_NAME.lower()}.{REPLIT_USERNAME}.repl.co" if REPLIT_APP_NAME and REPLIT_USERNAME else False
-PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300")) # interval time in seconds the bot should ping ur app
+PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))
