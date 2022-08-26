@@ -3,8 +3,10 @@ from database.database import *
 from pyrogram import Client, filters
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from plugins.filters import private_use
 
 @Client.on_message(filters.private & filters.incoming)
+@private_use
 async def forcesub(c:Client, m:Message):
     # Getting the owner of the bot.
     owner = c.owner
