@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 
 import aiohttp
 import heroku3
-import pyshorteners
 from bs4 import BeautifulSoup
 from mdisky import Mdisk
 from pyrogram import Client
@@ -208,13 +207,6 @@ async def extract_link(string):
     urls = re.findall(regex, string)
     return ["".join(x) for x in urls]
 
-
-# Incase website server fails, bot will return https://droplink.co/st?api={API}&url={link} 
-# TinyUrl 
-async def tiny_url_main(url):
-    s = pyshorteners.Shortener()
-    return s.tinyurl.short(url)
-
 # todo -> bypass long droplink url
 async def droplink_bypass_handler(text):
     if LINK_BYPASS and not HEROKU:
@@ -223,7 +215,6 @@ async def droplink_bypass_handler(text):
             bypassed_link = await droplink_bypass(link)
             text = text.replace(link, bypassed_link)
     return text
-
 
 # credits -> https://github.com/TheCaduceus/Link-Bypasser
 async def droplink_bypass(url):
@@ -254,7 +245,6 @@ async def droplink_bypass(url):
                             raise Exception("Error while bypassing droplink {0}: {1}".format(url, res['message']))
     except Exception as e:
         raise Exception("Error while bypassing droplink {0}: {1}".format(url, e))
-
 
 async def is_droplink_url(url):
     domain = urlparse(url).netloc

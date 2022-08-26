@@ -58,7 +58,7 @@
     },
     "LOG_CHANNEL":{
       "description": "Enter Your Log Channel id for information about users",
-      "value": "",
+      "value": "0",
       "required": false
     }
     ,

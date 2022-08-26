@@ -1,7 +1,6 @@
 import os
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
 def is_enabled(value, default):
@@ -22,7 +21,6 @@ DATABASE_URL = os.environ.get("DATABASE_URL", None) # mongodb uri from https://w
 OWNER_ID =  int(os.environ.get("OWNER_ID")) # id of the owner
 ADMINS.append(OWNER_ID) if OWNER_ID not in ADMINS else []
 
-
 #  Optionnal variables
 LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "0")) # log channel for information about users
 UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", False) # For Force Subscription
@@ -41,7 +39,7 @@ FORWARD_MESSAGE = is_enabled((os.environ.get('FORWARD_MESSAGE', "False")), False
 #  Heroku Config for Dynos stats
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None) # your heroku account api from https://dashboard.heroku.com/account/applications
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None) # your heroku app name
-HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME and "DYNOS" in os.environ else False # True or False
+HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME and ".heroku" in os.environ("PYTHONHOME", "") else False # True or False
 
 #  Replit Config for Hosting in Replit
 REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None) # your replit username 
