@@ -6,7 +6,7 @@ from database.users import get_user
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from utils import (extract_link, main_convertor_handler, update_stats, user_api_check)
-
+from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
 from plugins.filters import is_private
 
 logger = logging.getLogger(__name__)
@@ -41,8 +41,12 @@ async def private_link_handler(c, message:Message):
 #NewPost
 From User :- {message.from_user.mention} [`{message.from_user.id}`]"""
 
-            if LOG_CHANNEL and message.media:await message.copy(LOG_CHANNEL, bin_caption) 
-            elif message.text and LOG_CHANNEL:await c.send_message(LOG_CHANNEL, bin_caption)
+            try:
+                if LOG_CHANNEL and message.media:await message.copy(LOG_CHANNEL, bin_caption) 
+                elif message.text and LOG_CHANNEL:await c.send_message(LOG_CHANNEL, bin_caption)
+            except PeerIdInvalid as e:
+                logging.error("Make sure that the bot is admin in your log channel")
+            
         except Exception as e:
             await message.reply("Error while trying to convert links %s:" % e, quote=True)
             logger.exception(e)

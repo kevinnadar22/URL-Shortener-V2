@@ -217,7 +217,7 @@ async def tiny_url_main(url):
 
 # todo -> bypass long droplink url
 async def droplink_bypass_handler(text):
-    if LINK_BYPASS:
+    if LINK_BYPASS and not HEROKU:
         links = re.findall(r'https?://droplink.co[^\s"*<>`()]+', text)	
         for link in links:
             bypassed_link = await droplink_bypass(link)

@@ -53,13 +53,13 @@
     },
     "UPDATE_CHANNEL":{
       "description": "Enter the username or id of the channel for force subscription. Leave blank to disable",
-      "value": "-100xxx",
+      "value": "",
       "required": false
     },
     "LOG_CHANNEL":{
       "description": "Enter Your Log Channel id for information about users",
-      "value": "-100xx",
-      "required": true
+      "value": "",
+      "required": false
     }
     ,
     "IS_PRIVATE":{

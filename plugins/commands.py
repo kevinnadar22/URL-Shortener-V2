@@ -42,7 +42,7 @@ async def start(c:Client, m:Message):
     t = START_MESSAGE.format(m.from_user.mention, new_user["method"], new_user["base_site"])
 
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t, reply_markup=START_MESSAGE_REPLY_MARKUP)
     await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
 
 
