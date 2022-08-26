@@ -3,8 +3,7 @@ import datetime
 # Logger
 import logging
 
-from config import ADMINS, CHANNELS, SOURCE_CODE
-from database import db
+from config import ADMINS
 from database.users import get_user
 from helpers import AsyncIter, temp
 from pyrogram import Client, filters
@@ -17,8 +16,6 @@ from utils import main_convertor_handler, update_stats, user_api_check
 
 logger = logging.getLogger(__name__)
 
-
-
 lock = asyncio.Lock()
 
 cancel_button = [[
@@ -27,7 +24,7 @@ cancel_button = [[
 ]
 
 
-@Client.on_message(filters.private & filters.command('batch'))
+@Client.on_message(filters.private & filters.command('batch') & filters.user(ADMINS))
 async def batch(c, m: Message):
 
     if m.from_user.id not in ADMINS: return await m.reply_text("Works only for admins")
@@ -139,7 +136,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
 
 
 
-@Client.on_message(filters.command('cancel'))
+@Client.on_message(filters.private & filters.command('cancel') & filters.user(ADMINS))
 async def stop_button(c, m):
     if m.from_user.id in ADMINS:
         temp.CANCEL = True

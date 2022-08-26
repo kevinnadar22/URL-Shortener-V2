@@ -7,13 +7,14 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from utils import (extract_link, main_convertor_handler, update_stats, user_api_check)
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
-from plugins.filters import is_private
+from plugins.filters import private_use
 
 logger = logging.getLogger(__name__)
 
 
 # Private Chat
-@Client.on_message(filters.private & filters.incoming & is_private)
+@Client.on_message(filters.private & filters.incoming)
+@private_use
 async def private_link_handler(c, message:Message):
     try:
         user = await get_user(message.from_user.id)

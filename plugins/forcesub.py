@@ -1,17 +1,11 @@
-
-
 from config import *
 from database.database import *
 from pyrogram import Client, filters
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-
 @Client.on_message(filters.private & filters.incoming)
 async def forcesub(c:Client, m:Message):
-
-    if IS_PRIVATE and m.from_user.id not in ADMINS:
-        return await m.reply_text("This bot only works for Admins. Make your own [Bot](https://github.com/kevinnadar22/URL-Shortener-V2)", disable_web_page_preview=True)
     # Getting the owner of the bot.
     owner = c.owner
     if UPDATE_CHANNEL:

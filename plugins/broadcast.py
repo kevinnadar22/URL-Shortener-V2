@@ -16,7 +16,7 @@ from database import get_all_users, total_users_count, delete_user
 
 broadcast_ids = {}
 
-@Client.on_message(filters.command("broadcast") & filters.private & filters.chat(ADMINS))
+@Client.on_message(filters.command("broadcast") & filters.private & filters.user(ADMINS))
 async def broadcast_handler(c:Client, m:Message):
     if m.reply_to_message:
         try:

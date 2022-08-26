@@ -47,4 +47,5 @@ REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None) # your replit app name
 REPLIT = f"https://{REPLIT_APP_NAME.lower()}.{REPLIT_USERNAME}.repl.co" if REPLIT_APP_NAME and REPLIT_USERNAME else False
 PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))
 
-LOG_STR = "Heroku is {0}\n".format("Enabled" if HEROKU else "Disabled")
+LOG_STR = "\nHeroku is {0}\n".format("Enabled" if HEROKU else "Disabled")
+LOG_STR += "Users {0} use this bot".format("cannot" if IS_PRIVATE else "can")

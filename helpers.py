@@ -1,5 +1,4 @@
 # temp db for banned 
-
 import database
 from config import ADMINS, CHANNEL_ID, CHANNELS, REPLIT, PING_INTERVAL
 
@@ -8,13 +7,12 @@ import logging
 import aiohttp
 import traceback
 
-
-class temp(object): # Eva Maria Idea of Temping
+class temp(object): # TrojanZ Idea of Temping
     BOT_USERNAME = None
     CANCEL = False
     FIRST_NAME = None
     START_TIME = None
-
+    BANNED_USERS = []
 
 class AsyncIter:    
     def __init__(self, items):    
@@ -58,8 +56,6 @@ class Helpers:
         async for i in AsyncIter(ADMINS):
             x+= f"~ `{i}`\n"
         return x
-
-
 
 async def ping_server():
     sleep_time = PING_INTERVAL

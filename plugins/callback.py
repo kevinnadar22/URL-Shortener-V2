@@ -23,8 +23,6 @@ from utils import get_me_button
 logger = logging.getLogger(__name__)
 
 
-
-
 @Client.on_callback_query(filters.regex('sub_refresh'))
 async def refresh_cb(c, m):
     owner = c.owner
