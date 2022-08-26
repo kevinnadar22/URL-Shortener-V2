@@ -84,7 +84,8 @@ class Bot(Client):
 
         if not await db.get_bot_stats():
             await db.create_stats()
-            
+        
+        logging.info(LOG_STR)
         await broadcast_admins(self, '** Bot started successfully **')
         logging.info('Bot started')
 
