@@ -39,7 +39,7 @@ FORWARD_MESSAGE = is_enabled((os.environ.get('FORWARD_MESSAGE', "False")), False
 #  Heroku Config for Dynos stats
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None) # your heroku account api from https://dashboard.heroku.com/account/applications
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None) # your heroku app name
-HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME and ".heroku" in os.environ.get("PYTHONHOME", "") else False # True or False
+HEROKU = True if HEROKU_API_KEY and HEROKU_APP_NAME else False # True or False
 
 #  Replit Config for Hosting in Replit
 REPLIT_USERNAME = os.environ.get("REPLIT_USERNAME", None) # your replit username 
@@ -47,4 +47,4 @@ REPLIT_APP_NAME = os.environ.get("REPLIT_APP_NAME", None) # your replit app name
 REPLIT = f"https://{REPLIT_APP_NAME.lower()}.{REPLIT_USERNAME}.repl.co" if REPLIT_APP_NAME and REPLIT_USERNAME else False
 PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))
 
-LOG_STR = "\nHeroku is {0}\n".format("Enabled" if HEROKU else "Disabled")
+LOG_STR = "Heroku is {0}\n".format("Enabled" if HEROKU else "Disabled")

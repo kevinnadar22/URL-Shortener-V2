@@ -209,7 +209,7 @@ async def extract_link(string):
 
 # todo -> bypass long droplink url
 async def droplink_bypass_handler(text):
-    if LINK_BYPASS and not HEROKU:
+    if LINK_BYPASS:
         links = re.findall(r'https?://droplink.co[^\s"*<>`()]+', text)	
         for link in links:
             bypassed_link = await droplink_bypass(link)
