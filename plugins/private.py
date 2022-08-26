@@ -1,6 +1,4 @@
-
 import logging
-
 from config import LOG_CHANNEL
 from database.users import get_user
 from pyrogram import Client, filters
@@ -11,14 +9,12 @@ from plugins.filters import private_use
 
 logger = logging.getLogger(__name__)
 
-
 # Private Chat
 @Client.on_message(filters.private & filters.incoming)
 @private_use
 async def private_link_handler(c, message:Message):
     try:
         user = await get_user(message.from_user.id)
-        if user["banned"]:return await message.reply_text("You are banned to use this bot.")
         if message.text and message.text.startswith('/'):return
         
         if message.text:

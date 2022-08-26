@@ -53,6 +53,7 @@ async def ban_cb_handler(c:Client,m: CallbackQuery):
 
         if user:
             if not user["banned"]:
+                temp.BANNED_USERS.append(int(user_id))
                 await update_user_info(user_id, {"banned": True})
                 try:
                     owner = await c.get_users(int(OWNER_ID))
@@ -81,6 +82,7 @@ async def unban_cb_handler(c,m: CallbackQuery):
 
     if user:
         if user["banned"]:
+            temp.BANNED_USERS.remove(int(user_id))
             await update_user_info(user_id, {"banned": False})
             try:
                 await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")

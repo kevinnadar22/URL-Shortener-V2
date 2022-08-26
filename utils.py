@@ -95,7 +95,7 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
                     custom_alias = custom_alias.group(0).split('|')
                     alias = custom_alias[1].strip()
                     url = custom_alias[0].strip()
-                    shortenedText = await method_func(url, alias)
+                    shortenedText = await method_func(user, url, alias=alias)
         
         if edit_caption:
             return await message.edit(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup)
@@ -136,12 +136,12 @@ async def reply_markup_handler(message:Message, method_func, user):
         return reply_markup
 
 
-async def mdisk_api_handler(user, text):
+async def mdisk_api_handler(user, text, alias=""):
     api_key = user["mdisk_api"]
     mdisk = Mdisk(api_key)
     return await mdisk.convert_from_text(text)
 
-async def replace_link(user, text, x=""):
+async def replace_link(user, text, alias=""):
 
     api_key = user["shortener_api"]
     base_site = user["base_site"]
@@ -165,7 +165,7 @@ async def replace_link(user, text, x=""):
             include = user["include_domain"]
             domain = [domain.strip() for domain in include]
             if any(i in link for i in domain):
-                short_link = await shortzy.convert(link, x)
+                short_link = await shortzy.convert(link, alias)
                 text = text.replace(long_url, short_link)
 
         # Exclude domain validation 
@@ -175,10 +175,10 @@ async def replace_link(user, text, x=""):
             if any(i in link for i in domain):
                 pass
             else:
-                short_link = await shortzy.convert(link, x)
+                short_link = await shortzy.convert(link, alias)
                 text = text.replace(long_url, short_link)
         else:
-            short_link = await shortzy.convert(link, x)
+            short_link = await shortzy.convert(link, alias)
             text = text.replace(long_url, short_link)
 
     return text
@@ -186,7 +186,7 @@ async def replace_link(user, text, x=""):
 ####################  Mdisk and Droplink  ####################
 async def mdisk_droplink_convertor(user, text, alias=""):
     links = await mdisk_api_handler(user, text)
-    links = await replace_link(user, links, x=alias)
+    links = await replace_link(user, links, alias=alias)
     return links
 
 ####################  Replace Username  ####################

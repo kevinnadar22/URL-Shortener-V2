@@ -69,7 +69,7 @@ async def about_command(c, m: Message):
 
     bot = await c.get_me()
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=reply_markup, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=reply_markup)
     await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')),reply_markup=reply_markup , disable_web_page_preview=True)
 
 
@@ -410,29 +410,26 @@ async def exclude_domain_handler(bot, m:Message):
 async def banned_user_handler(c:Client, m:Message):
     try:
         if len(m.command) == 1:
-                banned_users = await filter_users({"banned": True})
                 x = ""
-                async for user in banned_users:
-                    x += f"- `{user['user_id']}`\n"
+                for user in temp.BANNED_USERS:
+                    x += f"- `{user}`\n"
 
                 txt = BANNED_USER_TXT.format(users=x if x else "None")
                 await m.reply(txt)
-
         elif len(m.command) == 2:
             user_id = m.command[1]
             user = await get_user(int(user_id))
-
             if user:
                 if not user["banned"]:
                     await update_user_info(user_id, {"banned": True})
                     try:
+                        temp.BANNED_USERS.append(int(user_id))
                         await c.send_message(user_id, "You are now banned from the bot by Admin")
                     except Exception as e:
                         pass
                     await m.reply(f"User [`{user_id}`] has been banned from the bot. To Unban. `/unban {user_id}`")
                 else:
                     await m.reply("User is already banned")
-
             else:
                 await m.reply("User doesn't exist")
     except Exception as e:
@@ -443,10 +440,9 @@ async def banned_user_handler(c:Client, m:Message):
 async def unban_user_handler(c:Client, m:Message):
     try:
         if len(m.command) == 1:
-                banned_users = await filter_users({"banned": True})
                 x = ""
-                async for user in banned_users:
-                    x += f"- `{user['user_id']}`\n"
+                for user in temp.BANNED_USERS:
+                    x += f"- `{user}`\n"
 
                 txt = BANNED_USER_TXT.format(users=x if x else "None")
                 await m.reply(txt)
@@ -459,6 +455,7 @@ async def unban_user_handler(c:Client, m:Message):
                 if user["banned"]:
                     await update_user_info(user_id, {"banned": False})
                     try:
+                        temp.BANNED_USERS.remove(int(user_id))
                         await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")
                     except Exception as e:
                         pass
