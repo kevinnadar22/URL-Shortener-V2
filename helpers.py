@@ -1,11 +1,13 @@
 # temp db for banned 
-import database
-from config import ADMINS, CHANNEL_ID, CHANNELS, REPLIT, PING_INTERVAL
-
 import asyncio
 import logging
-import aiohttp
 import traceback
+
+import aiohttp
+
+import database
+from config import ADMINS, CHANNEL_ID, CHANNELS, PING_INTERVAL, REPLIT
+
 
 class temp(object): # TrojanZ Idea of Temping
     BOT_USERNAME = None
@@ -25,9 +27,8 @@ class AsyncIter:
     async def __anext__(self):
         try:
             return next(self.iter)
-        except StopIteration:
-            raise StopAsyncIteration
-
+        except StopIteration as e:
+            raise StopAsyncIteration from e
 
 class Helpers:
     def __init__(self):
@@ -36,17 +37,15 @@ class Helpers:
     @property
     async def user_method(self):
         user_method = await database.db.get_bot_method(self.username)
-        if user_method:
-            return user_method
-        return "None"
+        return user_method or "None"
 
 
     @property
     async def get_channels(self):
-        x=''
-        if CHANNELS:   
+        if CHANNELS:
+            x = ''
             async for i in AsyncIter(CHANNEL_ID):
-                x+= f"~ `{i}`\n"
+                x += f"~ `{i}`\n"
             return x
         return "Channels is set to False in heroku Var"
 
@@ -62,11 +61,9 @@ async def ping_server():
     while True:
         await asyncio.sleep(sleep_time)
         try:
-            async with aiohttp.ClientSession(
-                timeout=aiohttp.ClientTimeout(total=10)
-            ) as session:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
                 async with session.get(REPLIT) as resp:
-                    logging.info("Pinged server with response: {}".format(resp.status))
+                    logging.info(f"Pinged server with response: {resp.status}")
         except TimeoutError:
             logging.warning("Couldn't connect to the site URL..!")
         except Exception:

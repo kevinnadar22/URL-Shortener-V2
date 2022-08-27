@@ -19,7 +19,7 @@ async def forcesub(c:Client, m:Message):
                return
         except UserNotParticipant:
             buttons = [[InlineKeyboardButton(text='Updates Channel 🔖', url=invite_link.invite_link)]]
-            buttons.append([InlineKeyboardButton('🔄 Refresh', callback_data=f'sub_refresh')])
+            buttons.append([InlineKeyboardButton('🔄 Refresh', callback_data='sub_refresh')])
 
             await m.reply_text(
                 f"Hey {m.from_user.mention(style='md')} you need join My updates channel in order to use me 😉\n\n"

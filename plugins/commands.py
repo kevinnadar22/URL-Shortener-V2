@@ -1,12 +1,12 @@
+import contextlib
 import datetime
-import json
 import logging
 
 from validators import domain
 from config import (ADMINS, HEROKU, HEROKU_API_KEY, HEROKU_APP_NAME,
                     IS_PRIVATE, LOG_CHANNEL, SOURCE_CODE, WELCOME_IMAGE)
 from database import db
-from database.users import (filter_users, get_user, is_user_exist,
+from database.users import (get_user, is_user_exist,
                             total_users_count, update_user_info)
 from helpers import temp
 from pyrogram import Client, filters
@@ -20,15 +20,11 @@ logger = logging.getLogger(__name__)
 user_commands = ["mdisk_api", "shortener_api", "header", "footer", "username", "banner_image", "base_site", "me"]
 avl_web = ["droplink.co", "gplinks.in", "tnlink.in", "za.gl", "du-link.in", "viplink.in", "shorturllink.in", "shareus.in", "earnspace.in",]
 
-avl_web1 = ""
-
-for i in avl_web:
-    avl_web1+= f"- {i}\n"
+avl_web1 = "".join(f"- {i}\n" for i in avl_web)
 
 @Client.on_message(filters.command('start') & filters.private & filters.incoming)
 @private_use
 async def start(c:Client, m:Message):
-    
     NEW_USER_REPLY_MARKUP = [
                 [
                     InlineKeyboardButton('Ban', callback_data=f'ban#{m.from_user.id}'),
@@ -73,36 +69,26 @@ async def about_command(c, m: Message):
     await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')),reply_markup=reply_markup , disable_web_page_preview=True)
 
 
-@Client.on_message(filters.command('method') &  filters.private)
+@Client.on_message(filters.command('method') & filters.private)
 @private_use
-async def method_handler(c:Client, m:Message):
+async def method_handler(c: Client, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
-
     if len(cmd) == 1:
-        s = METHOD_MESSAGE.format(method=user["method"], shortener=user["base_site"],)
+        s = METHOD_MESSAGE.format(method=user["method"], shortener=user["base_site"])
         return await m.reply(s, reply_markup=METHOD_REPLY_MARKUP)
-    elif len(cmd) == 2:    
+    elif len(cmd) == 2:
         method = cmd[1]
-        if method in ["mdisk", "mdlink", "shortener"]:
-            await update_user_info(user_id, {"method": method })
-            await m.reply("Method updated successfully to " + method)
-        else:
+        if method not in ["mdisk", "mdlink", "shortener"]:
             return await m.reply(METHOD_MESSAGE.format(method=user["method"]))
+        await update_user_info(user_id, {"method": method})
+        await m.reply(f"Method updated successfully to {method}")
 
 @Client.on_message(filters.command('restart') & filters.user(ADMINS) & filters.private)
 @private_use
-async def restart_handler(c: Client, m:Message):
-    RESTARTE_MARKUP = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton('Sure', callback_data=f'restart'),
-        InlineKeyboardButton('Disable', callback_data=f'delete'),
-
-    ],
-
-])
-
+async def restart_handler(c: Client, m: Message):
+    RESTARTE_MARKUP = InlineKeyboardMarkup([[InlineKeyboardButton('Sure', callback_data='restart'), InlineKeyboardButton('Disable', callback_data='delete')]])
     await m.reply("Are you sure you want to restart / re-deploy the server?", reply_markup=RESTARTE_MARKUP)
 
 
@@ -153,110 +139,98 @@ async def log_file(bot, message):
 
 @Client.on_message(filters.command('mdisk_api') & filters.private)
 @private_use
-async def mdisk_api_handler(bot, message:Message):
+async def mdisk_api_handler(bot, message: Message):
     user_id = message.from_user.id
     user = await get_user(user_id)
     cmd = message.command
-
     if len(cmd) == 1:
         return await message.reply(MDISK_API_MESSAGE.format(user["mdisk_api"]))
-
-    elif len(cmd) == 2:    
+    elif len(cmd) == 2:
         api = cmd[1].strip()
         await update_user_info(user_id, {"mdisk_api": api})
-        await message.reply("Mdisk API updated successfully to " + api)
+        await message.reply(f"Mdisk API updated successfully to {api}")
 
 @Client.on_message(filters.command('shortener_api') & filters.private)
 @private_use
-async def shortener_api_handler(bot, m:Message):
+async def shortener_api_handler(bot, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
-
     if len(cmd) == 1:
         s = SHORTENER_API_MESSAGE.format(base_site=user["base_site"], shortener_api=user["shortener_api"])
 
         return await m.reply(s)
-    elif len(cmd) == 2:    
+    elif len(cmd) == 2:
         api = cmd[1].strip()
         await update_user_info(user_id, {"shortener_api": api})
-        await m.reply("Shortener API updated successfully to " + api)
+        await m.reply(f"Shortener API updated successfully to {api}")
 
 @Client.on_message(filters.command('header') & filters.private)
 @private_use
-async def header_handler(bot, m:Message):
+async def header_handler(bot, m: Message):
     user_id = m.from_user.id
     cmd = m.command
     user = await get_user(user_id)
-
-    if m.reply_to_message:    
+    if m.reply_to_message:
         header_text = m.reply_to_message.text.html
         await update_user_info(user_id, {"header_text": header_text})
         await m.reply("Header Text Updated Successfully")
+    elif "remove" in cmd:
+        await update_user_info(user_id, {"header_text": ""})
+        return await m.reply("Header Text Successfully Removed")
     else:
-        if "remove" in cmd:
-            await update_user_info(user_id, {"header_text": ""})
-            return await m.reply("Header Text Successfully Removed")
-        else:
-            return await m.reply(HEADER_MESSAGE + "\n\nCurrent Header Text: " + user["header_text"].replace(r"\n", "\n"))
+        return await m.reply(HEADER_MESSAGE + "\n\nCurrent Header Text: " + user["header_text"].replace("\n", "\n"))
 
 @Client.on_message(filters.command('footer') & filters.private)
 @private_use
-async def footer_handler(bot, m:Message):
+async def footer_handler(bot, m: Message):
     user_id = m.from_user.id
     cmd = m.command
     user = await get_user(user_id)
-
     if not m.reply_to_message:
-        if "remove" in cmd:
-            await update_user_info(user_id, {"footer_text": ""})
-            return await m.reply("Footer Text Successfully Removed")
-        else:
-            return await m.reply(FOOTER_MESSAGE + "\n\nCurrent Footer Text: " + user["footer_text"].replace(r"\n", "\n"))
-    elif m.reply_to_message.text:    
+        if "remove" not in cmd:
+            return await m.reply(FOOTER_MESSAGE + "\n\nCurrent Footer Text: " + user["footer_text"].replace("\n", "\n"))
+
+        await update_user_info(user_id, {"footer_text": ""})
+        return await m.reply("Footer Text Successfully Removed")
+    elif m.reply_to_message.text:
         footer_text = m.reply_to_message.text.html
         await update_user_info(user_id, {"footer_text": footer_text})
         await m.reply("Footer Text Updated Successfully")
 
 @Client.on_message(filters.command('username') & filters.private)
 @private_use
-async def username_handler(bot, m:Message):
+async def username_handler(bot, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
-
     if len(cmd) == 1:
-        username = user["username"] if user["username"] else None
+        username = user["username"] or None
         return await m.reply(USERNAME_TEXT.format(username=username))
-    elif len(cmd) == 2:    
+    elif len(cmd) == 2:
         if "remove" in cmd:
             await update_user_info(user_id, {"username": ""})
             return await m.reply("Username Successfully Removed")
         else:
             username = cmd[1].strip().replace("@", "")
             await update_user_info(user_id, {"username": username})
-            await m.reply("Username updated successfully to " + username)
+            await m.reply(f"Username updated successfully to {username}")
 
 
 @Client.on_message(filters.command('banner_image') & filters.private)
 @private_use
-async def banner_image_handler(bot, m:Message):
+async def banner_image_handler(bot, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
-
     if len(cmd) == 1:
-        if m.reply_to_message and m.reply_to_message.photo:
-            # Getting the file_id of the photo that was sent to the bot.
-            fileid = m.reply_to_message.photo.file_id
-            await update_user_info(user_id, {"banner_image": fileid})
-            return await m.reply_photo(fileid, caption="Banner Image updated successfully")
-        else:
-            if user["banner_image"]:
-                return await m.reply_photo(user["banner_image"], caption=BANNER_IMAGE)
-            else:
-                return await m.reply("Current Banner Image URL: None\n" + BANNER_IMAGE)
-    elif len(cmd) == 2:    
+        if not m.reply_to_message or not m.reply_to_message.photo:
+            return await m.reply_photo(user["banner_image"], caption=BANNER_IMAGE) if user["banner_image"] else await m.reply("Current Banner Image URL: None\n" + BANNER_IMAGE)
+
+        fileid = m.reply_to_message.photo.file_id
+        await update_user_info(user_id, {"banner_image": fileid})
+        return await m.reply_photo(fileid, caption="Banner Image updated successfully")
+    elif len(cmd) == 2:
         if "remove" in cmd:
             await update_user_info(user_id, {"banner_image": ""})
             return await m.reply("Banner Image Successfully Removed")
@@ -266,6 +240,7 @@ async def banner_image_handler(bot, m:Message):
             if valid_image_url:
                 await update_user_info(user_id, {"banner_image": image_url})
                 return await m.reply_photo(image_url, caption="Banner Image updated successfully")
+
             else:
                 return await m.reply_text("Image URL is Invalid")
 
@@ -315,119 +290,94 @@ async def me_handler(bot, m:Message):
 #  Todo
 @Client.on_message(filters.command('include_domain') & filters.private)
 @private_use
-async def include_domain_handler(bot, m:Message):
+async def include_domain_handler(bot, m: Message):
     user = await get_user(m.from_user.id)
     inc_domain = user["include_domain"]
     tdl = ""
     if inc_domain:
         for i in inc_domain:
-            tdl+= f"- `{i}`\n"
+            tdl += f"- `{i}`\n"
     else:
         tdl = "None\n"
-
     if len(m.command) == 1:
         return await m.reply(INCLUDE_DOMAIN_TEXT.format(tdl))
-    else:
-        try:
-            cmd = m.command
-            cmd.remove('include_domain')
-
-            if "remove_all" in cmd:
-                domain_list = []
-
-            elif "remove" in cmd:
-
-                cmd.remove('remove')
-                domain_list_cmd = ("".join(cmd)).strip().split(",") 
-
-                for i in list(domain_list_cmd):
-                    try:
-                        inc_domain.remove(i)
-                    except:
-                        pass
-                
-                domain_list = list(set(list(inc_domain)))
-
-            else:
-                domain_list_cmd = ("".join(cmd)).strip().split(",") 
-                domain_list = list(set(domain_list_cmd+list(inc_domain)))
-
-            x = await update_user_info(m.from_user.id, {"include_domain":domain_list}, )
-            return await m.reply("Updated include domain list successfully") 
-        except Exception as e:
-            logging.exception(e, exc_info=True)
-            return await m.reply("Some error updating include domain list")
+    try:
+        cmd = m.command
+        cmd.remove('include_domain')
+        if "remove_all" in cmd:
+            domain_list = []
+        elif "remove" in cmd:
+            cmd.remove('remove')
+            domain_list_cmd = "".join(cmd).strip().split(",")
+            for i in list(domain_list_cmd):
+                with contextlib.suppress(Exception):
+                    inc_domain.remove(i)
+            domain_list = list(set(list(inc_domain)))
+        else:
+            domain_list_cmd = "".join(cmd).strip().split(",")
+            domain_list = list(set(domain_list_cmd + list(inc_domain)))
+        x = await update_user_info(m.from_user.id, {"include_domain": domain_list})
+        return await m.reply("Updated include domain list successfully")
+    except Exception as e:
+        logging.exception(e, exc_info=True)
+        return await m.reply("Some error updating include domain list")
 
 
 @Client.on_message(filters.command('exclude_domain') & filters.private)
 @private_use
-async def exclude_domain_handler(bot, m:Message):
+async def exclude_domain_handler(bot, m: Message):
     user = await get_user(m.from_user.id)
     ex_domain = user["exclude_domain"]
     tdl = ""
     if ex_domain:
         for i in ex_domain:
-            tdl+= f"- `{i}`\n"
+            tdl += f"- `{i}`\n"
     else:
         tdl = "None\n"
-
     if len(m.command) == 1:
         return await m.reply(EXCLUDE_DOMAIN_TEXT.format(tdl))
-    else:
-        try:
-            cmd = m.command
-            cmd.remove('exclude_domain')
+    try:
+        cmd = m.command
+        cmd.remove('exclude_domain')
+        if "remove_all" in cmd:
+            domain_list = []
+        elif "remove" in cmd:
+            cmd.remove('remove')
+            domain_list_cmd = "".join(cmd).strip().split(",")
+            for i in list(domain_list_cmd):
+                with contextlib.suppress(Exception):
+                    ex_domain.remove(i)
 
-            if "remove_all" in cmd:
-                domain_list = []
-
-            elif "remove" in cmd:
-
-                cmd.remove('remove')
-                domain_list_cmd = ("".join(cmd)).strip().split(",") 
-
-                for i in list(domain_list_cmd):
-                    try:
-                        ex_domain.remove(i)
-                    except:
-                        pass
-                
-                domain_list = list(set(list(ex_domain)))
-
-            else:
-                domain_list_cmd = ("".join(cmd)).strip().split(",") 
-                domain_list = list(set(domain_list_cmd+list(ex_domain)))
-
-            x = await update_user_info(m.from_user.id, {"exclude_domain":domain_list}, )
-            return await m.reply("Updated exclude domain list successfully") 
-        except Exception as e:
-            logging.exception(e, exc_info=True)
-            return await m.reply("Some error updating exclude domain list")
+            domain_list = list(set(list(ex_domain)))
+        else:
+            domain_list_cmd = "".join(cmd).strip().split(",")
+            domain_list = list(set(domain_list_cmd + list(ex_domain)))
+        x = await update_user_info(m.from_user.id, {"exclude_domain": domain_list})
+        return await m.reply("Updated exclude domain list successfully")
+    except Exception as e:
+        logging.exception(e, exc_info=True)
+        return await m.reply("Some error updating exclude domain list")
 
 
 @Client.on_message(filters.command('ban') & filters.private & filters.user(ADMINS))
 @private_use
-async def banned_user_handler(c:Client, m:Message):
+async def banned_user_handler(c: Client, m: Message):
     try:
         if len(m.command) == 1:
-                x = ""
-                for user in temp.BANNED_USERS:
-                    x += f"- `{user}`\n"
-
-                txt = BANNED_USER_TXT.format(users=x if x else "None")
-                await m.reply(txt)
+            x = "".join(f"- `{user}`\n" for user in temp.BANNED_USERS)
+            txt = BANNED_USER_TXT.format(users=x or "None")
+            await m.reply(txt)
         elif len(m.command) == 2:
             user_id = m.command[1]
             user = await get_user(int(user_id))
             if user:
                 if not user["banned"]:
                     await update_user_info(user_id, {"banned": True})
-                    try:
+                    with contextlib.suppress(Exception):
                         temp.BANNED_USERS.append(int(user_id))
                         await c.send_message(user_id, "You are now banned from the bot by Admin")
-                    except Exception as e:
-                        pass
                     await m.reply(f"User [`{user_id}`] has been banned from the bot. To Unban. `/unban {user_id}`")
+
                 else:
                     await m.reply("User is already banned")
             else:
@@ -437,32 +387,26 @@ async def banned_user_handler(c:Client, m:Message):
 
 @Client.on_message(filters.command('unban') & filters.private & filters.user(ADMINS))
 @private_use
-async def unban_user_handler(c:Client, m:Message):
+async def unban_user_handler(c: Client, m: Message):
     try:
         if len(m.command) == 1:
-                x = ""
-                for user in temp.BANNED_USERS:
-                    x += f"- `{user}`\n"
-
-                txt = BANNED_USER_TXT.format(users=x if x else "None")
-                await m.reply(txt)
-
+            x = "".join(f"- `{user}`\n" for user in temp.BANNED_USERS)
+            txt = BANNED_USER_TXT.format(users=x or "None")
+            await m.reply(txt)
         elif len(m.command) == 2:
             user_id = m.command[1]
             user = await get_user(int(user_id))
-
             if user:
                 if user["banned"]:
                     await update_user_info(user_id, {"banned": False})
-                    try:
+                    with contextlib.suppress(Exception):
                         temp.BANNED_USERS.remove(int(user_id))
                         await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")
-                    except Exception as e:
-                        pass
+
                     await m.reply(f"User [`{user_id}`] has been unbanned from the bot. To ban. `/ban {user_id}`")
+
                 else:
                     await m.reply("User is not banned yet")
-
             else:
                 await m.reply("User doesn't exist")
     except Exception as e:
@@ -471,36 +415,19 @@ async def unban_user_handler(c:Client, m:Message):
 
 @Client.on_message(filters.command('info') & filters.private & filters.user(ADMINS))
 @private_use
-async def get_user_info_handler(c:Client, m:Message):
+async def get_user_info_handler(c: Client, m: Message):
     try:
-        if len(m.command) == 2:
-            user = await get_user(int(m.command[1]))
-            if user:
-                res = USER_ABOUT_MESSAGE.format(
-                            base_site=user["base_site"], 
-                            method=user["method"], 
-                            shortener_api='This is something secret', 
-                            mdisk_api='This is something secret',
-                            username=user["username"],
-                            header_text=user["header_text"].replace(r'\n', '\n') if user["header_text"] else None,
-                            footer_text=user["footer_text"].replace(r'\n', '\n') if user["footer_text"] else None,
-                            banner_image=user["banner_image"])
-                
-                res = f'User: `{user["user_id"]}`\n{res}'
+        if len(m.command) != 2:
+            return await m.reply_text("Wrong Input!!\n`/info user_id`")
+        user = await get_user(int(m.command[1]))
+        if not user:
+            return await m.reply_text("User doesn't exist")
+        res = USER_ABOUT_MESSAGE.format(base_site=user["base_site"], method=user["method"], shortener_api='This is something secret', mdisk_api='This is something secret', username=user["username"], header_text=user["header_text"].replace('\n', '\n') if user["header_text"] else None, footer_text=user["footer_text"].replace('\n', '\n') if user["footer_text"] else None, banner_image=user["banner_image"])
 
-                reply_markup = InlineKeyboardMarkup([
-                        [
-                        InlineKeyboardButton('Ban', callback_data=f'ban#{user["user_id"]}'),
-                        InlineKeyboardButton('Close', callback_data='delete')
-                    ],
+        res = f'User: `{user["user_id"]}`\n{res}'
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('Ban', callback_data=f'ban#{user["user_id"]}'), InlineKeyboardButton('Close', callback_data='delete')]])
 
-                ])
-                return await m.reply_text(res, reply_markup=reply_markup, quote=True)
-            else:
-                return await m.reply_text("User doesn't exist")
-
-        else:
-            return await m.reply_text("`/info user_id`")
+        return await m.reply_text(res, reply_markup=reply_markup, quote=True)
     except Exception as e:
         await m.reply_text(e)
         logging.error(e)

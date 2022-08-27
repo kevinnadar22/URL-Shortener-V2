@@ -14,8 +14,7 @@ class Database:
         self.users = self.db['users']
 
     async def get_db_size(self):
-        size = (await self.db.command("dbstats"))['dataSize']
-        return size
+        return (await self.db.command("dbstats"))['dataSize']
     
     async def get_bot_stats(self):
         return await self.stats.find_one({"bot": helpers.temp.BOT_USERNAME})

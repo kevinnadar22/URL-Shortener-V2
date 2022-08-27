@@ -55,13 +55,10 @@ InlineKeyboardButton('Cancel 🔐', callback_data='cancel')
 
         return await m.reply(text=f"Are you sure you want to batch short?\n\nChannel: {channel_id}", reply_markup=InlineKeyboardMarkup(buttons))
 
-
 @Client.on_callback_query(filters.regex(r'^cancel') | filters.regex(r'^batch') & filters.user(ADMINS))
 async def batch_handler(c:Client, m:CallbackQuery):
-
-    user_id = m.from_user.id    
+    user_id = m.from_user.id
     user = await get_user(user_id)
-
     user_method = user["method"]
 
     if m.data == "cancel":
@@ -70,12 +67,13 @@ async def batch_handler(c:Client, m:CallbackQuery):
     elif m.data.startswith('batch'): 
         if lock.locked():
             return await m.answer('Wait until previous process complete.', show_alert=True)
-            
+
         channel_id = int(m.data.split('#')[1])
         try:
             txt = await c.send_message(channel_id, ".")
             id = txt.id
             await txt.delete()
+            
         except ChatWriteForbidden:
             return await m.message.edit("Bot is not an admin in the given channel")
         except PeerIdInvalid:
@@ -85,9 +83,7 @@ async def batch_handler(c:Client, m:CallbackQuery):
             return await m.message.edit(e)
 
         start_time = datetime.datetime.now()
-
         txt = await m.message.edit(text=f"Batch Shortening Started!\n\n Channel: {channel_id}\n\nTo Cancel /cancel",)
-
         logger.info(f"Batch Shortening Started for {channel_id}")
 
         success = 0
@@ -96,35 +92,34 @@ async def batch_handler(c:Client, m:CallbackQuery):
         empty=0
 
         total_messages = (range(1,id))
-
         try:
             for i in range(0, len(total_messages), 200):
                 channel_posts = AsyncIter(await c.get_messages(channel_id, total_messages[i:i+200]))
                 temp.CANCEL = False
                 async with lock:
-                        async for message in channel_posts:
-                            if temp.CANCEL == True:
-                                break
+                    async for message in channel_posts:
+                        if temp.CANCEL:
+                            break
 
-                            if message.media or message.text:
-                                try:
-                                    await main_convertor_handler(message=message, type=user_method, edit_caption=True, user=user)
-                                    success += 1
-                                    await update_stats(message, user_method)
-                                except Exception as e:
-                                    logger.error(e)
-                                    fail+=1
-                                await asyncio.sleep(1)
-                            else:
-                                empty += 1
-                            total+=1
+                        if message.media or message.text:
+                            try:
+                                await main_convertor_handler(message=message, type=user_method, edit_caption=True, user=user)
+                                success += 1
+                                await update_stats(message, user_method)
+                            except Exception as e:
+                                logger.error(e)
+                                fail+=1
+                            await asyncio.sleep(1)
+                        else:
+                            empty += 1
+                        total+=1
 
-                            if total % 10 == 0:
-                                msg = f"Batch Shortening in Process !\n\nTotal: {total}\nSuccess: {success}\nFailed: {fail}\nEmpty: {empty}\n\nTo cancel the batch: /cancel"
-                                await txt.edit((msg))
+                        if total % 10 == 0:
+                            msg = f"Batch Shortening in Process !\n\nTotal: {total}\nSuccess: {success}\nFailed: {fail}\nEmpty: {empty}\n\nTo cancel the batch: /cancel"
+                            await txt.edit((msg))
         except Exception as e:
             logger.error(e)
-            await m.message.reply("Error Occured while processing batch: `%s`" % e.message)
+            await m.message.reply(f"Error Occured while processing batch: `{e.message}`")
         finally:
             end_time = datetime.datetime.now()
             await asyncio.sleep(10)
@@ -140,10 +135,8 @@ async def batch_handler(c:Client, m:CallbackQuery):
 async def stop_button(c, m):
     if m.from_user.id in ADMINS:
         temp.CANCEL = True
-        msg = await c.send_message(
-            text="<i>Trying To Stoping.....</i>",
-            chat_id=m.chat.id
-        )
+        msg = await c.send_message(text="<i>Trying To Stoping.....</i>", chat_id=m.chat.id)
+
         await asyncio.sleep(5)
         await msg.edit("Batch Shortening Stopped Successfully 👍")
-        logger.info(f"Batch Shortening Stopped Successfully 👍")
+        logger.info("Batch Shortening Stopped Successfully 👍")

@@ -158,7 +158,7 @@ You can deploy this bot anywhere.
 
 ## Tech Stack
 
-**Language:** [Python](https://www.python.org/) 3.9.9
+**Language:** [Python](https://www.python.org/) 3.10.2
 
 **Library:** [Pyrogram](https://github.com/pyrogram/pyrogram) 2.0.30
 

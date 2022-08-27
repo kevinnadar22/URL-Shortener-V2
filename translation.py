@@ -205,6 +205,8 @@ Ex: `/mdisk_api 6LZq851sXoPHugiKQq`
             
 Others Mdisk Links will be automatically changed to the API of this Mdisk account
 
+Get your Mdisk API from @VideoToolMoneyTreebot
+
 Current Mdisk API: `{}`"""
 
 SHORTENER_API_MESSAGE = """To add or update your Shortner Website API, 

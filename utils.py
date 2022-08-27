@@ -82,21 +82,16 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
             fileid = banner_image
             if edit_caption:
                 fileid = InputMediaPhoto(banner_image, caption=shortenedText)
-        
-    if message.text:
-        if user_method in ["shortener", "mdlink"] :
-            if '|' not in caption:
-                pass
-            else:
-                regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))\s\|\s([a-zA-Z0-9_]){,30}"
-                custom_alias = re.match(regex, caption)
 
-                if custom_alias:
-                    custom_alias = custom_alias.group(0).split('|')
-                    alias = custom_alias[1].strip()
-                    url = custom_alias[0].strip()
-                    shortenedText = await method_func(user, url, alias=alias)
-        
+    if message.text:
+        if user_method in ["shortener", "mdlink"] and '|' in caption:
+            regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))\s\|\s([a-zA-Z0-9_]){,30}"
+            if custom_alias := re.match(regex, caption):
+                custom_alias = custom_alias[0].split('|')
+                alias = custom_alias[1].strip()
+                url = custom_alias[0].strip()
+                shortenedText = await method_func(user, url, alias=alias)
+
         if edit_caption:
             return await message.edit(shortenedText, disable_web_page_preview=True, reply_markup=reply_markup)
 
@@ -113,7 +108,7 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
         if message.document:
             return await message.reply_document(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True, parse_mode=ParseMode.HTML)
 
-        
+
         elif message.photo:
             return await message.reply_photo(fileid, caption=shortenedText, reply_markup=reply_markup, quote=True, parse_mode=ParseMode.HTML)
 
@@ -142,66 +137,48 @@ async def mdisk_api_handler(user, text, alias=""):
     return await mdisk.convert_from_text(text)
 
 async def replace_link(user, text, alias=""):
-
     api_key = user["shortener_api"]
     base_site = user["base_site"]
-
     shortzy = Shortzy(api_key, base_site)
-    
     links = await extract_link(text)
-
     for link in links:
-
-        https  = link.split(":")[0]
-
-        if "http" == https:
+        https = link.split(":")[0]
+        if https == "http":
             https = "https"
             link = link.replace("http", https)
-
         long_url = link
-
-        # Include domain validation 
         if user["include_domain"]:
             include = user["include_domain"]
             domain = [domain.strip() for domain in include]
             if any(i in link for i in domain):
                 short_link = await shortzy.convert(link, alias)
                 text = text.replace(long_url, short_link)
-
-        # Exclude domain validation 
         elif user["exclude_domain"]:
             exclude = user["exclude_domain"]
             domain = [domain.strip() for domain in exclude]
-            if any(i in link for i in domain):
-                pass
-            else:
+            if all(i not in link for i in domain):
                 short_link = await shortzy.convert(link, alias)
                 text = text.replace(long_url, short_link)
         else:
             short_link = await shortzy.convert(link, alias)
             text = text.replace(long_url, short_link)
-
     return text
 
-####################  Mdisk and Droplink  ####################
+# Mdisk and Droplink  
 async def mdisk_droplink_convertor(user, text, alias=""):
     links = await mdisk_api_handler(user, text)
     links = await replace_link(user, links, alias=alias)
     return links
 
-####################  Replace Username  ####################
+# Replace Username  
 async def replace_username(text, username):
     if username:
-        usernames = re.findall("([@#][A-Za-z0-9_]+)", text)
+        usernames = re.findall("([@][A-Za-z0-9_]+)", text)
         for i in usernames:
-            text = text.replace(i, f"@{username}")
-        pvt_links = re.findall('https?://t.me+.[^\s]*', text)
-        for i in pvt_links:
             text = text.replace(i, f"@{username}")
     return text
     
-
-#####################  Extract all urls in a string ####################
+# Extract all urls in a string 
 async def extract_link(string):
     regex = r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))"""
     urls = re.findall(regex, string)
@@ -217,34 +194,25 @@ async def droplink_bypass_handler(text):
     return text
 
 # credits -> https://github.com/TheCaduceus/Link-Bypasser
-async def droplink_bypass(url):
+async def droplink_bypass(url):  
     try:
-        # client = aiohttp.ClientSession()
         async with aiohttp.ClientSession() as client:
             async with client.get(url) as res:
-                ref = re.findall("action[ ]{0,}=[ ]{0,}['|\"](.*?)['|\"]", await res.text())[0]
+                ref = re.findall("""action[ ]{0,}=[ ]{0,}['|\"](.*?)['|\"]""", await res.text())[0]
                 h = {'referer': ref}
-                # res = client.get(url, headers=h)
                 async with client.get(url, headers=h) as res:
                     bs4 = BeautifulSoup(await res.content.read(), 'html.parser')
                     inputs = bs4.find_all('input')
-                    data = { input.get('name'): input.get('value') for input in inputs }
-                    h = {
-                        'content-type': 'application/x-www-form-urlencoded',
-                        'x-requested-with': 'XMLHttpRequest'
-                    }
+                    data = {input.get('name'): input.get('value') for input in inputs}
+                    h = {'content-type': 'application/x-www-form-urlencoded', 'x-requested-with': 'XMLHttpRequest'}
                     p = urlparse(url)
                     final_url = f'{p.scheme}://{p.netloc}/links/go'
                     await asyncio.sleep(3.1)
-                    # res = client.post(final_url, data=data, headers=h).json()
                     async with client.post(final_url, data=data, headers=h) as res:
                         res = await res.json()
-                        if res['status'] == 'success':
-                            return res['url']
-                        else:
-                            raise Exception("Error while bypassing droplink {0}: {1}".format(url, res['message']))
+                        return res['url'] if res['status'] == 'success' else res['message']
     except Exception as e:
-        raise Exception("Error while bypassing droplink {0}: {1}".format(url, e))
+        raise Exception("Error while bypassing droplink {0}: {1}".format(url, e)) from e
 
 async def is_droplink_url(url):
     domain = urlparse(url).netloc
@@ -325,16 +293,13 @@ async def TimeFormatter(milliseconds) -> str:
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
-    tmp = ((str(days) + "d, ") if days else "") + \
-        ((str(hours) + "h, ") if hours else "") + \
-        ((str(minutes) + "m, ") if minutes else "") + \
-        ((str(seconds) + "s, ") if seconds else "") + \
-        ((str(milliseconds) + "ms, ") if milliseconds else "")
+    tmp = (f"{str(days)}d, " if days else "") + (f"{str(hours)}h, " if hours else "") + (f"{str(minutes)}m, " if minutes else "") + (f"{str(seconds)}s, " if seconds else "") + (f"{str(milliseconds)}ms, " if milliseconds else "")
+
     return tmp[:-2]
 
 
 async def getHerokuDetails(h_api_key, h_app_name):
-    if (not h_api_key) or (not h_app_name):
+    if not h_api_key or not h_app_name:
         logger.info("if you want heroku dyno stats, read readme.")
         return None
     try:
@@ -343,26 +308,18 @@ async def getHerokuDetails(h_api_key, h_app_name):
         app = Heroku.app(h_app_name)
         useragent = await getRandomUserAgent()
         user_id = Heroku.account().id
-        headers = {
-            "User-Agent": useragent,
-            "Authorization": f"Bearer {h_api_key}",
-            "Accept": "application/vnd.heroku+json; version=3.account-quotas",
-        }
-        path = "/accounts/" + user_id + "/actions/get-quota"
+        headers = {"User-Agent": useragent, "Authorization": f"Bearer {h_api_key}", "Accept": "application/vnd.heroku+json; version=3.account-quotas"}
 
+        path = f"/accounts/{user_id}/actions/get-quota"
         async with aiohttp.ClientSession() as session:
-            result = (await session.get(heroku_api + path, headers=headers))
-
-        result=await result.json()
-
+            result = await session.get(heroku_api + path, headers=headers)
+        result = await result.json()
         abc = ""
         account_quota = result["account_quota"]
         quota_used = result["quota_used"]
         quota_remain = account_quota - quota_used
-
         abc += f"<b>- Dyno Used:</b> `{await TimeFormatter(quota_used)}`\n"
         abc += f"<b>- Free:</b> `{await TimeFormatter(quota_remain)}`\n"
-        # App Quota
         AppQuotaUsed = 0
         OtherAppsUsage = 0
         for apps in result["apps"]:
@@ -372,14 +329,12 @@ async def getHerokuDetails(h_api_key, h_app_name):
                 except Exception as t:
                     logger.error("error when adding main dyno")
                     logger.error(t)
-                    pass
             else:
                 try:
                     OtherAppsUsage += int(apps.get("quota_used"))
                 except Exception as t:
                     logger.error("error when adding other dyno")
                     logger.error(t)
-                    pass
         logger.info(f"This App: {str(app.name)}")
         abc += f"<b>- This App:</b> `{await TimeFormatter(AppQuotaUsed)}`\n"
         abc += f"<b>- Other:</b> `{await TimeFormatter(OtherAppsUsage)}`"
@@ -393,38 +348,19 @@ async def get_me_button(user):
     user_id = user["user_id"]
     buttons = []
     try:
-        buttons =  [
-                [
-                    InlineKeyboardButton('Header Text',
-                                        callback_data=f'ident'),
-                    InlineKeyboardButton('✅ Enable' if not user["is_header_text"] else '❌ Disable',
-                                        callback_data=f'setgs#is_header_text#{not user["is_header_text"]}#{str(user_id)}')
-                ],
-                [
-                    InlineKeyboardButton('Footer Text', callback_data='ident'),
-                    InlineKeyboardButton('✅ Enable' if not user["is_footer_text"] else '❌ Disable',
-                                        callback_data=f'setgs#is_footer_text#{not user["is_footer_text"]}#{str(user_id)}')
-                ],
-                [
-                    InlineKeyboardButton('Username',
-                                        callback_data=f'ident'),
-                    InlineKeyboardButton('✅ Enable' if not user["is_username"] else '❌ Disable',
-                                        callback_data=f'setgs#is_username#{not user["is_username"]}#{str(user_id)}')
-                ],
-                [
-                    InlineKeyboardButton('Banner Image', callback_data=f'ident'),
-                    InlineKeyboardButton('✅ Enable' if not user["is_banner_image"] else '❌ Disable',
-                                        callback_data=f'setgs#is_banner_image#{not user["is_banner_image"]}#{str(user_id)}')
-                ],
-            ]
+        buttons = [[InlineKeyboardButton('Header Text', callback_data='ident'), InlineKeyboardButton('❌ Disable' if user["is_header_text"] else '✅ Enable', callback_data=f'setgs#is_header_text#{not user["is_header_text"]}#{str(user_id)}')], [InlineKeyboardButton('Footer Text', callback_data='ident'), InlineKeyboardButton('❌ Disable' if user["is_footer_text"] else '✅ Enable', callback_data=f'setgs#is_footer_text#{not user["is_footer_text"]}#{str(user_id)}')], [InlineKeyboardButton('Username', callback_data='ident'), InlineKeyboardButton('❌ Disable' if user["is_username"] else '✅ Enable', callback_data=f'setgs#is_username#{not user["is_username"]}#{str(user_id)}')], [InlineKeyboardButton('Banner Image', callback_data='ident'), InlineKeyboardButton('❌ Disable' if user["is_banner_image"] else '✅ Enable', callback_data=f'setgs#is_banner_image#{not user["is_banner_image"]}#{str(user_id)}')]]
     except Exception as e:
         print(e)
     return buttons
 
 async def user_api_check(user):
-    user_method =  user["method"]
+    user_method = user["method"]
     text = ""
-    if user_method in ["mdisk" , "mdlink"] and not user["mdisk_api"]: text += "\n\nSet your /mdisk_api to continue..."
-    if user_method in ["shortener" , "mdlink"] and not user["shortener_api"]:text += f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
-    if not user_method: text = "\n\nSet your /method first"
-    return text if text else True
+    if user_method in ["mdisk", "mdlink"] and not user["mdisk_api"]:
+        text += "\n\nSet your /mdisk_api to continue..."
+    if user_method in ["shortener", "mdlink"] and not user["shortener_api"]:
+        text += f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
+
+    if not user_method:
+        text = "\n\nSet your /method first"
+    return text or True
