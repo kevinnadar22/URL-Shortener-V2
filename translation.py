@@ -11,16 +11,27 @@ Command usage: `/batch [channel id or username]`
 Ex: `/batch -100xxx`
 """
 
-START_MESSAGE = '''Hello, {}
+START_MESSAGE = '''***Hello, {}***
 
-I'm a Bot to Convert Other MDisk Links to your MDisk Links or Short Other Links to Shortener Website Links by Using your API. 
+***I'm LinksEarn.Site Official Bot I will Convert Bulk Links to your Short Links From Direct Your Account LinksEarn.site With Your API ***
 
-Just Send me Any Post with Mdisk or Other Links. I will Convert Those Links Using Your API and Send them Back To You. I work in Channels too. 
+***How To Use Me:***
+***✅1. Go To https://linksearn.site/auth/signup & Sign Up In LinksEarn***
+***✅2. Get Your API From https://linksearn.site/member/tools/api***
+***✅3. Add Your API Using /set_api***
 
-Hit /help for more information about this Bot
+***👇 Useful Commands 👇***
 
-Current Method Selected: **{}**
-Current Website Selected: **{}**
+***👏 Hit /start for more information about How To Get API***
+***⭐ Hit /help to know about features of This Bot***
+***👉 Hit /footer to Set Your Custom Footer***
+***🔯 Hit /header to Set Your Custom Header***
+***🖼️ Hit /me to get your details***
+
+***Join Our Official LinksEarn Telegram Channel***
+***https://t.me/linksearn_official***
+
+***Devloped By LinksEarn***
 '''
 
 
