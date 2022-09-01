@@ -54,7 +54,7 @@ async def main_convertor_handler(message:Message, type:str, edit_caption:bool=Fa
     METHODS = {
         "mdisk": mdisk_api_handler,
         "shortener": replace_link,
-        "mdlink": mdisk_droplink_convertor
+        "mdlink": replace_link
     }
 
     # Replacing the username with your username.
