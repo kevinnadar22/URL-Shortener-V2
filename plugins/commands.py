@@ -52,8 +52,8 @@ async def help_command(c, m: Message):
                 username=temp.BOT_USERNAME )
 
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=s, reply_markup=HELP_REPLY_MARKUP)
-    await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=s)
+    await m.reply_text(s, disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('about'))
