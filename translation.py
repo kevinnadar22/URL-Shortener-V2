@@ -84,9 +84,9 @@ ABOUT_TEXT = """
     
 `📝 Language:` [Python 3](https://www.python.org/)
 `🧰 Framework:` [Pyrogram](https://github.com/pyrogram/pyrogram)
-`👨‍💻 Developer:` [Dev](t.me/ask_admin001)
-`📢 Support:` [Talk Bot](https://t.me/t2linkspromotion_bot)
-`🌐 Source Code:` [GitHub](https://github.com/T2links)
+`👨‍💻 Developer:` [Dev](https://t.me/linksearn_official)
+`📢 Support:` [Talk Bot](https://t.me/linksearn_official)
+`🌐 Source Code:` [GitHub](https://t.me/linksearn_official)
 """
 
 
@@ -162,11 +162,6 @@ START_MESSAGE_REPLY_MARKUP  = InlineKeyboardMarkup([
         InlineKeyboardButton('Help', callback_data=f'help_command'),
         InlineKeyboardButton('About', callback_data='about_command')
     ],
-        [
-        InlineKeyboardButton('Method', callback_data=f'method_command'),
-        InlineKeyboardButton('Close', callback_data='delete')
-    ],
-
 ])
 
 METHOD_REPLY_MARKUP = InlineKeyboardMarkup([
@@ -190,13 +185,7 @@ BACK_REPLY_MARKUP = InlineKeyboardMarkup([
 ])
 
 USER_ABOUT_MESSAGE = """
-- Shortener Website: {base_site}
-
-- Method: {method}
-
-- {base_site} API: {shortener_api}
-
-- Mdisk API: {mdisk_api}
+- Your API: {shortener_api}
 
 - Username: @{username}
 
