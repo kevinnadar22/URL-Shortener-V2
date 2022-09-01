@@ -17,7 +17,7 @@ from utils import extract_link, get_me_button, get_size, getHerokuDetails
 
 logger = logging.getLogger(__name__)
 
-user_commands = ["mdisk_api", "shortener_api", "header", "footer", "username", "banner_image", "base_site", "me"]
+user_commands = ["mdisk_api", "set_api", "header", "footer", "username", "banner_image", "base_site", "me"]
 avl_web = ["droplink.co", "gplinks.in", "tnlink.in", "za.gl", "du-link.in", "viplink.in", "shorturllink.in", "shareus.in", "earnspace.in",]
 
 avl_web1 = "".join(f"- {i}\n" for i in avl_web)
@@ -150,14 +150,14 @@ async def mdisk_api_handler(bot, message: Message):
         await update_user_info(user_id, {"mdisk_api": api})
         await message.reply(f"Mdisk API updated successfully to {api}")
 
-@Client.on_message(filters.command('shortener_api') & filters.private)
+@Client.on_message(filters.command('set_api') & filters.private)
 @private_use
 async def shortener_api_handler(bot, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
     if len(cmd) == 1:
-        s = SHORTENER_API_MESSAGE.format(base_site=user["base_site"], shortener_api=user["shortener_api"])
+        s = SHORTENER_API_MESSAGE.format(shortener_api=user["shortener_api"])
 
         return await m.reply(s)
     elif len(cmd) == 2:
