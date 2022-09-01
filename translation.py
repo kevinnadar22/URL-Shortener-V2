@@ -11,27 +11,27 @@ Command usage: `/batch [channel id or username]`
 Ex: `/batch -100xxx`
 """
 
-START_MESSAGE = '''***Hello, {}***
+START_MESSAGE = '''**Hello, {}**
 
-***I'm LinksEarn.Site Official Bot I will Convert Bulk Links to your Short Links From Direct Your Account LinksEarn.site With Your API ***
+**I'm LinksEarn.Site Official Bot I will Convert Bulk Links to your Short Links From Direct Your Account LinksEarn.site With Your API **
 
-***How To Use Me:***
-***✅1. Go To https://linksearn.site/auth/signup & Sign Up In LinksEarn***
-***✅2. Get Your API From https://linksearn.site/member/tools/api***
-***✅3. Add Your API Using /set_api***
+**How To Use Me:**
+**✅1. Go To https://linksearn.site/auth/signup & Sign Up In LinksEarn**
+**✅2. Get Your API From https://linksearn.site/member/tools/api**
+**✅3. Add Your API Using /set_api**
 
-***👇 Useful Commands 👇***
+**👇 Useful Commands 👇**
 
-***👏 Hit /start for more information about How To Get API***
-***⭐ Hit /help to know about features of This Bot***
-***👉 Hit /footer to Set Your Custom Footer***
-***🔯 Hit /header to Set Your Custom Header***
-***🖼️ Hit /me to get your details***
+**👏 Hit /start for more information about How To Get API**
+**⭐ Hit /help to know about features of This Bot**
+**👉 Hit /footer to Set Your Custom Footer**
+**🔯 Hit /header to Set Your Custom Header**
+**🖼️ Hit /me to get your details**
 
-***Join Our Official LinksEarn Telegram Channel***
-***https://t.me/linksearn_official***
+**Join Our Official LinksEarn Telegram Channel**
+**https://t.me/linksearn_official**
 
-***Devloped By LinksEarn***
+**Devloped By LinksEarn**
 '''
 
 
@@ -190,9 +190,9 @@ SHORTENER_API_MESSAGE = """*To add or update your API, ***
             
 Ex: `/set_api 8b088f1bec72e5db`
 
-***You Will Get Your Api From https://linksearn.site/member/tools/api***
+**You Will Get Your Api From https://linksearn.site/member/tools/api**
 
-***Current API:*** `{shortener_api}`"""
+**Current API:** `{shortener_api}`"""
 
 HEADER_MESSAGE = """Reply to the Header Text You Want
 
