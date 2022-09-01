@@ -119,11 +119,7 @@ List of channels that have access to this Bot:
 
 
 HELP_REPLY_MARKUP = InlineKeyboardMarkup([
-
-    [
         InlineKeyboardButton('Home', callback_data='start_command')
-        
-    ]
 ])
 
 
@@ -141,7 +137,7 @@ START_MESSAGE_REPLY_MARKUP  = InlineKeyboardMarkup([
     [
         InlineKeyboardButton('Help', callback_data=f'help_command'),
         InlineKeyboardButton('About', callback_data='about_command')
-    ],
+    ]
 ])
 
 METHOD_REPLY_MARKUP = InlineKeyboardMarkup([
