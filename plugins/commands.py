@@ -40,8 +40,8 @@ async def start(c:Client, m:Message):
     t = START_MESSAGE.format(m.from_user.mention)
 
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t, reply_markup=START_MESSAGE_REPLY_MARKUP)
-    await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t)
+    await m.reply_text(t, disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('help') & filters.private)
@@ -49,9 +49,7 @@ async def start(c:Client, m:Message):
 async def help_command(c, m: Message):
     s = HELP_MESSAGE.format(
                 firstname=temp.FIRST_NAME,
-                username=temp.BOT_USERNAME,
-                repo=SOURCE_CODE,
-                owner="@ask_admin001" )
+                username=temp.BOT_USERNAME )
 
     if WELCOME_IMAGE:
         return await m.reply_photo(photo=WELCOME_IMAGE, caption=s, reply_markup=HELP_REPLY_MARKUP)
@@ -65,8 +63,8 @@ async def about_command(c, m: Message):
 
     bot = await c.get_me()
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=reply_markup)
-    await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')),reply_markup=reply_markup , disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')))
+    await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')), disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('method') & filters.private)
