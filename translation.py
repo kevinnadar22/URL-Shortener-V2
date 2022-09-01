@@ -55,7 +55,7 @@ Helpful commands:
 - /help: Sends this message; I'll tell you more about myself!
 - /batch -100xxx: To short or convert all posts of your channel
 
-If you have any bugs or questions on how to use me, have a look at my [website]({repo}), or contact to {owner}.
+If you have any bugs or questions on how to use me, contact LinksEarn.site or contact Me On telegram https://t.me/linksearn_official
 
 Available commands:
 
