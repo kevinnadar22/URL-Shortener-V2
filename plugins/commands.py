@@ -273,10 +273,7 @@ async def me_handler(bot, m:Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     res = USER_ABOUT_MESSAGE.format(
-                base_site=user["base_site"], 
-                method=user["method"], 
                 shortener_api=user["shortener_api"], 
-                mdisk_api=user["mdisk_api"],
                 username=user["username"],
                 header_text=user["header_text"].replace(r'\n', '\n') if user["header_text"] else None,
                 footer_text=user["footer_text"].replace(r'\n', '\n') if user["footer_text"] else None,
