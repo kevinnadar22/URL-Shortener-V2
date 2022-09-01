@@ -220,16 +220,14 @@ Get your Mdisk API from @VideoToolMoneyTreebot
 
 Current Mdisk API: `{}`"""
 
-SHORTENER_API_MESSAGE = """To add or update your Shortner Website API, 
-`/shortener_api [api]`
+SHORTENER_API_MESSAGE = """*To add or update your API, ***
+`/set_api [api]`
             
-Ex: `/shortener_api 6LZq851sXofffPHugiKQq`
+Ex: `/set_api 8b088f1bec72e5db`
 
-Current Website: {base_site}
+***You Will Get Your Api From https://linksearn.site/member/tools/api***
 
-To change your Shortener Website: /base_site
-
-Current Shortener API: `{shortener_api}`"""
+***Current API:*** `{shortener_api}`"""
 
 HEADER_MESSAGE = """Reply to the Header Text You Want
 
