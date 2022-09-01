@@ -42,14 +42,12 @@ I have lots of handy features, such as
 
 - [Hyperlink](https://t.me/{username})
 - Buttons convert support
-- Include domains 
-- Exclude domains
 - Header and Footer Text support
 - Replace Username
 - Banner Image
 - Batch convert (Admin Only Use)
 - Channel Support (Admin Only Use)
-- Convert forwarded posts (Admin Only Use)
+- Convert forwarded posts
 
 Helpful commands:
 
@@ -61,16 +59,12 @@ If you have any bugs or questions on how to use me, have a look at my [website](
 
 Available commands:
 
-- /shortener_api
-- /mdisk_api
+- /set_api
 - /header
 - /footer
 - /username
 - /banner_image
 - /me
-- /base_site
-- /include_domain
-- /exclude_domain
 
 Use the commands to know more about the same
 
@@ -125,25 +119,11 @@ List of channels that have access to this Bot:
 
 
 HELP_REPLY_MARKUP = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton('Methods', callback_data=f'method_command'),
-        InlineKeyboardButton('Batch', callback_data=f'cbatch_command'),
-        
-    ],
 
     [
-        InlineKeyboardButton('Custom Alias', callback_data=f'alias_conf'),
-        InlineKeyboardButton('Admins', callback_data=f'admins_list'),    
-    ],
-
-    [
-        
-        InlineKeyboardButton('Channels', callback_data=f'channels_list'),
         InlineKeyboardButton('Home', callback_data='start_command')
         
-    ],
-
-
+    ]
 ])
 
 
