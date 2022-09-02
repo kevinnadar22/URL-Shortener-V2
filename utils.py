@@ -359,7 +359,7 @@ async def user_api_check(user):
     if user_method in ["mdisk", "mdlink"] and not user["mdisk_api"]:
         text += "\n\nSet your /mdisk_api to continue..."
     if user_method in ["shortener", "mdlink"] and not user["shortener_api"]:
-        text += f"\n\n**Set your LinksEarn API From /set_api to continue...\nHit /start For More Info***"
+        text += f"\n\n**Set your LinksEarn API From /set_api to continue...\nHit /start For More Info**"
 
     if not user_method:
         text = "\n\nSet your /method first"
