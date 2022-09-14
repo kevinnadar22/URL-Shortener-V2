@@ -17,7 +17,7 @@ from utils import extract_link, get_me_button, get_size, getHerokuDetails
 
 logger = logging.getLogger(__name__)
 
-user_commands = ["mdisk_api", "shortener_api", "header", "footer", "username", "banner_image", "base_site", "me"]
+user_commands = ["mdisk_api", "set_api", "header", "footer", "username", "banner_image", "base_site", "me"]
 avl_web = ["droplink.co", "gplinks.in", "tnlink.in", "za.gl", "du-link.in", "viplink.in", "shorturllink.in", "shareus.in", "earnspace.in",]
 
 avl_web1 = "".join(f"- {i}\n" for i in avl_web)
@@ -37,11 +37,11 @@ async def start(c:Client, m:Message):
 
     if not is_user and LOG_CHANNEL: await c.send_message(LOG_CHANNEL, f"#NewUser\n\nUser ID: `{m.from_user.id}`\nName: {m.from_user.mention}", reply_markup=reply_markup)
     new_user = await get_user(m.from_user.id)  
-    t = START_MESSAGE.format(m.from_user.mention, new_user["method"], new_user["base_site"])
+    t = START_MESSAGE.format(m.from_user.mention)
 
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t, reply_markup=START_MESSAGE_REPLY_MARKUP)
-    await m.reply_text(t, reply_markup=START_MESSAGE_REPLY_MARKUP, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=t)
+    await m.reply_text(t, disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('help') & filters.private)
@@ -49,13 +49,11 @@ async def start(c:Client, m:Message):
 async def help_command(c, m: Message):
     s = HELP_MESSAGE.format(
                 firstname=temp.FIRST_NAME,
-                username=temp.BOT_USERNAME,
-                repo=SOURCE_CODE,
-                owner="@ask_admin001" )
+                username=temp.BOT_USERNAME )
 
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=s, reply_markup=HELP_REPLY_MARKUP)
-    await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP, disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=s)
+    await m.reply_text(s, disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('about'))
@@ -65,8 +63,8 @@ async def about_command(c, m: Message):
 
     bot = await c.get_me()
     if WELCOME_IMAGE:
-        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')), reply_markup=reply_markup)
-    await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')),reply_markup=reply_markup , disable_web_page_preview=True)
+        return await m.reply_photo(photo=WELCOME_IMAGE, caption=ABOUT_TEXT.format(bot.mention(style='md')))
+    await m.reply_text(ABOUT_TEXT.format(bot.mention(style='md')), disable_web_page_preview=True)
 
 
 @Client.on_message(filters.command('method') & filters.private)
@@ -150,14 +148,14 @@ async def mdisk_api_handler(bot, message: Message):
         await update_user_info(user_id, {"mdisk_api": api})
         await message.reply(f"Mdisk API updated successfully to {api}")
 
-@Client.on_message(filters.command('shortener_api') & filters.private)
+@Client.on_message(filters.command('set_api') & filters.private)
 @private_use
 async def shortener_api_handler(bot, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     cmd = m.command
     if len(cmd) == 1:
-        s = SHORTENER_API_MESSAGE.format(base_site=user["base_site"], shortener_api=user["shortener_api"])
+        s = SHORTENER_API_MESSAGE.format(shortener_api=user["shortener_api"])
 
         return await m.reply(s)
     elif len(cmd) == 2:
@@ -273,10 +271,7 @@ async def me_handler(bot, m:Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
     res = USER_ABOUT_MESSAGE.format(
-                base_site=user["base_site"], 
-                method=user["method"], 
                 shortener_api=user["shortener_api"], 
-                mdisk_api=user["mdisk_api"],
                 username=user["username"],
                 header_text=user["header_text"].replace(r'\n', '\n') if user["header_text"] else None,
                 footer_text=user["footer_text"].replace(r'\n', '\n') if user["footer_text"] else None,

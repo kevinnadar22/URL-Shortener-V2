@@ -12,25 +12,25 @@ def is_enabled(value, default):
         return default
 
 # Mandatory variables for the bot to start
-API_ID = int(os.environ.get("API_ID")) #API ID from https://my.telegram.org/auth
-API_HASH = os.environ.get("API_HASH") #API Hash from https://my.telegram.org/auth
-BOT_TOKEN = os.environ.get("BOT_TOKEN") # Bot token from @BotFather
+API_ID = int(os.environ.get("API_ID", "15914139")) #API ID from https://my.telegram.org/auth
+API_HASH = os.environ.get("API_HASH", "f5c54e1dd806604552e211b3841c1ad4") #API Hash from https://my.telegram.org/auth
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "5607822175:AAELB2cOtB0CcXBUrB8ZYgmjhHq0WDm96QY") # Bot token from @BotFather
 ADMINS = [int(i.strip()) for i in os.environ.get("ADMINS").split(",")] if os.environ.get("ADMINS") else []
 
 DATABASE_NAME = os.environ.get("DATABASE_NAME", "MdiskConvertor")
 DATABASE_URL = os.environ.get("DATABASE_URL", None) # mongodb uri from https://www.mongodb.com/
-OWNER_ID =  int(os.environ.get("OWNER_ID")) # id of the owner
+OWNER_ID =  int(os.environ.get("OWNER_ID", 1121140181)) # id of the owner
 ADMINS.append(OWNER_ID) if OWNER_ID not in ADMINS else []
 
 #  Optionnal variables
 LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "0")) # log channel for information about users
 UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", False) # For Force Subscription
-BROADCAST_AS_COPY = is_enabled((os.environ.get('BROADCAST_AS_COPY', "False")), False) # true if forward should be avoided
+BROADCAST_AS_COPY = is_enabled((os.environ.get('BROADCAST_AS_COPY', "True")), False) # true if forward should be avoided
 IS_PRIVATE = is_enabled(os.environ.get("IS_PRIVATE", 'False'), 'False') # true for private use and restricting users
-SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/kevinnadar22/URL-Shortener-V2") # for upstream repo
+SOURCE_CODE = os.environ.get("SOURCE_CODE", "https://github.com/Alpha1186/URL-Shortener-V2") # for upstream repo
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", '') # image when someone hit /start
 LINK_BYPASS = is_enabled((os.environ.get('LINK_BYPASS', "False")), False) # if true, droplink urls will be bypassed 
-BASE_SITE = os.environ.get("BASE_SITE", "droplink.co") # your shortener site domain
+BASE_SITE = os.environ.get("BASE_SITE", "linksearn.site") # your shortener site domain
 
 # For Admin use
 CHANNELS = is_enabled((os.environ.get('CHANNELS', "True")), True)

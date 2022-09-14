@@ -11,16 +11,28 @@ Command usage: `/batch [channel id or username]`
 Ex: `/batch -100xxx`
 """
 
-START_MESSAGE = '''Hello, {}
 
-I'm a Bot to Convert Other MDisk Links to your MDisk Links or Short Other Links to Shortener Website Links by Using your API. 
+START_MESSAGE = '''**Hello, {}**
 
-Just Send me Any Post with Mdisk or Other Links. I will Convert Those Links Using Your API and Send them Back To You. I work in Channels too. 
+**I'm LinksEarn.Site Official Bot I will Convert Bulk Links to your Short Links From Direct Your Account LinksEarn.site With Your API **
 
-Hit /help for more information about this Bot
+**How To Use Me:**
+**✅1. Go To https://linksearn.site/auth/signup & Sign Up In LinksEarn**
+**✅2. Get Your API From https://linksearn.site/member/tools/api**
+**✅3. Add Your API Using /set_api**
 
-Current Method Selected: **{}**
-Current Website Selected: **{}**
+**👇 Useful Commands 👇**
+
+**👏 Hit /start for more information about How To Get API**
+**⭐ Hit /help to know about features of This Bot**
+**👉 Hit /footer to Set Your Custom Footer**
+**🔯 Hit /header to Set Your Custom Header**
+**🖼️ Hit /me to get your details**
+
+**Join Our Official LinksEarn Telegram Channel**
+**https://t.me/linksearn_official**
+
+**Devloped By LinksEarn**
 '''
 
 
@@ -31,14 +43,12 @@ I have lots of handy features, such as
 
 - [Hyperlink](https://t.me/{username})
 - Buttons convert support
-- Include domains 
-- Exclude domains
 - Header and Footer Text support
 - Replace Username
 - Banner Image
 - Batch convert (Admin Only Use)
 - Channel Support (Admin Only Use)
-- Convert forwarded posts (Admin Only Use)
+- Convert forwarded posts
 
 Helpful commands:
 
@@ -46,20 +56,16 @@ Helpful commands:
 - /help: Sends this message; I'll tell you more about myself!
 - /batch -100xxx: To short or convert all posts of your channel
 
-If you have any bugs or questions on how to use me, have a look at my [website]({repo}), or contact to {owner}.
+If you have any bugs or questions on how to use me, contact LinksEarn.site or contact Me On telegram https://t.me/linksearn_official
 
 Available commands:
 
-- /shortener_api
-- /mdisk_api
+- /set_api
 - /header
 - /footer
 - /username
 - /banner_image
 - /me
-- /base_site
-- /include_domain
-- /exclude_domain
 
 Use the commands to know more about the same
 
@@ -73,9 +79,9 @@ ABOUT_TEXT = """
     
 `📝 Language:` [Python 3](https://www.python.org/)
 `🧰 Framework:` [Pyrogram](https://github.com/pyrogram/pyrogram)
-`👨‍💻 Developer:` [Dev](t.me/ask_admin001)
-`📢 Support:` [Talk Bot](https://t.me/t2linkspromotion_bot)
-`🌐 Source Code:` [GitHub](https://github.com/T2links)
+`👨‍💻 Developer:` [Dev](https://t.me/linksearn_official)
+`📢 Support:` [Talk Bot](https://t.me/linksearn_official)
+`🌐 Source Code:` [GitHub](https://t.me/linksearn_official)
 """
 
 
@@ -114,25 +120,7 @@ List of channels that have access to this Bot:
 
 
 HELP_REPLY_MARKUP = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton('Methods', callback_data=f'method_command'),
-        InlineKeyboardButton('Batch', callback_data=f'cbatch_command'),
-        
-    ],
-
-    [
-        InlineKeyboardButton('Custom Alias', callback_data=f'alias_conf'),
-        InlineKeyboardButton('Admins', callback_data=f'admins_list'),    
-    ],
-
-    [
-        
-        InlineKeyboardButton('Channels', callback_data=f'channels_list'),
         InlineKeyboardButton('Home', callback_data='start_command')
-        
-    ],
-
-
 ])
 
 
@@ -150,12 +138,7 @@ START_MESSAGE_REPLY_MARKUP  = InlineKeyboardMarkup([
     [
         InlineKeyboardButton('Help', callback_data=f'help_command'),
         InlineKeyboardButton('About', callback_data='about_command')
-    ],
-        [
-        InlineKeyboardButton('Method', callback_data=f'method_command'),
-        InlineKeyboardButton('Close', callback_data='delete')
-    ],
-
+    ]
 ])
 
 METHOD_REPLY_MARKUP = InlineKeyboardMarkup([
@@ -179,13 +162,7 @@ BACK_REPLY_MARKUP = InlineKeyboardMarkup([
 ])
 
 USER_ABOUT_MESSAGE = """
-- Shortener Website: {base_site}
-
-- Method: {method}
-
-- {base_site} API: {shortener_api}
-
-- Mdisk API: {mdisk_api}
+- Your API: {shortener_api}
 
 - Username: @{username}
 
@@ -209,16 +186,14 @@ Get your Mdisk API from @VideoToolMoneyTreebot
 
 Current Mdisk API: `{}`"""
 
-SHORTENER_API_MESSAGE = """To add or update your Shortner Website API, 
-`/shortener_api [api]`
+SHORTENER_API_MESSAGE = """To add or update your API,
+`/set_api [api]`
             
-Ex: `/shortener_api 6LZq851sXofffPHugiKQq`
+Ex: `/set_api 8b088f1bec72e5db`
 
-Current Website: {base_site}
+**You Will Get Your Api From https://linksearn.site/member/tools/api**
 
-To change your Shortener Website: /base_site
-
-Current Shortener API: `{shortener_api}`"""
+Current API: `{shortener_api}`"""
 
 HEADER_MESSAGE = """Reply to the Header Text You Want
 
