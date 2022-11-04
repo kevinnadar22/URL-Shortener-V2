@@ -68,7 +68,7 @@
 
 __This Is Just An Simple Advance Shortener and Converter Bot Completely Rewritten Version Of [URL Shortener](https://github.com/t2links/URL-Shortener-bot)__
 
-__Just Send Any Link To Short. It Will Short To Droplink Link or Save it to your MDisk Account__
+__Just Send Any Link To Short. It Will Short Link or Save it to your MDisk Account__
 
 
 ## Usage
@@ -113,7 +113,7 @@ info - get user info
 
 ### Features
 
-- [x] Droplink Shortener
+- [x] Shortener
 - [x] Mdisk Convertor
 - [x] Channels Support
 - [x] Batch Support
