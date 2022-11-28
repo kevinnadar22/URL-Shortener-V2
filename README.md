@@ -150,9 +150,11 @@ You can deploy this bot anywhere.
 
 |                                                                                                                 | Name              | Deploy        |
 | --------------------------------------------------------------------------------------------------------------- | ----------------- | ------------- | 
-| ![Replit](assets/img/replit.jpg) | Replit (Recommended) | [see guide](/guides/replit.md) |
+| ![Replit](assets/img/replit.jpg) | Replit (Recommended) | [See Guide](/guides/replit.md) |
 | [![Heroku](assets/img/heroku.png)](https://heroku.com)                                                          | Heroku            | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kevinnadar22/URL-Shortener-V2)                          |
-| ![VPS](assets/img/vps.png) | VPS | [see guide](/guides/vps.md) |
+| ![Koyeb](assets/img/koyeb.png) | Koyeb | [![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/apps/deploy?type=git&repository=kevinnadar22/url-shortener-v2&name=url-shortener-v2&run_command=python3%20-m%20main&branch=main) |
+| ![VPS](assets/img/vps.png) | VPS | [See Guide](/guides/vps.md) |
+
 
 
 
