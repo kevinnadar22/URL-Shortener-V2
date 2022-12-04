@@ -1,6 +1,3 @@
-# (c) @Royalkrrishna
-
-
 from config import *
 from motor.motor_asyncio import AsyncIOMotorClient
 import helpers

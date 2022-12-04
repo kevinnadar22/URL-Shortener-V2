@@ -72,7 +72,7 @@ class Bot(Client):
             try:
                 self.invite_link = await self.create_chat_invite_link(UPDATE_CHANNEL)
             except Exception:
-                logging.error(f"Make sure to make the bot in your update channel {UPDATE_CHANNEL}")
+                logging.error(f"Make sure to make the bot in your update channel - {UPDATE_CHANNEL}")
                 sys.exit(1)
 
         me = await self.get_me()

@@ -7,7 +7,7 @@
     "telegram",
     "shortener"
   ],
-  "website": "https://github.com/T2links/",
+  "website": "https://github.com/Neutron-Bots",
   "repository": "https://github.com/kevinnadar22/URL-Shortener-V2",
   "env": {
     "BOT_TOKEN": {
