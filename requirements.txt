@@ -10,3 +10,4 @@ shortzy
 aiofiles
 validators
 python-dotenv
+flask

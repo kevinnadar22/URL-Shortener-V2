@@ -18,7 +18,7 @@ logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 
 
-if REPLIT:
+if REPLIT or KOYEB:
     from threading import Thread
 
     from flask import Flask, jsonify
@@ -34,8 +34,8 @@ if REPLIT:
         
         res = {
             "status":"running",
-            "hosted":"replit.com",
-            "repl":REPLIT,
+            "hosted":"replit.com" if REPLIT else "koyeb.com",
+            "repl":REPLIT or KOYEB,
             "bot":temp.BOT_USERNAME,
             "runtime":runtime
         }
