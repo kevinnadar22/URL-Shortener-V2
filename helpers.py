@@ -6,7 +6,7 @@ import traceback
 import aiohttp
 
 import database
-from config import ADMINS, CHANNEL_ID, CHANNELS, PING_INTERVAL, REPLIT
+from config import ADMINS, CHANNEL_ID, CHANNELS, PING_INTERVAL, REPLIT, KOYEB
 
 
 class temp(object): # TrojanZ Idea of Temping
@@ -62,7 +62,7 @@ async def ping_server():
         await asyncio.sleep(sleep_time)
         try:
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
-                async with session.get(REPLIT) as resp:
+                async with session.get(REPLIT or KOYEB) as resp:
                     logging.info(f"Pinged server with response: {resp.status}")
         except TimeoutError:
             logging.warning("Couldn't connect to the site URL..!")

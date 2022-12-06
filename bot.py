@@ -62,7 +62,7 @@ class Bot(Client):
         )
 
     async def start(self):
-        if REPLIT:
+        if REPLIT or KOYEB:
             await keep_alive()
             asyncio.create_task(ping_server())
         temp.START_TIME = datetime.datetime.now()
