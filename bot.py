@@ -7,6 +7,9 @@ import sys
 from pyrogram import Client
 from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate
 
+from aiohttp import web
+from plugins import web_server
+
 from config import *
 from database import db
 from database.users import filter_users
@@ -17,37 +20,6 @@ from utils import broadcast_admins
 logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 
-
-if REPLIT or KOYEB:
-    from threading import Thread
-
-    from flask import Flask, jsonify
-    
-    app = Flask('')
-    
-    @app.route('/')
-    def main():
-        
-        runtime = datetime.datetime.now()
-        t = runtime - temp.START_TIME
-        runtime = str(datetime.timedelta(seconds=t.seconds))
-        
-        res = {
-            "status":"running",
-            "hosted":"replit.com" if REPLIT else "koyeb.com",
-            "repl":REPLIT or KOYEB,
-            "bot":temp.BOT_USERNAME,
-            "runtime":runtime
-        }
-        
-        return jsonify(res)
-
-    def run():
-      app.run(host="0.0.0.0", port=8000)
-    
-    async def keep_alive():
-      server = Thread(target=run)
-      server.start()
 
 
 class Bot(Client):
@@ -62,9 +34,7 @@ class Bot(Client):
         )
 
     async def start(self):
-        if REPLIT or KOYEB:
-            await keep_alive()
-            asyncio.create_task(ping_server())
+
         temp.START_TIME = datetime.datetime.now()
         await super().start()
         
@@ -88,6 +58,14 @@ class Bot(Client):
         logging.info(LOG_STR)
         await broadcast_admins(self, '** Bot started successfully **')
         logging.info('Bot started')
+
+        if REPLIT or KOYEB:
+            app = web.AppRunner(await web_server())
+            await app.setup()
+            bind_address = "0.0.0.0"
+            await web.TCPSite(app, bind_address, 8000).start()
+            logging.info("Server URL: {0}".format(KOYEB or REPLIT or None))
+            asyncio.create_task(ping_server())
 
     async def stop(self, *args):
         await broadcast_admins(self, '** Bot Stopped Bye **')

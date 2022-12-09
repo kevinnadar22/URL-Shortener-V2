@@ -56,4 +56,3 @@ KOYEB = f"https://{KOYEB_APP_NAME}-{KOYEB_USERNAME}.koyeb.app/" if KOYEB_APP_NAM
 PING_INTERVAL = int(os.environ.get("PING_INTERVAL", "300"))
 
 LOG_STR = "\nHeroku is {0}\n".format("Enabled" if HEROKU else "Disabled") + "Users {0} use this bot\n".format("cannot" if IS_PRIVATE else "can")
-LOG_STR+= "Server URL: {0}".format(KOYEB or REPLIT or None)
