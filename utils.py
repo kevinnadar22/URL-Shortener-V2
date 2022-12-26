@@ -233,8 +233,10 @@ async def bypass_handler(text):
     if LINK_BYPASS:
         links = await extract_link(text)
         for link in links:
-            bypassed_link = await bypass_func(link)
-            text = text.replace(link, bypassed_link)
+            domain = extract_domain(link)
+            if domain not in DE_BYPASS:
+                bypassed_link = await bypass_func(link)
+                text = text.replace(link, bypassed_link)
     return text
 
 
@@ -409,3 +411,8 @@ async def user_api_check(user):
     if not user_method:
         text = "\n\nSet your /method first"
     return text or True
+
+
+def extract_domain(link):
+    parsed_url = urlparse(link)
+    return parsed_url.netloc

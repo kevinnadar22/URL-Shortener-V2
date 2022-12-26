@@ -99,7 +99,7 @@ List of Admins who has access to this Bot
 
 
 CHANNELS_LIST_MESSAGE = """
-Here is a list of the admins who have access to this bot:
+Here is a list of the channels:
 
 {channels}"""
 

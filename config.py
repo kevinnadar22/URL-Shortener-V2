@@ -59,6 +59,13 @@ CHANNEL_ID = (
     else []
 )
 
+DE_BYPASS = (
+    [i.strip() for i in os.environ.get("DE_BYPASS").split(",")]
+    if os.environ.get("DE_BYPASS")
+    else []
+)
+DE_BYPASS.append("mdisk.me")
+
 FORWARD_MESSAGE = is_enabled(
     (os.environ.get("FORWARD_MESSAGE", "False")), False
 )  # true if forwardd message to converted by reposting the post
