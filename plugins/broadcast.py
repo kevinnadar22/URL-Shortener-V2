@@ -12,8 +12,7 @@ import aiofiles.os
 from config import ADMINS, BROADCAST_AS_COPY
 from database import delete_user, get_all_users, total_users_count
 from pyrogram import Client, filters
-from pyrogram.errors import (FloodWait, InputUserDeactivated, PeerIdInvalid,
-                             UserIsBlocked)
+from pyrogram.errors import (FloodWait, InputUserDeactivated, PeerIdInvalid, UserIsBlocked)
 from pyrogram.types import Message
 
 broadcast_ids = {}
@@ -36,7 +35,7 @@ async def send_msg(user_id, message):
             await message.copy(chat_id=user_id)
         return 200, None
     except FloodWait as e:
-        await asyncio.sleep(e.x)
+        await asyncio.sleep(e.value)
         return send_msg(user_id, message)
     except InputUserDeactivated:
         return 400, f"{user_id} : deactivated\n"

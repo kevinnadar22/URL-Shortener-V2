@@ -2,69 +2,60 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 BATCH_MESSAGE = BATCH = """
-This command is used to short or convert links from first to last posts
+Need to shorten or convert links from all of your channel's posts? I've got you covered! Just make me an admin in your channel and use the following command:
 
-Make the bot as an admin in your channel
+<code>/batch [channel id or username]</code>
 
-Command usage: `/batch [channel id or username]`
+For example: <code>/batch -100xxx</code>
 
-Ex: `/batch -100xxx`
+I'll handle the rest and get those links shortened or converted in a short time! 💪
 """
 
-START_MESSAGE = '''Hello, {}
+START_MESSAGE = """Hi there {} 
 
-I'm a Bot to Convert Other MDisk Links to your MDisk Links or Short Other Links to Shortener Website Links by Using your API. 
+I'm here to help you convert Mdisk and other links 🔗 into shorter links using your API. Just send me any post with the links and I'll take care of the rest. I can even work in channels! 🤖
 
-Just Send me Any Post with Mdisk or Other Links. I will Convert Those Links Using Your API and Send them Back To You. I work in Channels too. 
+To learn more about what I can do, just type /help 🤔.
 
-Hit /help for more information about this Bot
+Currently using the <b>{}</b> method and the <i>{}</i> website for link conversion 💻.
+"""
 
-Current Method Selected: **{}**
-Current Website Selected: **{}**
-'''
+HELP_MESSAGE = """Hey there! My name is {firstname} and I'm a link convertor and shortener bot here to make your work easier and help you earn more 💰.
 
+I have a ton of handy features to help you out, such as:
 
-HELP_MESSAGE = '''
-Hey! My name is {firstname}. I am a Link Convertor and Shortener Bot, here to make your Work Easy and Help you to Earn more
+- [Hyperlink](https://t.me/{username}) support 🔗
+- Button conversion support 🔘
+- Domain inclusion and exclusion options 🌐
+- Header and footer text support 📝
+- Replace username function 📎
+- Banner image support 🖼️
+- Batch conversion for channel admins only 📊
+- Channel support for admins only 📢
+- Forwarded post conversion for admins only 📩
 
-I have lots of handy features, such as 
+Useful commands:
 
-- [Hyperlink](https://t.me/{username})
-- Buttons convert support
-- Include domains 
-- Exclude domains
-- Header and Footer Text support
-- Replace Username
-- Banner Image
-- Batch convert (Admin Only Use)
-- Channel Support (Admin Only Use)
-- Convert forwarded posts (Admin Only Use)
+- /start: Start me up! You probably already used this.
+- /help: Send this message; I'll tell you more about myself!
+- /batch -100xxx: To shorten or convert all posts in your channel
 
-Helpful commands:
-
-- /start: Starts me! You've probably already used this.
-- /help: Sends this message; I'll tell you more about myself!
-- /batch -100xxx: To short or convert all posts of your channel
-
-If you have any bugs or questions on how to use me, have a look at my [website]({repo}), or contact to {owner}.
+If you have any bugs or questions about how to use me, check out my [website]({repo}) or contact {owner}.
 
 Available commands:
 
-- /shortener_api
-- /mdisk_api
-- /header
-- /footer
-- /username
-- /banner_image
-- /me
-- /base_site
-- /include_domain
-- /exclude_domain
+- **/shortener_api**
+- **/mdisk_api**
+- **/header**
+- **/footer**
+- **/username**
+- **/banner_image**
+- **/me**
+- **/base_site**
+- **/include_domain**
+- **/exclude_domain**
 
-Use the commands to know more about the same
-
-Below are some features I provide'''
-
+Use these commands to learn more about each feature."""
 
 ABOUT_TEXT = """
 **My Details:**
@@ -74,8 +65,8 @@ ABOUT_TEXT = """
 `📝 Language:` [Python 3](https://www.python.org/)
 `🧰 Framework:` [Pyrogram](https://github.com/pyrogram/pyrogram)
 `👨‍💻 Developer:` [Dev](t.me/ask_admin001)
-`📢 Support:` [Talk Bot](https://t.me/t2linkspromotion_bot)
-`🌐 Source Code:` [GitHub](https://github.com/T2links)
+`📢 Support:` [Talk Bot](https://t.me/ask_admin001)
+`🌐 Source Code:` [GitHub](https://github.com/kevinnadar22/URL-Shortener-V2/)
 """
 
 
@@ -108,94 +99,94 @@ List of Admins who has access to this Bot
 
 
 CHANNELS_LIST_MESSAGE = """
-List of channels that have access to this Bot:
+Here is a list of the admins who have access to this bot:
 
 {channels}"""
 
 
-HELP_REPLY_MARKUP = InlineKeyboardMarkup([
+HELP_REPLY_MARKUP = InlineKeyboardMarkup(
     [
-        InlineKeyboardButton('Methods', callback_data=f'method_command'),
-        InlineKeyboardButton('Batch', callback_data=f'cbatch_command'),
-        
-    ],
-
-    [
-        InlineKeyboardButton('Custom Alias', callback_data=f'alias_conf'),
-        InlineKeyboardButton('Admins', callback_data=f'admins_list'),    
-    ],
-
-    [
-        
-        InlineKeyboardButton('Channels', callback_data=f'channels_list'),
-        InlineKeyboardButton('Home', callback_data='start_command')
-        
-    ],
-
-
-])
-
-
-ABOUT_REPLY_MARKUP = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton('Home', callback_data=f'start_command'),
-        InlineKeyboardButton('Help', callback_data=f'help_command')
-    ],
-    [
-        InlineKeyboardButton('Close', callback_data='delete')
+        [
+            InlineKeyboardButton("Methods", callback_data="method_command"),
+            InlineKeyboardButton("Batch", callback_data="cbatch_command"),
+        ],
+        [
+            InlineKeyboardButton("Custom Alias", callback_data="alias_conf"),
+            InlineKeyboardButton("Admins", callback_data="admins_list"),
+        ],
+        [
+            InlineKeyboardButton("Channels", callback_data="channels_list"),
+            InlineKeyboardButton("Home", callback_data="start_command"),
+        ],
     ]
-])
+)
 
-START_MESSAGE_REPLY_MARKUP  = InlineKeyboardMarkup([
+
+ABOUT_REPLY_MARKUP = InlineKeyboardMarkup(
     [
-        InlineKeyboardButton('Help', callback_data=f'help_command'),
-        InlineKeyboardButton('About', callback_data='about_command')
-    ],
         [
-        InlineKeyboardButton('Method', callback_data=f'method_command'),
-        InlineKeyboardButton('Close', callback_data='delete')
-    ],
+            InlineKeyboardButton("Home", callback_data="start_command"),
+            InlineKeyboardButton("Help", callback_data="help_command"),
+        ],
+        [InlineKeyboardButton("Close", callback_data="delete")],
+    ]
+)
 
-])
-
-METHOD_REPLY_MARKUP = InlineKeyboardMarkup([
+START_MESSAGE_REPLY_MARKUP = InlineKeyboardMarkup(
     [
-        InlineKeyboardButton('MDLINK', callback_data=f'change_method#mdlink'),
-        InlineKeyboardButton('Shortener', callback_data='change_method#shortener'),
-        InlineKeyboardButton('Mdisk', callback_data='change_method#mdisk')
-    ],
         [
-        InlineKeyboardButton('Back', callback_data=f'help_command'),
-        InlineKeyboardButton('Close', callback_data='delete')
-    ],
+            InlineKeyboardButton("Help", callback_data="help_command"),
+            InlineKeyboardButton("About", callback_data="about_command"),
+        ],
+        [
+            InlineKeyboardButton("Method", callback_data="method_command"),
+            InlineKeyboardButton("Close", callback_data="delete"),
+        ],
+    ]
+)
 
-])
-
-BACK_REPLY_MARKUP = InlineKeyboardMarkup([
+METHOD_REPLY_MARKUP = InlineKeyboardMarkup(
     [
-        InlineKeyboardButton('Back', callback_data=f'help_command')
-    ],
+        [
+            InlineKeyboardButton(
+                "MDLINK", callback_data="change_method#mdlink"
+            ),
+            InlineKeyboardButton(
+                "Shortener", callback_data="change_method#shortener"
+            ),
+            InlineKeyboardButton("Mdisk", callback_data="change_method#mdisk"),
+        ],
+        [
+            InlineKeyboardButton("Back", callback_data="help_command"),
+            InlineKeyboardButton("Close", callback_data="delete"),
+        ],
+    ]
+)
 
-])
+BACK_REPLY_MARKUP = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("Back", callback_data="help_command")]]
+)
 
 USER_ABOUT_MESSAGE = """
-- Shortener Website: {base_site}
+🔧 Here are the current settings for this bot:
 
-- Method: {method}
+- 🌐 Shortener website: {base_site}
 
-- {base_site} API: {shortener_api}
+- 🧰 Method: {method}
 
-- Mdisk API: {mdisk_api}
+- 🔌 {base_site} API: {shortener_api}
 
-- Username: @{username}
+- 💾 Mdisk API: {mdisk_api}
 
-- Header Text: 
+- 📎 Username: @{username}
+
+- 📝 Header text:
 {header_text}
 
-- Footer Text: 
+- 📝 Footer text:
 {footer_text}
 
-- Banner Image: {banner_image}
+🖼️ Banner image: {banner_image}
 """
 
 
@@ -220,29 +211,35 @@ To change your Shortener Website: /base_site
 
 Current Shortener API: `{shortener_api}`"""
 
-HEADER_MESSAGE = """Reply to the Header Text You Want
+HEADER_MESSAGE = """📝 To set the header text for every message caption or text, just reply with the text you want to use. You can use \\n to add a line break.
 
-This Text will be added to the top of every message caption or text
+🗑 To remove the header text, use the following command:
 
-For adding line break use \\n
+`/header remove`
 
-To Remove Header Text: `/header remove`"""
+This is a helpful way to add a consistent header to all of your messages. Enjoy! 🎉"""
 
-FOOTER_MESSAGE = """Reply to the Footer Text You Want
+FOOTER_MESSAGE = """📝 To set the footer text for every message caption or text, just reply with the text you want to use. You can use \\n to add a line break.
 
-This Text will be added to the bottom of every message caption or text
+🗑 To remove the footer text, use the following command:
 
-For adding line break use \\n
+`/footer remove`
 
-To Remove Footer Text: `/footer remove`"""
+This is a helpful way to add a consistent footer to all of your messages. Enjoy! 🎉"""
 
-USERNAME_TEXT = """Current Username: {username}
+USERNAME_TEXT = """Current username: {username}
 
-Usage: `/username your_username` (without @)
+To set the username that will be automatically replaced with other usernames in the post, use the following command:
 
-This username will be automatically replaced with other usernames in the post
+`/username your_username`
 
-To remove this username, `/username remove`"""
+__(Note: Do not include the @ symbol in your username.)__
+
+To remove the current username, use the following command:
+
+`/username remove`
+
+This is a helpful way to make sure that all of your posts have a consistent username. Enjoy! 📎"""
 
 BANNER_IMAGE = """
 Usage: `/banner_image image_url` or reply to any Image with this command

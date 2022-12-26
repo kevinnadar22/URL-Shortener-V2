@@ -10,14 +10,20 @@ logger.setLevel(logging.INFO)
 
 
 # edit forwarded message
-@Client.on_message(filters.chat(CHANNEL_ID) & (filters.channel | filters.group) & filters.incoming & ~filters.private & filters.forwarded)
-async def channel_forward_link_handler(c:Client, message):
+@Client.on_message(
+    filters.chat(CHANNEL_ID)
+    & (filters.channel | filters.group)
+    & filters.incoming
+    & ~filters.private
+    & filters.forwarded
+)
+async def channel_forward_link_handler(c: Client, message):
     try:
         user = await get_user(OWNER_ID)
         user_method = user["method"]
         vld = await user_api_check(user)
-        if vld is not True and CHANNELS: 
-            return await c.send_message(OWNER_ID, "To use me in channel...\n\n" + vld )
+        if vld is not True and CHANNELS:
+            return await c.send_message(OWNER_ID, "To use me in channel...\n\n" + vld)
         if FORWARD_MESSAGE and CHANNELS:
             await main_convertor_handler(message, user_method, user=user)
             await message.delete()

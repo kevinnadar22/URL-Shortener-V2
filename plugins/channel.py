@@ -9,7 +9,14 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 # Channel
-@Client.on_message(~filters.forwarded & filters.chat(CHANNEL_ID) & (filters.channel | filters.group) & filters.incoming & ~filters.private & ~filters.forwarded)
+@Client.on_message(
+    ~filters.forwarded
+    & filters.chat(CHANNEL_ID)
+    & (filters.channel | filters.group)
+    & filters.incoming
+    & ~filters.private
+    & ~filters.forwarded
+)
 async def channel_link_handler(c: Client, message):
     user = await get_user(OWNER_ID)
     user_method = user["method"]
