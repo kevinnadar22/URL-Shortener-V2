@@ -7,6 +7,8 @@ else
   git clone $SOURCE_CODE /URL-Shortener-V2
 fi
 cd /URL-Shortener-V2
+python3 -m venv venv
+source venv/bin/activate
 pip3 install -U -r requirements.txt
 echo "Starting Bot...."
 python3 -m main

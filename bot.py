@@ -5,7 +5,6 @@ import logging.config
 import sys
 
 from pyrogram import Client
-from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate
 
 from aiohttp import web
 from plugins import web_server
@@ -66,7 +65,7 @@ class Bot(Client):
             logging.info("Server URL: {0}".format(KOYEB or REPLIT or None))
             asyncio.create_task(ping_server())
 
-    async def stop(self, *args):
+    async def stop(self):
         await broadcast_admins(self, "** Bot Stopped Bye **")
         await super().stop()
         logging.info("Bot Stopped Bye")
