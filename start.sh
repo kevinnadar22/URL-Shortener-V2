@@ -1,3 +1,9 @@
+if [ -d "/URL-Shortener-V2" ]
+then
+  echo "Deleting existing directory..."
+  rm -rf /URL-Shortener-V2
+fi
+
 if [ -z $SOURCE_CODE ]
 then
   echo "Cloning main Repository"
