@@ -231,8 +231,7 @@ async def bypass_handler(text):
             domain = extract_domain(link)
             if domain not in DE_BYPASS:
                 bypassed_link = await bypass_func(link)
-                if bypassed_link:
-                    text = text.replace(link, bypassed_link)
+                text = text.replace(link, bypassed_link)
     return text
 
 
@@ -278,21 +277,15 @@ async def get_size(size):
 
 
 async def update_stats(m: Message, method):
-    if m.reply_markup:
-        reply_markup = str(m.reply_markup)
-    else:
-        reply_markup = ""
-
     if m.caption:
         message = m.caption.html
     else:
         message = m.text.html
 
     mdisk_links = re.findall(
-        r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message +
-        reply_markup
+        r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message
     )
-    droplink_links = await extract_link(message + reply_markup)
+    droplink_links = await extract_link(message)
     total_links = len(droplink_links)
     await db.update_posts(1)
     if method == "mdisk":

@@ -37,7 +37,7 @@ async def private_link_handler(c: Client, message: Message):
             )
 
             await main_convertor_handler(message, user_method, user=user)
-            await update_stats(message, user_method)
+            
             bin_caption = f"""{caption}\n\n#NewPost\nFrom User :- {message.from_user.mention} [`{message.from_user.id}`]"""
 
             try:
@@ -47,8 +47,10 @@ async def private_link_handler(c: Client, message: Message):
                     await c.send_message(
                         LOG_CHANNEL, bin_caption, disable_web_page_preview=True
                     )
+                
             except PeerIdInvalid as e:
                 logging.error("Make sure that the bot is admin in your log channel")
+            await update_stats(message, user_method)
         except Exception as e:
             await message.reply(f"Error while trying to convert links {e}:", quote=True)
             logger.exception(e)
