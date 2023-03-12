@@ -5,9 +5,6 @@ import logging
 from validators import domain
 from config import (
     ADMINS,
-    HEROKU,
-    HEROKU_API_KEY,
-    HEROKU_APP_NAME,
     LOG_CHANNEL,
     SOURCE_CODE,
     WELCOME_IMAGE,
@@ -19,7 +16,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from plugins.filters import private_use
 from translation import *
-from utils import extract_link, get_me_button, get_size, getHerokuDetails
+from utils import extract_link, get_me_button, get_size
 
 logger = logging.getLogger(__name__)
 
@@ -178,9 +175,7 @@ async def stats_handler(c: Client, m: Message):
 
 **- Runtime:** `{runtime}`
     """
-        if HEROKU and m.from_user.id in ADMINS:
-            heroku = await getHerokuDetails(HEROKU_API_KEY, HEROKU_APP_NAME)
-            msg += f"\n- **Heroku Stats:**\n{heroku}"
+
 
         return await txt.edit(msg)
     except Exception as e:

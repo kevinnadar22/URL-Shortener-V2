@@ -6,14 +6,12 @@ import sys
 
 from pyrogram import Client
 
-from aiohttp import web
-from plugins import web_server
 
 from config import *
 from database import db
 from database.users import filter_users
-from helpers import ping_server, temp
-from utils import broadcast_admins
+from helpers import temp
+from utils import broadcast_admins, create_server, set_commands
 
 # Get logging configurations
 logging.config.fileConfig("logging.conf")
@@ -51,19 +49,20 @@ class Bot(Client):
         temp.FIRST_NAME = me.first_name
         if not await db.get_bot_stats():
             await db.create_stats()
+
         banned_users = await filter_users({"banned": True})
         async for user in banned_users:
             temp.BANNED_USERS.append(user["user_id"])
-        logging.info(LOG_STR)
+
+        await set_commands(self)
+
         await broadcast_admins(self, "** Bot started successfully **")
         logging.info("Bot started")
 
-        if REPLIT or KOYEB:
-            app = web.AppRunner(await web_server())
-            await app.setup()
-            await web.TCPSite(app, "0.0.0.0", 8000).start()
-            logging.info("Server URL: {0}".format(KOYEB or REPLIT or None))
-            asyncio.create_task(ping_server())
+        if WEB_SERVER:
+            await create_server()
+            logging.info("Web server started")
+            logging.info("Pinging server")
 
     async def stop(self):
         await broadcast_admins(self, "** Bot Stopped Bye **")

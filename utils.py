@@ -1,40 +1,31 @@
+import asyncio
 import json
 import logging
 import re
+import sys
 from urllib.parse import urlparse
 
-import aiohttp
-import heroku3
+import PyBypass as bypasser
+from aiohttp import web
 from mdisky import Mdisk
 from pyrogram import Client
 from pyrogram.enums import ParseMode
-from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
-from pyrogram.types import (
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    InputMediaPhoto,
-    Message,
-)
+from pyrogram.errors import FloodWait, MessageNotModified, PeerIdInvalid
+from pyrogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
+                            InputMediaPhoto, Message, BotCommand)
 from shortzy import Shortzy
-
-from random_user_agent.user_agent import UserAgent
-from random_user_agent.params import SoftwareName, OperatingSystem
 
 from config import *
 from database import db
-import PyBypass as bypasser
+from helpers import ping_server
+from plugins import web_server
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-software_names = [SoftwareName.CHROME.value]
-operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]   
-
-user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=1000)
-
 
 async def main_convertor_handler(
-    message: Message, type: str, edit_caption: bool = False, user=None
+    message: Message, _, edit_caption: bool = False, user=None
 ):
     """
     This function is used to convert a message to a different format
@@ -42,7 +33,6 @@ async def main_convertor_handler(
     :param message: The message object that the user sent
     :type message: Message
     :param type: str - The type of the media to be converted
-    :type type: str
     :param edit_caption: If you want to edit the caption of the message, set this to True, defaults to
     False
     :type edit_caption: bool (optional)
@@ -50,10 +40,12 @@ async def main_convertor_handler(
     """
     if user:
         header_text = (
-            user["header_text"].replace(r"\n", "\n") if user["is_header_text"] else ""
+            user["header_text"].replace(
+                r"\n", "\n") if user["is_header_text"] else ""
         )
         footer_text = (
-            user["footer_text"].replace(r"\n", "\n") if user["is_footer_text"] else ""
+            user["footer_text"].replace(
+                r"\n", "\n") if user["is_footer_text"] else ""
         )
         username = user["username"] if user["is_username"] else None
         banner_image = user["banner_image"] if user["is_banner_image"] else None
@@ -120,9 +112,12 @@ async def main_convertor_handler(
                 shortenedText = await method_func(user, url, alias=alias)
 
         if edit_caption:
-            return await message.edit(
-                shortenedText, disable_web_page_preview=True, reply_markup=reply_markup
-            )
+            try:
+                return await message.edit(
+                    shortenedText, disable_web_page_preview=True, reply_markup=reply_markup
+                )
+            except MessageNotModified:
+                return
 
         return await message.reply(
             shortenedText,
@@ -236,7 +231,8 @@ async def bypass_handler(text):
             domain = extract_domain(link)
             if domain not in DE_BYPASS:
                 bypassed_link = await bypass_func(link)
-                text = text.replace(link, bypassed_link)
+                if bypassed_link:
+                    text = text.replace(link, bypassed_link)
     return text
 
 
@@ -255,15 +251,18 @@ async def is_droplink_url(url):
 
 async def broadcast_admins(c: Client, Message, sender=False):
     admins = ADMINS[:]
-
     if sender:
         admins.remove(sender)
-
     for i in admins:
         try:
             await c.send_message(i, Message)
         except PeerIdInvalid:
             logging.info(f"{i} have not yet started the bot")
+        except FloodWait as e:
+            logging.error(f"Sleeping for {e.x} seconds")
+            await asyncio.sleep(e.x)
+        except:
+            logging.error(f"Unexpected error: {sys.exc_info()[0]}")
     return
 
 
@@ -279,10 +278,19 @@ async def get_size(size):
 
 
 async def update_stats(m: Message, method):
-    reply_markup = str(m.reply_markup) if m.reply_markup else ""
-    message = m.caption.html if m.caption else m.text.html
+    if m.reply_markup:
+        reply_markup = str(m.reply_markup)
+    else:
+        reply_markup = ""
+
+    if m.caption:
+        message = m.caption.html
+    else:
+        message = m.text.html
+
     mdisk_links = re.findall(
-        r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message + reply_markup
+        r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', message +
+        reply_markup
     )
     droplink_links = await extract_link(message + reply_markup)
     total_links = len(droplink_links)
@@ -292,73 +300,6 @@ async def update_stats(m: Message, method):
     if method == "shortener":
         mdisk_links = []
     await db.update_links(total_links, len(droplink_links), len(mdisk_links))
-
-
-async def TimeFormatter(milliseconds) -> str:
-    milliseconds = int(milliseconds) * 1000
-    seconds, milliseconds = divmod(int(milliseconds), 1000)
-    minutes, seconds = divmod(seconds, 60)
-    hours, minutes = divmod(minutes, 60)
-    days, hours = divmod(hours, 24)
-    tmp = (
-        (f"{str(days)}d, " if days else "")
-        + (f"{str(hours)}h, " if hours else "")
-        + (f"{str(minutes)}m, " if minutes else "")
-        + (f"{str(seconds)}s, " if seconds else "")
-        + (f"{str(milliseconds)}ms, " if milliseconds else "")
-    )
-
-    return tmp[:-2]
-
-
-async def getHerokuDetails(h_api_key, h_app_name):
-    if not h_api_key or not h_app_name:
-        logger.info("if you want heroku dyno stats, read readme.")
-        return None
-    try:
-        heroku_api = "https://api.heroku.com"
-        Heroku = heroku3.from_key(h_api_key)
-        app = Heroku.app(h_app_name)
-        useragent = user_agent_rotator.get_random_user_agent()
-        user_id = Heroku.account().id
-        headers = {
-            "User-Agent": useragent,
-            "Authorization": f"Bearer {h_api_key}",
-            "Accept": "application/vnd.heroku+json; version=3.account-quotas",
-        }
-
-        path = f"/accounts/{user_id}/actions/get-quota"
-        async with aiohttp.ClientSession() as session:
-            result = await session.get(heroku_api + path, headers=headers)
-        result = await result.json()
-        abc = ""
-        account_quota = result["account_quota"]
-        quota_used = result["quota_used"]
-        quota_remain = account_quota - quota_used
-        abc += f"<b>- Dyno Used:</b> `{await TimeFormatter(quota_used)}`\n"
-        abc += f"<b>- Free:</b> `{await TimeFormatter(quota_remain)}`\n"
-        AppQuotaUsed = 0
-        OtherAppsUsage = 0
-        for apps in result["apps"]:
-            if str(apps.get("app_uuid")) == str(app.id):
-                try:
-                    AppQuotaUsed = apps.get("quota_used")
-                except Exception as t:
-                    logger.error("error when adding main dyno")
-                    logger.error(t)
-            else:
-                try:
-                    OtherAppsUsage += int(apps.get("quota_used"))
-                except Exception as t:
-                    logger.error("error when adding other dyno")
-                    logger.error(t)
-        logger.info(f"This App: {str(app.name)}")
-        abc += f"<b>- This App:</b> `{await TimeFormatter(AppQuotaUsed)}`\n"
-        abc += f"<b>- Other:</b> `{await TimeFormatter(OtherAppsUsage)}`"
-        return abc
-    except Exception as g:
-        logger.error(g)
-        return None
 
 
 async def get_me_button(user):
@@ -402,17 +343,57 @@ async def get_me_button(user):
 
 async def user_api_check(user):
     user_method = user["method"]
-    text = ""
-    if user_method in ["mdisk", "mdlink"] and not user["mdisk_api"]:
-        text += "\n\nSet your /mdisk_api to continue..."
-    if user_method in ["shortener", "mdlink"] and not user["shortener_api"]:
-        text += f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
-
-    if not user_method:
-        text = "\n\nSet your /method first"
-    return text or True
+    if user_method == "mdisk":
+        if not user["mdisk_api"]:
+            return "\n\nSet your /mdisk_api to continue..."
+    elif user_method == "shortener":
+        if not user["shortener_api"]:
+            return f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
+    elif user_method == "mdlink":
+        if not user["mdisk_api"]:
+            return "\n\nSet your /mdisk_api to continue..."
+        if not user["shortener_api"]:
+            return f"\n\nSet your /shortener_api to continue...\nCurrent Website {user['base_site']}"
+    else:
+        return "\n\nSet your /method first"
+    return True
 
 
 def extract_domain(link):
     parsed_url = urlparse(link)
     return parsed_url.netloc
+
+
+async def create_server():
+    app = web.AppRunner(await web_server())
+    await app.setup()
+    await web.TCPSite(app, "0.0.0.0", PORT).start()
+    asyncio.create_task(ping_server())
+
+
+async def set_commands(app):
+    COMMANDS = [
+        BotCommand("start", "Used to start the bot."),
+        BotCommand("help", "Displays the help command."),
+        BotCommand("about", "Displays information about the bot."),
+        BotCommand("method", "Sets your preferred method."),
+        BotCommand("shortener_api", "Sets the shortener API."),
+        BotCommand("mdisk_api", "Sets the mDisk API."),
+        BotCommand("header", "Sets the header."),
+        BotCommand("footer", "Sets the footer."),
+        BotCommand("username", "Sets the username to replace others."),
+        BotCommand("banner_image", "Sets the banner image."),
+        BotCommand("me", "Displays information about the bot."),
+        BotCommand("base_site", "Changes the base site."),
+        BotCommand("include_domain", "Sets the included domain."),
+        BotCommand("exclude_domain", "Sets the excluded domain."),
+        BotCommand("stats", "Displays statistics of the server and bot."),
+        BotCommand("batch", "Converts link for multiple posts (admin only)."),
+        BotCommand("logs", "Sends the log messages (admin only)."),
+        BotCommand("restart", "Restarts or re-deploys the server (admin only)."),
+        BotCommand("ban", "Bans users (admin only)."),
+        BotCommand("unban", "Unbans users (admin only)."),
+        BotCommand("info", "Gets user info (admin only)."),
+    ]
+
+    await app.set_bot_commands(COMMANDS)

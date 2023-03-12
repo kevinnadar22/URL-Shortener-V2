@@ -20,7 +20,7 @@ async def forcesub_handler(c: Client, m: Message):
             buttons = [
                 [
                     InlineKeyboardButton(
-                        text="Updates Channel 🔖", url=invite_link.invite_link
+                        text="Updates Channel", url=invite_link.invite_link
                     )
                 ]
             ]
@@ -29,8 +29,8 @@ async def forcesub_handler(c: Client, m: Message):
             )
 
             await m.reply_text(
-                f"Hey {m.from_user.mention(style='md')} you need join My updates channel in order to use me 😉\n\n"
-                "__Press the Following Button to join Now 👇__",
+                f"Hey {m.from_user.mention(style='md')} you need join My updates channel in order to use me\n\n"
+                "Press the Following Button to join Now ",
                 reply_markup=InlineKeyboardMarkup(buttons),
                 quote=True,
             )

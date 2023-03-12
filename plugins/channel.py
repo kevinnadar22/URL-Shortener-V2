@@ -18,12 +18,13 @@ logger.setLevel(logging.ERROR)
     & ~filters.forwarded
 )
 async def channel_link_handler(c: Client, message):
-    user = await get_user(OWNER_ID)
-    user_method = user["method"]
-    vld = await user_api_check(user)
-    if vld is not True and CHANNELS:
-        return await c.send_message(OWNER_ID, f"To use me in channel...{vld}")
     if CHANNELS:
+        user = await get_user(OWNER_ID)
+        user_method = user["method"]
+        vld = await user_api_check(user)
+        if vld is not True and CHANNELS:
+            return await c.send_message(OWNER_ID, f"To use me in channel...{vld}")
+    
         try:
             await main_convertor_handler(message, user_method, True, user=user)
             await update_stats(message, user_method)

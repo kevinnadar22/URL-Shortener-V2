@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 lock = asyncio.Lock()
 
-cancel_button = [[InlineKeyboardButton("Cancel 🔐", callback_data="cancel_process")]]
+cancel_button = [[InlineKeyboardButton(
+    "Cancel 🔐", callback_data="cancel_process")]]
 
 
 @Client.on_message(filters.private & filters.command("batch") & filters.user(ADMINS))
@@ -45,13 +46,11 @@ async def batch(c, m: Message):
         channel_id = m.command[1]
         if channel_id.startswith("@"):
             channel_id = channel_id.split("@")[1]
-        elif channel_id.startswith("-100"):
-            channel_id = int(channel_id)
 
         buttons = [
             [
                 InlineKeyboardButton(
-                    "Batch Short 🏕", callback_data=f"batch#{str(channel_id)}"
+                    "Batch Short 🏕", callback_data=f"batch#{channel_id}"
                 )
             ],
             [InlineKeyboardButton("Cancel 🔐", callback_data="cancel")],
@@ -109,15 +108,14 @@ async def batch_handler(c: Client, m: CallbackQuery):
         try:
             for i in range(0, len(total_messages), 200):
                 channel_posts = AsyncIter(
-                    await c.get_messages(channel_id, total_messages[i : i + 200])
+                    await c.get_messages(channel_id, total_messages[i: i + 200])
                 )
                 temp.CANCEL = False
                 async with lock:
                     async for message in channel_posts:
                         if temp.CANCEL:
                             break
-
-                        if message.media or message.text:
+                        if message.text or message.caption:
                             try:
                                 await main_convertor_handler(
                                     message=message,
@@ -128,7 +126,7 @@ async def batch_handler(c: Client, m: CallbackQuery):
                                 success += 1
                                 await update_stats(message, user_method)
                             except Exception as e:
-                                logger.error(e)
+                                logger.error(e, exc_info=True)
                                 fail += 1
                             await asyncio.sleep(1)
                         else:
@@ -137,9 +135,9 @@ async def batch_handler(c: Client, m: CallbackQuery):
 
                         if total % 10 == 0:
                             msg = f"Batch Shortening in Process !\n\nTotal: {total}\nSuccess: {success}\nFailed: {fail}\nEmpty: {empty}\n\nTo cancel the batch: /cancel"
-                            await txt.edit((msg))
+                            await txt.edit(msg)
         except Exception as e:
-            logger.error(e)
+            logger.error(e, exc_info=True)
             await m.message.reply(
                 f"Error Occured while processing batch: `{e.message}`"
             )
@@ -155,12 +153,11 @@ async def batch_handler(c: Client, m: CallbackQuery):
 
 @Client.on_message(filters.private & filters.command("cancel") & filters.user(ADMINS))
 async def stop_button(c, m):
-    if m.from_user.id in ADMINS:
-        temp.CANCEL = True
-        msg = await c.send_message(
-            text="<i>Trying To Stoping.....</i>", chat_id=m.chat.id
-        )
+    temp.CANCEL = True
+    msg = await c.send_message(
+        text="<i>Trying To Stoping.....</i>", chat_id=m.chat.id
+    )
 
-        await asyncio.sleep(5)
-        await msg.edit("Batch Shortening Stopped Successfully 👍")
-        logger.info("Batch Shortening Stopped Successfully 👍")
+    await asyncio.sleep(5)
+    await msg.edit("Batch Shortening Stopped Successfully 👍")
+    logger.info("Batch Shortening Stopped Successfully 👍")

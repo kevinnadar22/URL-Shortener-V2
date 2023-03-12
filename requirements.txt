@@ -5,9 +5,7 @@ Pyrogram==2.0.30
 TgCrypto==1.2.3
 PyBypass==2.0.1
 mdisky
-heroku3
 shortzy
 aiofiles
 validators
 python-dotenv
-random-user-agent

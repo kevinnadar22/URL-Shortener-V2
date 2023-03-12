@@ -13,11 +13,12 @@ I'll handle the rest and get those links shortened or converted in a short time!
 
 START_MESSAGE = """Hi there {} 
 
-I'm here to help you convert Mdisk and other links 🔗 into shorter links using your API. Just send me any post with the links and I'll take care of the rest. I can even work in channels! 🤖
+Send me a link or post and I'll shorten it for you!
 
-To learn more about what I can do, just type /help 🤔.
+To learn more about what I can do, just type /help.
 
-Currently using the <b>{}</b> method and the <i>{}</i> website for link conversion 💻.
+Method: {}
+Shortener website: {}
 """
 
 HELP_MESSAGE = """Hey there! My name is {firstname} and I'm a link convertor and shortener bot here to make your work easier and help you earn more 💰.
@@ -32,30 +33,13 @@ I have a ton of handy features to help you out, such as:
 - Banner image support 🖼️
 - Batch conversion for channel admins only 📊
 - Channel support for admins only 📢
-- Forwarded post conversion for admins only 📩
 
 Useful commands:
 
 - /start: Start me up! You probably already used this.
 - /help: Send this message; I'll tell you more about myself!
 - /batch -100xxx: To shorten or convert all posts in your channel
-
-If you have any bugs or questions about how to use me, check out my [website]({repo}) or contact {owner}.
-
-Available commands:
-
-- **/shortener_api**
-- **/mdisk_api**
-- **/header**
-- **/footer**
-- **/username**
-- **/banner_image**
-- **/me**
-- **/base_site**
-- **/include_domain**
-- **/exclude_domain**
-
-Use these commands to learn more about each feature."""
+"""
 
 ABOUT_TEXT = """
 **My Details:**

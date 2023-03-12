@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 async def private_link_handler(c: Client, message: Message):
     try:
         user = await get_user(message.from_user.id)
+        
         if message.text and message.text.startswith("/"):
             return
 

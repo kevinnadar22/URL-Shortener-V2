@@ -1,7 +1,5 @@
 import datetime
 from aiohttp import web
-
-from config import KOYEB, REPLIT
 from helpers import temp
 
 routes = web.RouteTableDef()
@@ -15,8 +13,6 @@ async def root_route_handler(request):
 
     res = {
         "status": "running",
-        "hosted": "replit.com" if REPLIT else "koyeb.com",
-        "repl": REPLIT or KOYEB,
         "bot": temp.BOT_USERNAME,
         "runtime": runtime,
     }
