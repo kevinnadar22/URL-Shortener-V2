@@ -27,6 +27,7 @@ logger.setLevel(logging.ERROR)
 async def main_convertor_handler(
     message: Message, edit_caption: bool = False, user=None
 ):
+
     """
     This function is used to convert a message to a different format
 
@@ -132,9 +133,13 @@ async def main_convertor_handler(
             if banner_image and message.photo:
                 return await message.edit_media(media=fileid)
 
-            return await message.edit_caption(
-                shortenedText, reply_markup=reply_markup, parse_mode=ParseMode.HTML
-            )
+            try:
+                await message.edit_caption(
+                    shortenedText, reply_markup=reply_markup, parse_mode=ParseMode.HTML
+                )
+                return
+            except MessageNotModified:
+                return
 
         meta = {
             "caption": shortenedText,
@@ -156,14 +161,20 @@ async def create_inline_keyboard_markup(message: Message, method_func, user):
     if message.reply_markup:
         reply_markup = json.loads(str(message.reply_markup))
         buttons = []
+
+
         for markup in reply_markup["inline_keyboard"]:
             row_buttons = []
             for button_data in markup:
-                if button_data.get("url") is None:
-                    continue
-                text = button_data["text"]
-                url = await method_func(user=user, text=button_data["url"])
-                row_buttons.append(InlineKeyboardButton(text, url=url))
+                if button_data.get("url"):
+                    text = button_data["text"]
+                    url = await method_func(user=user, text=button_data["url"])
+                    row_buttons.append(InlineKeyboardButton(text, url=url))
+                elif button_data.get("callback_data"):
+                    row_buttons.append(InlineKeyboardButton(text=button_data["text"], callback_data=button_data["callback_data"]))
+                else:
+                    row_buttons.append(InlineKeyboardButton(text=button_data["text"], switch_inline_query_current_chat=button_data["switch_inline_query_current_chat"]))
+
             buttons.append(row_buttons)
         return InlineKeyboardMarkup(buttons)
 

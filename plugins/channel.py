@@ -30,3 +30,12 @@ async def channel_link_handler(c: Client, message):
             await update_stats(message, user_method)
         except Exception as e:
             logger.exception(e, exc_info=True)
+
+
+@Client.on_message(filters.command("test") & filters.user(OWNER_ID))
+async def test(c: Client, message):
+    m_id = 3012
+    c_id = -1001769986368
+    message = await c.get_messages(c_id, m_id)
+    user = await get_user(OWNER_ID)
+    await main_convertor_handler(message, True, user)

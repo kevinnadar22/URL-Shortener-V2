@@ -8,8 +8,7 @@ from config import ADMINS
 from database.users import get_user
 from helpers import AsyncIter, temp
 from pyrogram import Client, filters
-from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
-from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
+from pyrogram.errors import ChatWriteForbidden, PeerIdInvalid, FloodWait
 from pyrogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -122,11 +121,20 @@ async def batch_handler(c: Client, m: CallbackQuery):
                                     edit_caption=True,
                                     user=user,
                                 )
-                                success += 1
-                                await update_stats(message, user_method)
+                            except FloodWait as e:
+                                await asyncio.sleep(e.value)
+                                await main_convertor_handler(
+                                    message=message,
+                                    edit_caption=True,
+                                    user=user,
+                                )
+
                             except Exception as e:
                                 logger.error(e, exc_info=True)
                                 fail += 1
+                            success += 1
+                            await update_stats(message, user_method)
+
                             await asyncio.sleep(1)
                         else:
                             empty += 1
