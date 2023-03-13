@@ -119,7 +119,6 @@ async def batch_handler(c: Client, m: CallbackQuery):
                             try:
                                 await main_convertor_handler(
                                     message=message,
-                                    type=user_method,
                                     edit_caption=True,
                                     user=user,
                                 )

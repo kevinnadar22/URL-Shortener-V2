@@ -25,7 +25,7 @@ logger.setLevel(logging.ERROR)
 
 
 async def main_convertor_handler(
-    message: Message, _, edit_caption: bool = False, user=None
+    message: Message, edit_caption: bool = False, user=None
 ):
     """
     This function is used to convert a message to a different format

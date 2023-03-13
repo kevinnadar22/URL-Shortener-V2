@@ -36,7 +36,7 @@ async def private_link_handler(c: Client, message: Message):
                 quote=True,
             )
 
-            await main_convertor_handler(message, user_method, user=user)
+            await main_convertor_handler(message, user=user)
             
             bin_caption = f"""{caption}\n\n#NewPost\nFrom User :- {message.from_user.mention} [`{message.from_user.id}`]"""
 

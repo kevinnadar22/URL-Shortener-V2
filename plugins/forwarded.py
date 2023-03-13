@@ -27,7 +27,7 @@ async def channel_forward_link_handler(c: Client, message):
             if vld is not True and CHANNELS:
                 return await c.send_message(OWNER_ID, "To use me in channel...\n\n" + vld)
             
-            await main_convertor_handler(message, user_method, user=user)
+            await main_convertor_handler(message, user=user)
             await message.delete()
 
             await update_stats(message, user_method)

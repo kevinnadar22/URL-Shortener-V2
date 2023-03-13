@@ -26,7 +26,7 @@ async def channel_link_handler(c: Client, message):
             return await c.send_message(OWNER_ID, f"To use me in channel...{vld}")
     
         try:
-            await main_convertor_handler(message, user_method, True, user=user)
+            await main_convertor_handler(message, True, user=user)
             await update_stats(message, user_method)
         except Exception as e:
             logger.exception(e, exc_info=True)
