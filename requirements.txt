@@ -9,3 +9,4 @@ shortzy
 aiofiles
 validators
 python-dotenv
+uvloop
