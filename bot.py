@@ -1,6 +1,5 @@
 import uvloop
 uvloop.install()
-import asyncio
 import datetime
 import logging
 import logging.config
@@ -18,9 +17,6 @@ from utils import broadcast_admins, create_server, set_commands
 # Get logging configurations
 logging.config.fileConfig("logging.conf")
 logging.getLogger().setLevel(logging.INFO)
-
-
-
 
 
 class Bot(Client):

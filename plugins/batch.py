@@ -104,12 +104,14 @@ async def batch_handler(c: Client, m: CallbackQuery):
         empty = 0
 
         total_messages = range(1, id)
+        temp.CANCEL = False
         try:
             for i in range(0, len(total_messages), 200):
                 channel_posts = AsyncIter(
                     await c.get_messages(channel_id, total_messages[i: i + 200])
                 )
-                temp.CANCEL = False
+                if temp.CANCEL:
+                    break
                 async with lock:
                     async for message in channel_posts:
                         if temp.CANCEL:
