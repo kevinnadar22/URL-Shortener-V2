@@ -106,7 +106,7 @@ async def main_convertor_handler(
     if message.text:
         if user_method in ["shortener", "mdlink"] and "|" in caption:
             regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))\s\|\s([a-zA-Z0-9_]){,30}"
-            if custom_alias := re.match(regex, caption):
+            if custom_alias == re.match(regex, caption):
                 custom_alias = custom_alias[0].split("|")
                 alias = custom_alias[1].strip()
                 url = custom_alias[0].strip()
